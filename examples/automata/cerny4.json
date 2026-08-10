@@ -1,0 +1,14 @@
+{
+  "schema_id": "rime.automata.source.v1",
+  "source_id": "cerny4",
+  "states": ["0", "1", "2", "3"],
+  "alphabet": ["a", "b"],
+  "transitions": {
+    "a": ["1", "2", "3", "0"],
+    "b": ["0", "1", "2", "0"]
+  },
+  "metadata": {
+    "family": "Cerny",
+    "state_count": 4
+  }
+}

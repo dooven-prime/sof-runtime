@@ -1,0 +1,63 @@
+{
+  "lock_version": "1.0",
+  "upstream_repository": "https://github.com/dooven-prime/rime-lite",
+  "upstream_commit": "6274b7b387e8f5b84a39afe1d5c1082edebc3792",
+  "import_policy": "immutable",
+  "imported_at": "2026-08-04",
+  "entries": [
+    {
+      "role": "canonical_contract",
+      "upstream_path": "schemas/sofcompiler/capability-manifest-v1.0.schema.json",
+      "local_path": "contracts/compiler/v1.0/capability-manifest.schema.json",
+      "sha256": "7be6195d0d1c2ae791af2817948d6684649dbbce3787336ccae7c6bc3b53b89e"
+    },
+    {
+      "role": "canonical_contract",
+      "upstream_path": "schemas/sofcompiler/typed-sof-ir-v1.0.schema.json",
+      "local_path": "contracts/compiler/v1.0/typed-sof-ir.schema.json",
+      "sha256": "a4eb97fde5df7ed1c0ffab24f9b559cc25ceaf6cd840f4ed0d619e67a746123d"
+    },
+    {
+      "role": "canonical_contract",
+      "upstream_path": "schemas/sofcompiler/report-profile-v1.0.schema.json",
+      "local_path": "contracts/compiler/v1.0/report-profile.schema.json",
+      "sha256": "7213cf8e541b9708161c293e9671ea21692c2d3c8db365740f83ee053f95d90e"
+    },
+    {
+      "role": "canonical_rule_registry",
+      "upstream_path": "schemas/sofcompiler/rule-registry-v1.0.json",
+      "local_path": "contracts/compiler/v1.0/rule-registry.json",
+      "sha256": "12e987288ff4263f6c4e493850bf7ca8e32ebf89d01c6635c04f7f430bd9bef4"
+    },
+    {
+      "role": "conformance_fixture",
+      "upstream_path": "schemas/sofcompiler/examples/strict-associative-capabilities-v1.0.json",
+      "local_path": "tests/conformance/fixtures/upstream-v1.0/strict-associative-capabilities-v1.0.json",
+      "sha256": "ffa6e006073f93ad593097ebc7c00b62626797ea73f8565eac8a1e15c0556a02"
+    },
+    {
+      "role": "conformance_fixture",
+      "upstream_path": "schemas/sofcompiler/examples/strict-associative-ir-v1.0.json",
+      "local_path": "tests/conformance/fixtures/upstream-v1.0/strict-associative-ir-v1.0.json",
+      "sha256": "cc496aaee584ed95becd1b358f009130363649b1174e516f806a09910d0ff0e4"
+    },
+    {
+      "role": "conformance_fixture",
+      "upstream_path": "schemas/sofcompiler/examples/basic-associative-closure-profile-v1.0.json",
+      "local_path": "tests/conformance/fixtures/upstream-v1.0/basic-associative-closure-profile-v1.0.json",
+      "sha256": "8a617c9e9c3f10fd92ba25171abddbad3fd9048177acf7bf6219d7d820d66f90"
+    },
+    {
+      "role": "conformance_fixture",
+      "upstream_path": "schemas/sofcompiler/examples/strict-associative-compiler-output-v1.0.json",
+      "local_path": "tests/conformance/fixtures/upstream-v1.0/strict-associative-compiler-output-v1.0.json",
+      "sha256": "99bf6e93df676b4ff66c53c884170bf7a84e0a3bd72f8a698e1742e5e625b017"
+    },
+    {
+      "role": "conformance_fixture",
+      "upstream_path": "schemas/sofcompiler/examples/strict-associative-evidence-v1.0.json",
+      "local_path": "tests/conformance/fixtures/upstream-v1.0/strict-associative-evidence-v1.0.json",
+      "sha256": "32e5b9805e87b56a419491ad10c16f65d7c365ee91fe210747018de9622626a5"
+    }
+  ]
+}

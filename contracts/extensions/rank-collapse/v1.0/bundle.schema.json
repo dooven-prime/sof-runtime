@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/extensions/rank-collapse/v1.0/bundle.schema.json",
+  "title": "Rank-Collapse Result Bundle v1",
+  "type": "object",
+  "required": ["schema_id", "semantic_run_id", "execution_id", "source_digest", "policy_digest", "object", "image_layers", "layer_semantics", "findings", "claim_boundary"],
+  "properties": {
+    "schema_id": {"const": "rime.rank-collapse.bundle.v1"},
+    "semantic_run_id": {"type": "string", "pattern": "^semrun:sha256:[0-9a-f]{64}$"},
+    "execution_id": {"type": "string", "pattern": "^exec:[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+    "source_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "policy_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "object": {"type": "object"},
+    "image_layers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["depth", "images", "minimum_rank"],
+        "properties": {
+          "depth": {"type": "integer", "minimum": 0},
+          "images": {"type": "array", "items": {"type": "array", "items": {"type": "string"}}},
+          "minimum_rank": {"type": "integer", "minimum": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "layer_semantics": {"const": "shortest first-hit distance from the full state image"},
+    "findings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["envelope", "payload"],
+        "properties": {
+          "envelope": {"type": "object"},
+          "payload": {"type": "object"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "claim_boundary": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

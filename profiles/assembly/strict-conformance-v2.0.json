@@ -1,0 +1,22 @@
+{
+  "assembly_contract_version": "2.0",
+  "assembly_profile_id": "sof-runtime.strict-conformance.assembly.v2",
+  "assembly_profile_version": "2.0",
+  "compiler_profile_id": "sof-runtime.strict-conformance",
+  "normative_item_policy": {
+    "claim_rendering": "ir_summary_with_source_item_identity",
+    "degradation_rendering": "lossless_compiler_item",
+    "mapping": "typed_identity_bijection",
+    "order": "compiler_output_order"
+  },
+  "presentation_fields": [
+    "modules",
+    "findings",
+    "failure_modes",
+    "alignment_readiness",
+    "source_mapping",
+    "provenance"
+  ],
+  "record_kind": "strict_sof",
+  "title": "SOF Runtime Strict Conformance Assembly Profile"
+}

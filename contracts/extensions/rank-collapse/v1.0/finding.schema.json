@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/extensions/rank-collapse/v1.0/finding.schema.json",
+  "title": "Rank-Collapse Finding Payload v1",
+  "type": "object",
+  "required": ["schema_id", "payload_id", "kind", "rank_threshold", "depth", "shortest_word", "lower_depths_verified", "closure_exhausted", "reachable_image_subset_count"],
+  "properties": {
+    "schema_id": {"const": "rime.rank-collapse.finding.v1"},
+    "payload_id": {"type": "string", "minLength": 1},
+    "kind": {"enum": ["rank_threshold_first_hit", "rank_threshold_unreachable"]},
+    "rank_threshold": {"type": "integer", "minimum": 1},
+    "depth": {"type": ["integer", "null"], "minimum": 0},
+    "shortest_word": {"type": ["array", "null"], "items": {"type": "string"}},
+    "lower_depths_verified": {"type": ["integer", "null"], "minimum": 0},
+    "closure_exhausted": {"const": true},
+    "reachable_image_subset_count": {"type": "integer", "minimum": 1}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"kind": {"const": "rank_threshold_first_hit"}}, "required": ["kind"]},
+      "then": {
+        "properties": {
+          "depth": {"type": "integer", "minimum": 0},
+          "shortest_word": {"type": "array", "items": {"type": "string"}},
+          "lower_depths_verified": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"kind": {"const": "rank_threshold_unreachable"}}, "required": ["kind"]},
+      "then": {
+        "properties": {
+          "depth": {"type": "null"},
+          "shortest_word": {"type": "null"},
+          "lower_depths_verified": {"type": "null"}
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

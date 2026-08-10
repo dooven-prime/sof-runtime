@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rime-project.local/schemas/sof-runtime/expert-adapter-declaration-v1.0.schema.json",
+  "title": "SOF Expert Adapter Declaration v1.0",
+  "description": "Domain-facing capability and semantic-boundary declaration. It is not a report or IR.",
+  "type": "object",
+  "required": [
+    "declaration_version",
+    "adapter_id",
+    "adapter_version",
+    "domain_id",
+    "native_objects",
+    "supported_carriers",
+    "supported_observables",
+    "sectorization_origin",
+    "capabilities",
+    "unsupported_capabilities",
+    "parameterization",
+    "normalization_threshold_requirements",
+    "evidence_requirements"
+  ],
+  "properties": {
+    "declaration_version": {"const": "1.0"},
+    "adapter_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "adapter_version": {"type": "string", "minLength": 1},
+    "domain_id": {"type": "string", "minLength": 1},
+    "native_objects": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "supported_carriers": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "supported_observables": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "sectorization_origin": {"type": "string", "minLength": 1},
+    "capabilities": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "unsupported_capabilities": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "parameterization": {"type": "object", "minProperties": 1},
+    "normalization_threshold_requirements": {"type": "object", "minProperties": 1},
+    "evidence_requirements": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,20 @@
+"""Starter tests for __DOMAIN_SLUG__.
+
+These tests are intentionally incomplete until the adapter methods are filled.
+"""
+
+from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).parents[1]))
+
+from adapter import ADAPTER
+
+
+def test_declaration_is_present() -> None:
+    declaration = ADAPTER.describe()
+    assert declaration["adapter_id"] == "__ADAPTER_ID__"
+
+
+def test_source_admission_must_be_implemented() -> None:
+    raise AssertionError("replace this scaffold test with positive and hostile source tests")

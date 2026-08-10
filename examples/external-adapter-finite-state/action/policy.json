@@ -1,0 +1,18 @@
+{
+  "policy_id": "finite-state-review-policy",
+  "policy_contract_version": "2.0",
+  "policy_revision": "finite-state-review-r1",
+  "applicability": {"regimes": ["strict_vs_strict"], "comparison_roles": ["diagnostic_comparison"]},
+  "normative_basis": [
+    {"basis_id": "difference-is-not-defect", "statement": "A mismatch is a policy-relative review status, not a certified defect.", "source_ref": {"artifact_id": "finite-state-policy-basis", "role": "policy_source", "uri": "artifact://examples/external-adapter-finite-state/action/policy-basis.json", "digest": {"algorithm": "sha256", "value": "d4d2e837fd974caccbdde47eccacfad0337d24d3fb9537aac058d76f549e87df"}, "producer": "external-adapter-example", "contract_version": "2.0"}}
+  ],
+  "rules": [
+    {"rule_id": "mismatch-review", "when": {"predicate_version": "1.0", "op": "coordinate_state_is", "coordinate_id": "*", "value": "MISMATCH"}, "assessment_kind": "defect_candidate", "assessment_note": "A mismatch is a policy-relative review status, not a certified defect.", "uncertainty_status": "bounded", "allowed_dispositions": ["Investigate", "RequestEvidence"], "negative_boundary": ["The candidate is not a certified defect, execution command, or recommendation."]},
+    {"rule_id": "aligned-no-action", "when": {"predicate_version": "1.0", "op": "coordinate_state_is", "coordinate_id": "*", "value": "ALIGNED"}, "assessment_kind": "no_action_indicated", "assessment_note": "Equality on the requested coordinate indicates no action under this policy.", "uncertainty_status": "bounded", "allowed_dispositions": ["NoAction"], "negative_boundary": ["Equality does not establish global equivalence or safety."]}
+  ],
+  "exceptions": [],
+  "precedence_edges": [],
+  "uncertainty_policy": {"version": "1.0", "unresolved_predicate": "propagate_unresolved", "unavailable_coordinate": "non_satisfying", "not_declared": "propagate_unresolved", "incomparable": "propagate_unresolved", "rule_conflict": "unresolved_disposition", "no_applicable_rule": "no_disposition"},
+  "candidate_families": ["Investigate", "RequestEvidence"],
+  "selection_status": "downstream"
+}

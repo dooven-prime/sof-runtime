@@ -1,0 +1,16 @@
+{
+  "schema_id": "sof.plugin-manifest.v1",
+  "plugin_id": "org.rime.rank-collapse",
+  "plugin_version": "0.1.0",
+  "execution_mode": "python_in_process",
+  "carrier_kind": "rank_collapse",
+  "input_schema": "contracts/sources/automata/v1.0/source.schema.json",
+  "output_schema": "contracts/extensions/rank-collapse/v1.0/bundle.schema.json",
+  "semantic_environment": {
+    "algorithm_mode": "exhaustive_reachable_subset_bfs",
+    "arithmetic_backend": "exact_finite_transformations",
+    "dependency_lock_digest": null,
+    "feature_flags": []
+  },
+  "entry_point": "sof_runtime.carriers.rank_collapse:RankCollapsePlugin"
+}

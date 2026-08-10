@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/runtime/v1.0/compiler-output.schema.json",
+  "title": "SOF Runtime Compiler Output v1",
+  "description": "Runtime schema for the Paper X Compile_v1 output shape. This is not an upstream canonical input contract or a SOFRS report.",
+  "type": "object",
+  "required": ["compiler_output_version", "compiler_id", "manifest_id", "ir_record_id", "profile_id", "item_type", "items"],
+  "properties": {
+    "compiler_output_version": {"const": "1.0"},
+    "compiler_id": {"const": "sofcompiler.compile_v1"},
+    "manifest_id": {"type": "string", "minLength": 1},
+    "ir_record_id": {"type": "string", "minLength": 1},
+    "profile_id": {"type": "string", "minLength": 1},
+    "item_type": {"const": "ClaimItem_v1 | DegradationItem_v1"},
+    "items": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {"$ref": "#/$defs/claim_item"},
+          {"$ref": "#/$defs/degradation_item"}
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "claim_item": {
+      "type": "object",
+      "required": ["item_kind", "module_id", "claim_id", "source_ir_kind", "source_ir_id", "claim_status", "result_state", "carrier_ids", "derivation_ids"],
+      "properties": {
+        "item_kind": {"const": "claim"},
+        "module_id": {"type": "string"},
+        "claim_id": {"type": "string"},
+        "source_ir_kind": {"const": "claim"},
+        "source_ir_id": {"type": "string"},
+        "claim_status": {"enum": ["Theorem", "Computational Certificate", "Computational Observation", "Research Program", null]},
+        "result_state": {"enum": ["DECLARED", "ESTABLISHED", "CERTIFIED", "OBSERVED", "UNREACHED_AT_CUTOFF", "NOT_APPLICABLE", "NOT_DECLARED"]},
+        "carrier_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "derivation_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      },
+      "additionalProperties": false
+    },
+    "degradation_item": {
+      "type": "object",
+      "required": ["item_kind", "module_id", "action", "reason_kind", "details"],
+      "properties": {
+        "item_kind": {"const": "degradation"},
+        "module_id": {"type": "string"},
+        "action": {"enum": ["fail_profile", "omit_module", "emit_unavailable", "omit_claim"]},
+        "reason_kind": {"type": "string", "minLength": 1},
+        "source_ir_id": {"type": "string", "minLength": 1},
+        "details": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

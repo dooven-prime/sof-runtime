@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/extensions/positive-word-support/v1.0/bundle.schema.json",
+  "title": "Single-Letter Positive-Word Support Bundle v1",
+  "type": "object",
+  "required": ["schema_id", "semantic_run_id", "execution_id", "source_digest", "policy_digest", "object", "findings", "claim_boundary"],
+  "properties": {
+    "schema_id": {"const": "rime.positive-word-support.bundle.v1"},
+    "semantic_run_id": {"type": "string", "pattern": "^semrun:sha256:[0-9a-f]{64}$"},
+    "execution_id": {"type": "string", "pattern": "^exec:[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+    "source_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "policy_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "object": {"type": "object"},
+    "findings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["envelope", "payload"],
+        "properties": {
+          "envelope": {"type": "object"},
+          "payload": {"type": "object"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "claim_boundary": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

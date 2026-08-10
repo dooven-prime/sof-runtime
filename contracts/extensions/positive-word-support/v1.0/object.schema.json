@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/extensions/positive-word-support/v1.0/object.schema.json",
+  "title": "Single-Letter Positive-Word Support Object v1",
+  "type": "object",
+  "required": ["schema_id", "object_id", "source_ref", "state_count", "operator_label", "pair_scope", "semantics"],
+  "properties": {
+    "schema_id": {"const": "rime.positive-word-support.object.v1"},
+    "object_id": {"type": "string", "minLength": 1},
+    "source_ref": {"type": "string", "minLength": 1},
+    "state_count": {"type": "integer", "minimum": 1},
+    "operator_label": {"const": "P"},
+    "pair_scope": {"const": "ordered_off_diagonal"},
+    "semantics": {"const": "first positive power with nonzero coordinate-sector support"}
+  },
+  "additionalProperties": false
+}

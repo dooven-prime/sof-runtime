@@ -1,0 +1,58 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.hypothesis/
+.mypy_cache/
+.pyre/
+.ruff_cache/
+.tox/
+.nox/
+
+# Coverage and test output
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Packaging and build output
+*.egg-info/
+build/
+dist/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE and editor state
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Runtime executions and generated workspace artifacts
+/runs/*
+!/runs/.gitkeep
+
+# Rust build output
+**/target/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+.secrets/
+
+# Temporary and backup files
+*.tmp
+*.bak
+*.orig
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/sources/markov/v1.0/source.schema.json",
+  "title": "Exact Finite Markov Source v1",
+  "description": "One exact-rational, entrywise-nonnegative transition operator. The positive-word support adapter uses strict numerator > 0 and does not admit signed, complex, multi-letter, cancellation-sensitive, or tolerance-relative inputs.",
+  "type": "object",
+  "required": ["schema_id", "source_id", "states", "transition_numerators", "row_denominators"],
+  "properties": {
+    "schema_id": {"const": "rime.markov.source.v1"},
+    "source_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "states": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "transition_numerators": {
+      "description": "Nonnegative integer numerators for the single operative letter P.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "array",
+        "minItems": 1,
+        "items": {"type": "integer", "minimum": 0}
+      }
+    },
+    "row_denominators": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "integer", "minimum": 1}
+    },
+    "metadata": {"type": "object"}
+  },
+  "additionalProperties": false
+}

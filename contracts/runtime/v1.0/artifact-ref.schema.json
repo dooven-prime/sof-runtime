@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/runtime/v1.0/artifact-ref.schema.json",
+  "title": "SOF Runtime Artifact Reference v1",
+  "type": "object",
+  "required": ["artifact_id", "media_type", "uri", "sha256", "schema_id", "producer", "input_refs"],
+  "properties": {
+    "artifact_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+    "media_type": {"type": "string", "minLength": 1},
+    "uri": {"type": "string", "minLength": 1},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "schema_id": {"type": ["string", "null"]},
+    "producer": {"type": "string", "minLength": 1},
+    "input_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

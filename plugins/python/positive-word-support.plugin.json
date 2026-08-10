@@ -1,0 +1,16 @@
+{
+  "schema_id": "sof.plugin-manifest.v1",
+  "plugin_id": "org.rime.positive-word-support",
+  "plugin_version": "0.1.0",
+  "execution_mode": "python_in_process",
+  "carrier_kind": "positive_word_support",
+  "input_schema": "contracts/sources/markov/v1.0/source.schema.json",
+  "output_schema": "contracts/extensions/positive-word-support/v1.0/bundle.schema.json",
+  "semantic_environment": {
+    "algorithm_mode": "exhaustive_support_bfs",
+    "arithmetic_backend": "exact_nonnegative_rational_support",
+    "dependency_lock_digest": null,
+    "feature_flags": []
+  },
+  "entry_point": "sof_runtime.carriers.positive_word_support:PositiveWordSupportPlugin"
+}

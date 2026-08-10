@@ -1,0 +1,18 @@
+{
+  "alignment_version": "1.0",
+  "alignment_id": "example.finite-state.identity",
+  "alignment_kind": "identity",
+  "map_kind": "bijection",
+  "reference_carrier": "report-bound-labels",
+  "target_carrier": "report-bound-labels",
+  "sector_pairs": [
+    {"reference_id": "idle", "target_id": "idle", "relation": "equivalent"},
+    {"reference_id": "busy", "target_id": "busy", "relation": "equivalent"},
+    {"reference_id": "done", "target_id": "done", "relation": "equivalent"}
+  ],
+  "observable_pairs": [
+    {"reference_id": "advance", "target_id": "advance", "relation": "equivalent"}
+  ],
+  "semantic_basis": "Declared identity alignment on the shared finite-state labels.",
+  "negative_boundary": ["Identity alignment does not establish cross-domain semantic equivalence."]
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rime-project.local/schemas/sof-runtime/expert-realization-candidate-v1.0.schema.json",
+  "title": "SOF Expert Realization Candidate v1.0",
+  "description": "High-level adapter output consumed by a runtime-owned IR builder.",
+  "type": "object",
+  "required": [
+    "candidate_version",
+    "record_kind",
+    "source_id",
+    "space",
+    "sectorization",
+    "operative_alphabet",
+    "direct_support",
+    "claim"
+  ],
+  "properties": {
+    "candidate_version": {"const": "1.0"},
+    "record_kind": {"const": "strict_sof"},
+    "source_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "space": {
+      "type": "object",
+      "required": ["dimension", "scalar_field"],
+      "properties": {
+        "dimension": {"type": "integer", "minimum": 1},
+        "scalar_field": {"const": "complex"}
+      },
+      "additionalProperties": false
+    },
+    "sectorization": {
+      "type": "object",
+      "required": ["labels", "origin", "complete"],
+      "properties": {
+        "labels": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+        "origin": {"type": "string", "minLength": 1},
+        "complete": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "operative_alphabet": {
+      "type": "object",
+      "required": ["labels", "semantics"],
+      "properties": {
+        "labels": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+        "semantics": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "direct_support": {
+      "type": "object",
+      "required": ["present", "support_pairs", "threshold_statement"],
+      "properties": {
+        "present": {"type": "boolean"},
+        "support_pairs": {"type": "array", "items": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 2, "maxItems": 2}, "uniqueItems": true},
+        "threshold_statement": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "claim": {
+      "type": "object",
+      "required": ["statement", "scope", "negative_boundary"],
+      "properties": {
+        "statement": {"type": "string", "minLength": 1},
+        "scope": {"type": "string", "minLength": 1},
+        "negative_boundary": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

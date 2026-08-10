@@ -1,0 +1,29 @@
+"""Starter ExpertAdapter for __DOMAIN_SLUG__.
+
+This scaffold is intentionally not runnable until the domain author replaces
+the marked methods with source-specific validation and realization logic.
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from sof_runtime.sdk import CapabilityDeclaration, ExpertAdapter, RealizationCandidate, SourceBundle
+from sof_runtime.contracts import load_json
+
+
+class __CLASS_NAME__:
+    def describe(self) -> CapabilityDeclaration:
+        return load_json(__file__.replace("adapter.py", "adapter-manifest.json"))
+
+    def inspect_source(self, source: SourceBundle) -> dict[str, Any]:
+        raise NotImplementedError("replace inspect_source with domain-specific admission checks")
+
+    def realize(self, source: SourceBundle, request: dict[str, Any]) -> RealizationCandidate:
+        raise NotImplementedError("replace realize with a high-level realization candidate")
+
+    def evidence(self) -> dict[str, Any]:
+        raise NotImplementedError("declare how source inspection and realization are independently checked")
+
+
+ADAPTER: ExpertAdapter = __CLASS_NAME__()

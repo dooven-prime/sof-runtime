@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sof-runtime"
+version = "0.1.0"
+description = "Reference runtime for versioned Sectorized Observable Framework contracts"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "WuJun Chen"}]
+dependencies = [
+  "jsonschema>=4.23.0",
+]
+
+[project.scripts]
+sof = "sof_runtime.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["sof_runtime", "sof_runtime.*"]
+
+[tool.setuptools.package-data]
+sof_runtime = ["templates/expert_adapter_v1/**/*.txt"]
+
+[tool.setuptools.data-files]
+"sof_runtime_contracts" = [
+  "contracts/README.md",
+  "contracts/upstream.lock.json",
+  "contracts/upstream-candidate.lock.json",
+]
+"sof_runtime_contracts/compiler/v1.0" = [
+  "contracts/compiler/v1.0/*.json",
+]
+"sof_runtime_contracts/runtime" = [
+  "contracts/runtime/canonical-json-v1.md",
+]
+"sof_runtime_contracts/runtime/v1.0" = [
+  "contracts/runtime/v1.0/*.json",
+]
+"sof_runtime_contracts/reporting" = [
+  "contracts/reporting/README.md",
+]
+"sof_runtime_contracts/reporting/candidate-v2.0" = [
+  "contracts/reporting/candidate-v2.0/*.json",
+]
+"sof_runtime_contracts/comparison" = [
+  "contracts/comparison/README.md",
+]
+"sof_runtime_contracts/comparison/candidate-v2.0" = [
+  "contracts/comparison/candidate-v2.0/*.json",
+]
+"sof_runtime_contracts/action" = [
+  "contracts/action/README.md",
+]
+"sof_runtime_contracts/action/candidate-v2.0" = [
+  "contracts/action/candidate-v2.0/*.json",
+]
+"sof_runtime_contracts/sources/automata/v1.0" = [
+  "contracts/sources/automata/v1.0/*.json",
+]
+"sof_runtime_contracts/sources/markov/v1.0" = [
+  "contracts/sources/markov/v1.0/*.json",
+]
+"sof_runtime_contracts/extensions/rank-collapse/v1.0" = [
+  "contracts/extensions/rank-collapse/v1.0/*.json",
+]
+"sof_runtime_contracts/extensions/positive-word-support/v1.0" = [
+  "contracts/extensions/positive-word-support/v1.0/*.json",
+]

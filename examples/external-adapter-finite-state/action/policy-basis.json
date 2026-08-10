@@ -1,0 +1,5 @@
+{
+  "policy_basis_id": "finite-state-review-policy-basis-v1",
+  "statement": "A factual mismatch may support bounded review or evidence request, but is not by itself a defect or action command.",
+  "version": "1.0"
+}

@@ -1,0 +1,7 @@
+{
+  "source_id": "__SOURCE_ID__",
+  "schema_id": "external.__DOMAIN_SLUG__.source.v1",
+  "payload": {
+    "TODO": "replace with domain-native source data"
+  }
+}

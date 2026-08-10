@@ -1,0 +1,8 @@
+{
+  "source_id": "finite-state.transition.reference",
+  "domain": "finite-state-transition-system",
+  "states": ["idle", "busy", "done"],
+  "operators": [{"id": "advance", "matrix": [[0, 0, 0], [1, 0, 0], [0, 1, 0]]}],
+  "threshold": 1e-12,
+  "matrix_convention": "row_i_column_j_is_channel_j_to_i"
+}

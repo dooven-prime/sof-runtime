@@ -1,0 +1,18 @@
+{
+  "context_id": "finite-state-review-context-v1",
+  "context_contract_version": "2.0",
+  "context_revision": "finite-state-review-r1",
+  "actor": {"actor_id": "domain-reviewer", "role": "domain reviewer", "description": "A domain expert reviewing a finite-state transition comparison."},
+  "scope": {"scope_id": "finite-state-comparison-scope", "description": "The declared direct-support coordinate of the external finite-state comparison.", "audit_id": "comparison.example.finite-state-adapter.finite-state.transition.reference.sofreport.example.finite-state-adapter.finite-state.transition.target.sofreport"},
+  "objective": {"objective_id": "review-direct-support", "statement": "Determine whether the observed direct-support difference warrants bounded follow-up evidence."},
+  "constraints": [{"constraint_id": "human-review-required", "statement": "No candidate is an execution command and no action is authorized by this context.", "status": "binding"}],
+  "time": {"kind": "source_snapshot", "start": null, "end": null, "timezone": null, "basis": "The two source snapshots bound the comparison."},
+  "authority": {"authority_id": "finite-state-review-authority", "status": "declared", "description": "Declared review authority for this bounded diagnostic comparison.", "actor_ids": ["domain-reviewer"], "scope_ids": ["finite-state-comparison-scope"]},
+  "uncertainty_conditions": ["A mismatch is not a certified defect.", "Post-action outcomes require a new audit."],
+  "comparison_role": "diagnostic_comparison",
+  "mismatch_direction": "reference_to_target",
+  "contract_status": "nonconforming",
+  "evaluator_qualification_note": "Qualification is declared for this finite-state review only; it is not a general domain certificate.",
+  "transformation_contract_refs": [],
+  "negative_boundary": ["The context does not establish reference truth, severity, action correctness, or authorization."]
+}

@@ -1,0 +1,14 @@
+workflow_id: automata-rank-collapse-v1
+contract_lock: contracts/upstream.lock.json
+source_schema: contracts/sources/automata/v1.0/source.schema.json
+adapter: sof_runtime.adapters.automata
+carrier_plugin: plugins/python/rank-collapse.plugin.json
+validator: sof_runtime.validation.rank_collapse
+stages:
+  - validate_source
+  - admit_capabilities
+  - compute_raw_bundle
+  - independently_validate
+  - emit_run_response
+  - assemble_promotion_package
+boundary: Rank collapse remains an extension until an independent carrier contract is accepted upstream.

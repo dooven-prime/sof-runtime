@@ -1,0 +1,14 @@
+workflow_id: markov-positive-word-v1
+contract_lock: contracts/upstream.lock.json
+source_schema: contracts/sources/markov/v1.0/source.schema.json
+adapter: sof_runtime.adapters.markov
+carrier_plugin: plugins/python/positive-word-support.plugin.json
+validator: sof_runtime.validation.positive_word_support
+stages:
+  - validate_source
+  - admit_capabilities
+  - compute_raw_bundle
+  - independently_validate
+  - emit_run_response
+  - assemble_promotion_package
+boundary: Positive-word first-hit support is not mixing time, route depth, rank collapse, or Lie/Hall depth.

@@ -1,0 +1,7 @@
+{
+  "case_id": "finite-state.transition.v1",
+  "source": "source/input.json",
+  "adapter": "adapter.py",
+  "compiler_profile": "profiles/compiler/strict-conformance-v1.0.json",
+  "assembly_profile": "profiles/assembly/strict-conformance-v2.0.json"
+}

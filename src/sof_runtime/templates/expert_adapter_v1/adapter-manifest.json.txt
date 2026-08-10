@@ -1,0 +1,15 @@
+{
+  "declaration_version": "1.0",
+  "adapter_id": "__ADAPTER_ID__",
+  "adapter_version": "0.1.0",
+  "domain_id": "__DOMAIN_SLUG__",
+  "native_objects": ["TODO: name a domain-native object"],
+  "supported_carriers": ["TODO: declare a typed carrier"],
+  "supported_observables": ["TODO: declare an observable"],
+  "sectorization_origin": "TODO: state how sectors are obtained from source",
+  "capabilities": ["source inspection"],
+  "unsupported_capabilities": ["word depth", "Lie/Hall depth", "domain adequacy"],
+  "parameterization": {"TODO": "replace with domain parameters"},
+  "normalization_threshold_requirements": {"TODO": "replace with explicit conventions"},
+  "evidence_requirements": ["source snapshot", "independent realization check"]
+}

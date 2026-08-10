@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/extensions/positive-word-support/v1.0/finding.schema.json",
+  "title": "Single-Letter Positive-Word Support Finding v1",
+  "type": "object",
+  "required": ["schema_id", "payload_id", "kind", "pairs", "reachable_pair_count", "unreachable_pair_count", "maximum_first_hit_depth", "closure_exhausted"],
+  "properties": {
+    "schema_id": {"const": "rime.positive-word-support.finding.v1"},
+    "payload_id": {"type": "string", "minLength": 1},
+    "kind": {"const": "ordered_pair_first_hit_census"},
+    "pairs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "target", "first_positive_depth"],
+        "properties": {
+          "source": {"type": "string", "minLength": 1},
+          "target": {"type": "string", "minLength": 1},
+          "first_positive_depth": {"type": ["integer", "null"], "minimum": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "reachable_pair_count": {"type": "integer", "minimum": 0},
+    "unreachable_pair_count": {"type": "integer", "minimum": 0},
+    "maximum_first_hit_depth": {"type": ["integer", "null"], "minimum": 1},
+    "closure_exhausted": {"const": true}
+  },
+  "additionalProperties": false
+}

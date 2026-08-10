@@ -1,0 +1,35 @@
+{
+  "profile_id": "sof-runtime.external-adapter.identity.v2",
+  "profile_version": "2.0",
+  "audit_profile": {
+    "applicable_regime": "strict_vs_strict",
+    "requested_coordinate_ids": ["operator.support.summary"],
+    "coordinate_registry_ref": "schemas/sofaudit/coordinate-semantics-registry-v1.0.json",
+    "coordinate_families": ["operator"],
+    "availability_semantics": {
+      "unavailable_states": ["NOT_DECLARED", "NOT_APPLICABLE", "INCOMPARABLE", "UNRESOLVED"],
+      "null_value_states": ["NOT_DECLARED", "NOT_APPLICABLE", "INCOMPARABLE", "UNRESOLVED"],
+      "zero_is_unavailable": false
+    },
+    "comparison_semantics": {
+      "matched_states": ["ALIGNED", "MISMATCH"],
+      "comparison_is_pairwise": true
+    },
+    "carrier_requirements": {"strict": ["operator"], "analogue": []},
+    "required_evidence_roles": [
+      "reference-report",
+      "target-report",
+      "reference-report-validation-receipt",
+      "target-report-validation-receipt"
+    ]
+  },
+  "comparison_specification": {
+    "specification_id": "sof-runtime.external-adapter.identity.v2",
+    "normalization": {"normalization_id": "identity", "numeric_policy": "exact", "equality_tolerance": 0, "sentinel_policy": "state-not-infinity", "generator_policy": "report-bound-generators"},
+    "metric": {"metric_id": "absolute-difference", "domain": "integer", "unit_policy": "unitless", "missing_value_policy": "incomparable", "zero_denominator_policy": "not-applicable"},
+    "depth_semantics": {"carrier": "not-applicable", "mode": "not-applicable", "reference_cutoff": null, "target_cutoff": null, "unreached_policy": "incomparable"},
+    "thresholds": {"threshold_id": "not-applicable", "value": null, "source": "not-applicable"},
+    "parameter_synchronization": {"kind": "identity", "map_artifact_id": null, "interpolation_method": "not-applicable", "extrapolation_forbidden": true},
+    "aggregation": {"kind": "coordinatewise", "scalarization": "none", "weights_artifact_id": null, "weight_declaration": null}
+  }
+}

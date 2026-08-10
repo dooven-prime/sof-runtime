@@ -1,0 +1,13 @@
+[package]
+name = "sof-positive-word-support"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT"
+publish = false
+
+[dependencies]
+serde = "1.0"
+serde_json = "1.0"
+sha2 = "0.10"
+unicode-normalization = "0.1"

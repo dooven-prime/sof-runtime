@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/runtime/v1.0/run-request.schema.json",
+  "title": "SOF Plugin RunRequest v1",
+  "type": "object",
+  "required": ["schema_id", "semantic_run_id", "execution_id", "created_at", "plugin", "carrier_kind", "contract_versions", "semantic_environment", "runtime_environment", "source", "policies", "artifact_directory"],
+  "properties": {
+    "schema_id": {"const": "sof.run-request.v1"},
+    "semantic_run_id": {"type": "string", "pattern": "^semrun:sha256:[0-9a-f]{64}$"},
+    "execution_id": {"type": "string", "pattern": "^exec:[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "plugin": {
+      "type": "object",
+      "required": ["plugin_id", "plugin_version"],
+      "properties": {
+        "plugin_id": {"type": "string", "minLength": 1},
+        "plugin_version": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "carrier_kind": {"type": "string", "minLength": 1},
+    "contract_versions": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"type": "string", "minLength": 1}
+    },
+    "semantic_environment": {
+      "type": "object",
+      "required": ["algorithm_mode", "arithmetic_backend", "dependency_lock_digest", "feature_flags"],
+      "properties": {
+        "algorithm_mode": {"type": "string", "minLength": 1},
+        "arithmetic_backend": {"type": "string", "minLength": 1},
+        "dependency_lock_digest": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "feature_flags": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "runtime_environment": {
+      "type": "object",
+      "required": ["execution_mode", "implementation_language", "runtime_family", "runtime_version", "operating_system", "machine_architecture"],
+      "properties": {
+        "execution_mode": {"enum": ["python_in_process", "external_executable"]},
+        "implementation_language": {"type": "string", "minLength": 1},
+        "runtime_family": {"type": "string", "minLength": 1},
+        "runtime_version": {"type": "string", "minLength": 1},
+        "operating_system": {"type": "string", "minLength": 1},
+        "machine_architecture": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "source": {"type": "object"},
+    "policies": {"type": "object"},
+    "artifact_directory": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

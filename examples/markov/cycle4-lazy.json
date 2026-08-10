@@ -1,0 +1,16 @@
+{
+  "schema_id": "rime.markov.source.v1",
+  "source_id": "cycle4-lazy",
+  "states": ["0", "1", "2", "3"],
+  "transition_numerators": [
+    [1, 1, 0, 0],
+    [0, 1, 1, 0],
+    [0, 0, 1, 1],
+    [1, 0, 0, 1]
+  ],
+  "row_denominators": [2, 2, 2, 2],
+  "metadata": {
+    "family": "lazy directed cycle",
+    "operator_count": 1
+  }
+}
