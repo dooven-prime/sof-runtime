@@ -13,11 +13,11 @@ or overwrite domain-specific scientific conclusions.
 
 - Treat `contracts/compiler/` as immutable vendored upstream material.
 - Verify vendored files against `contracts/upstream.lock.json`.
-- Treat `contracts/reporting/candidate-v2.0/`,
-  `contracts/comparison/candidate-v2.0/`, and
-  `contracts/action/candidate-v2.0/` as explicitly non-canonical Paper XII--XIV
-  integration snapshots until release-content commits can
-  reproduce those bytes. Verify them against
+- Treat `contracts/reporting/v2.0/` and `contracts/comparison/v2.0/` as
+  immutable upstream material and verify them against
+  `contracts/upstream.lock.json`.
+- Treat `contracts/action/candidate-v2.0/` as an explicitly non-canonical Paper
+  XIV integration snapshot. Verify it against
   `contracts/upstream-candidate.lock.json`, but never cite that candidate lock
   as publication or upstream acceptance.
 - Put runtime-only protocols under `contracts/runtime/`.

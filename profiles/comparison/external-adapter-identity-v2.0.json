@@ -20,7 +20,9 @@
       "reference-report",
       "target-report",
       "reference-report-validation-receipt",
-      "target-report-validation-receipt"
+      "target-report-validation-receipt",
+      "audit-profile",
+      "coordinate-semantics-registry"
     ]
   },
   "comparison_specification": {

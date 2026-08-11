@@ -133,7 +133,7 @@ class SofauditCandidateConformanceTests(unittest.TestCase):
             PROJECT_ROOT
             / "contracts"
             / "comparison"
-            / "candidate-v2.0"
+            / "v2.0"
             / "coordinate-semantics-registry.json"
         )
         artifacts = [

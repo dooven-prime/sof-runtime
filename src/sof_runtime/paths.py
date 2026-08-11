@@ -22,8 +22,8 @@ CONTRACTS_ROOT = (
 )
 COMPILER_CONTRACT_ROOT = CONTRACTS_ROOT / "compiler" / "v1.0"
 RUNTIME_CONTRACT_ROOT = CONTRACTS_ROOT / "runtime" / "v1.0"
-REPORTING_CONTRACT_ROOT = CONTRACTS_ROOT / "reporting" / "candidate-v2.0"
-COMPARISON_CONTRACT_ROOT = CONTRACTS_ROOT / "comparison" / "candidate-v2.0"
+REPORTING_CONTRACT_ROOT = CONTRACTS_ROOT / "reporting" / "v2.0"
+COMPARISON_CONTRACT_ROOT = CONTRACTS_ROOT / "comparison" / "v2.0"
 ACTION_CONTRACT_ROOT = CONTRACTS_ROOT / "action" / "candidate-v2.0"
 RANK_COLLAPSE_CONTRACT_ROOT = (
     CONTRACTS_ROOT / "extensions" / "rank-collapse" / "v1.0"

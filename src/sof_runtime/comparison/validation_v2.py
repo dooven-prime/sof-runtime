@@ -13,6 +13,10 @@ from sof_runtime.reporting.validation_v2 import validate_receipt, validate_repor
 
 AUDIT_SCHEMA = COMPARISON_CONTRACT_ROOT / "sofaudit.schema.json"
 AUDIT_RECEIPT_SCHEMA = COMPARISON_CONTRACT_ROOT / "validation-receipt.schema.json"
+REQUIRED_PROFILE_SOURCE_ROLES = {
+    "audit-profile",
+    "coordinate-semantics-registry",
+}
 MATCH_STATES = {"ALIGNED", "MISMATCH"}
 REQUIRED_GUARDS = {
     "source-report-receipts-validate",
@@ -332,6 +336,10 @@ def _validate_semantics(
     }
     if set(profile["coordinate_families"]) - set(value_schema_by_family):
         raise ContractError("Audit Profile references an unknown coordinate family")
+    if REQUIRED_PROFILE_SOURCE_ROLES - set(profile["required_evidence_roles"]):
+        raise ContractError(
+            "Audit Profile does not require its source-addressed profile and registry artifacts"
+        )
     if set(profile["required_evidence_roles"]) - set(artifact_roles):
         raise ContractError("Audit Profile lacks required evidence roles")
 

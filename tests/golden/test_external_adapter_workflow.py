@@ -115,6 +115,31 @@ class ExternalAdapterWorkflowTests(unittest.TestCase):
             self.assertEqual(explanation["comparison"]["validation"]["status"], "PASS")
             self.assertEqual(len(explanation["interpretation"]["candidate_actions"]), 2)
 
+    def test_comparison_profile_cannot_omit_normative_source_roles(self) -> None:
+        with tempfile.TemporaryDirectory(dir=PROJECT_ROOT / "runs") as directory:
+            profile = load_json(
+                PROJECT_ROOT
+                / "profiles"
+                / "comparison"
+                / "external-adapter-identity-v2.0.json"
+            )
+            profile["audit_profile"]["required_evidence_roles"].remove(
+                "coordinate-semantics-registry"
+            )
+            profile_path = Path(directory) / "incomplete-comparison-profile.json"
+            profile_path.write_text(json.dumps(profile, indent=2), encoding="utf-8")
+
+            with self.assertRaisesRegex(ContractError, "source-addressed profile and registry"):
+                RuntimeAPI().full_pipeline(
+                    CASE / "reference",
+                    CASE / "target",
+                    alignment=CASE / "comparison" / "alignment.json",
+                    comparison_profile=profile_path,
+                    action_context=CASE / "action" / "context.json",
+                    policy_profile=CASE / "action" / "policy.json",
+                    run_dir=Path(directory) / "run",
+                )
+
     def test_level_one_stops_for_extension_only_realization(self) -> None:
         with tempfile.TemporaryDirectory(dir=PROJECT_ROOT / "runs") as directory:
             case = Path(directory) / "extension-case"

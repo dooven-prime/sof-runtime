@@ -3410,7 +3410,7 @@
           "uri": "artifact://papers/paper14/Paper%20XIV.md",
           "digest": {
             "algorithm": "sha256",
-            "value": "122e59fa61a4f8fa478d27cf05fec69f0d00ad0ecd6c7935ff4280e604381226"
+            "value": "ba0fa73a5f842b3fc44a5e8296708e4f8296bd8f7b9b1bf8dc1b656d7f0e2b02"
           },
           "producer": "RIME Paper XIV",
           "contract_version": "2.0"
@@ -3425,7 +3425,7 @@
           "uri": "artifact://papers/paper14/Paper%20XIV.md",
           "digest": {
             "algorithm": "sha256",
-            "value": "122e59fa61a4f8fa478d27cf05fec69f0d00ad0ecd6c7935ff4280e604381226"
+            "value": "ba0fa73a5f842b3fc44a5e8296708e4f8296bd8f7b9b1bf8dc1b656d7f0e2b02"
           },
           "producer": "RIME Paper XIV",
           "contract_version": "2.0"

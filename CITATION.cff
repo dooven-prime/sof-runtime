@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use sof-runtime, cite this software release and the owning RIME papers for the contracts you consume."
+title: "sof-runtime"
+type: software
+authors:
+  - family-names: "Chen"
+    given-names: "WuJun"
+    orcid: "https://orcid.org/0009-0006-9875-0818"
+version: "0.1.0"
+date-released: "2026-08-11"
+repository-code: "https://github.com/dooven-prime/sof-runtime"
+url: "https://github.com/dooven-prime/sof-runtime/tree/v0.1.0"
+license: MIT

@@ -2,8 +2,8 @@
 
 - `unit/`: carrier, validator, and layered run-identity behavior.
 - `conformance/`: immutable upstream contracts, exact Compile_v1 fixture,
-  candidate SOFRS faithful-assembly/receipt integration, and candidate
-  SOFAUDIT semantic validation.
+  SOFRS faithful-assembly/receipt integration, SOFAUDIT semantic validation,
+  and candidate SOFAction replay.
 - `golden/`: complete source-to-validated-RunResponse extension runs.
 - `regression/`: evidence promotion and missing-capability boundaries.
 - `cross_language/`: JSON stdin/stdout executable protocol and the scoped
@@ -18,14 +18,13 @@ source-digest change, unsupported cutoff policy, repeated semantic runs,
 semantic/concrete environment separation, and in-process versus
 external-executable semantic parity.
 
-The SOFRS candidate conformance slice recomputes `Compile_v1`, assembles every
+The SOFRS conformance slice recomputes `Compile_v1`, assembles every
 ordered compiler item exactly once, validates the report object, and freezes a
 seven-artifact validation-receipt closure. Its negative cases reject claim
 drift, duplicate item bindings, degradation/failure-mode retyping, and a
-tampered CompilerOutput. Candidate conformance is not canonical Paper XII
-publication status.
+tampered CompilerOutput.
 
-The SOFAUDIT candidate slice builds two independently receipt-validated strict
+The SOFAUDIT conformance slice builds two independently receipt-validated strict
 SOFRS reports and an identity-aligned comparison. Hostile cases verify
 reference/target roles, regime and profile closure, all four declared alignment
 properties, guard-coordinate coupling, comparison-basis completeness,

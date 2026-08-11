@@ -101,8 +101,8 @@ def main() -> None:
             env=env,
         )
     print(
-        "PASS: installed wheel carries compiler, runtime, and candidate reporting, "
-        "comparison, and action contracts, exposes downstream validators, and completes a validated run"
+        "PASS: installed wheel carries compiler, runtime, reporting, comparison, "
+        "and candidate action contracts, exposes downstream validators, and completes a validated run"
     )
 
 

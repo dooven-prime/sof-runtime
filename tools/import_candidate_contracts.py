@@ -1,4 +1,4 @@
-"""Verify or refresh explicitly non-canonical downstream contract snapshots."""
+"""Verify or refresh explicitly non-canonical Paper XIV contract snapshots."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ LOCK = ROOT / "contracts" / "upstream-candidate.lock.json"
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
-            "Verify or copy candidate Paper XII--XIV contracts from a rime-lite "
+            "Verify or copy candidate Paper XIV contracts from a rime-lite "
             "working tree without promoting them into the immutable upstream lock."
         )
     )

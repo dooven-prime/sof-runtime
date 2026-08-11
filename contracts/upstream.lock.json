@@ -1,9 +1,9 @@
 {
   "lock_version": "1.0",
   "upstream_repository": "https://github.com/dooven-prime/rime-lite",
-  "upstream_commit": "6274b7b387e8f5b84a39afe1d5c1082edebc3792",
+  "upstream_commit": "abed9f18a29be85a872b1ac1f6f83b0d6997ed0b",
   "import_policy": "immutable",
-  "imported_at": "2026-08-04",
+  "imported_at": "2026-08-11",
   "entries": [
     {
       "role": "canonical_contract",
@@ -58,6 +58,54 @@
       "upstream_path": "schemas/sofcompiler/examples/strict-associative-evidence-v1.0.json",
       "local_path": "tests/conformance/fixtures/upstream-v1.0/strict-associative-evidence-v1.0.json",
       "sha256": "32e5b9805e87b56a419491ad10c16f65d7c365ee91fe210747018de9622626a5"
+    },
+    {
+      "role": "canonical_reporting_contract",
+      "upstream_path": "schemas/sofrs/v2.0.schema.json",
+      "local_path": "contracts/reporting/v2.0/sofrs.schema.json",
+      "sha256": "8a751bd62a2746b334c81a394e6dce1cb1a9251c978aa723aef69c602dce098e"
+    },
+    {
+      "role": "canonical_reporting_contract",
+      "upstream_path": "schemas/sofrs/assembly-profile-v2.0.schema.json",
+      "local_path": "contracts/reporting/v2.0/assembly-profile.schema.json",
+      "sha256": "8ef44ef595ed178d2338f56b6f5e9f229a12ff46ddcba7521cb0972fd7c8199c"
+    },
+    {
+      "role": "canonical_reporting_contract",
+      "upstream_path": "schemas/sofrs/report-validation-receipt-v2.0.schema.json",
+      "local_path": "contracts/reporting/v2.0/validation-receipt.schema.json",
+      "sha256": "84254cf908ce21a5d8ab6267e7e5c9a0b06bca3aa8caaa9246e1f9b492855647"
+    },
+    {
+      "role": "canonical_comparison_contract",
+      "upstream_path": "schemas/sofaudit/v2.0.schema.json",
+      "local_path": "contracts/comparison/v2.0/sofaudit.schema.json",
+      "sha256": "3435fa84bfd6ceb8705725c832fc1c0a036b628bcd758a663242b48dce44cf37"
+    },
+    {
+      "role": "canonical_comparison_contract",
+      "upstream_path": "schemas/sofaudit/validation-receipt-v2.0.schema.json",
+      "local_path": "contracts/comparison/v2.0/validation-receipt.schema.json",
+      "sha256": "1f2d9bd125fa6dbd27303e86ad5aebbb80821dcc4ee907cd65a8e793cbde3db9"
+    },
+    {
+      "role": "canonical_comparison_registry",
+      "upstream_path": "schemas/sofaudit/coordinate-semantics-registry-v1.0.json",
+      "local_path": "contracts/comparison/v2.0/coordinate-semantics-registry.json",
+      "sha256": "1d2dc24ae56cfb364b02bccf8c0c3068138e6d07682cf4b0561ec75f765c6d48"
+    },
+    {
+      "role": "canonical_comparison_profile",
+      "upstream_path": "schemas/sofaudit/paper13-standard-regime-a-profile-v2.0.json",
+      "local_path": "contracts/comparison/v2.0/standard-regime-a-profile.json",
+      "sha256": "25a59d8f5897620deaa69a660b3160d32df43030b097830a0668c9eb8a5a20ee"
+    },
+    {
+      "role": "canonical_comparison_profile",
+      "upstream_path": "schemas/sofaudit/paper13-gridworld-f4-native-profile-v2.0.json",
+      "local_path": "contracts/comparison/v2.0/gridworld-f4-native-profile.json",
+      "sha256": "93728478c21d1b9af85c57abfccad857f0cbb62103bead52cf77f2e7ec973a6f"
     }
   ]
 }

@@ -18,6 +18,12 @@ from .validation_v2 import (
 )
 
 
+REQUIRED_PROFILE_SOURCE_ROLES = {
+    "audit-profile",
+    "coordinate-semantics-registry",
+}
+
+
 def _snapshot(source: Path, target: Path) -> Path:
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_bytes(source.read_bytes())
@@ -115,6 +121,10 @@ def build_comparison(
         raise ContractError("comparison profile does not bind the canonical coordinate registry")
     if not set(audit_profile["coordinate_families"]) <= set(value_schema_by_family):
         raise ContractError("comparison profile references an unknown coordinate family")
+    if REQUIRED_PROFILE_SOURCE_ROLES - set(audit_profile["required_evidence_roles"]):
+        raise ContractError(
+            "comparison profile must require its source-addressed profile and registry artifacts"
+        )
     comparison_specification = profile_bundle["comparison_specification"]
     reference = load_json(reference_path)
     target = load_json(target_path)

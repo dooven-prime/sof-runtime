@@ -88,7 +88,14 @@ def _comparison_profile() -> dict[str, object]:
             },
             "comparison_semantics": {"matched_states": ["ALIGNED", "MISMATCH"], "comparison_is_pairwise": True},
             "carrier_requirements": {"strict": ["operator"], "analogue": []},
-            "required_evidence_roles": ["reference-report", "target-report", "reference-report-validation-receipt", "target-report-validation-receipt"]
+            "required_evidence_roles": [
+                "reference-report",
+                "target-report",
+                "reference-report-validation-receipt",
+                "target-report-validation-receipt",
+                "audit-profile",
+                "coordinate-semantics-registry",
+            ]
         },
         "comparison_specification": {
             "specification_id": "third-party.finite-state.comparison",

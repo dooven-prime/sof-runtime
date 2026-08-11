@@ -61,14 +61,12 @@ Canonical compiler contracts are vendored immutably from the commit recorded
 in `contracts/upstream.lock.json`. Experimental carrier payloads live under
 `contracts/extensions/`; they do not modify the upstream contracts.
 
-The active Paper XII SOFRS v2, Paper XIII SOFAUDIT v2, and Paper XIV SOFAction
-v2 contracts are integrated separately under `contracts/reporting/candidate-v2.0/`,
-`contracts/comparison/candidate-v2.0/`, and `contracts/action/candidate-v2.0/`.
-Their bytes are pinned by
-`contracts/upstream-candidate.lock.json`, whose status explicitly records that
-the source schemas are still uncommitted in `rime-lite`. This permits honest
-assembly and comparison conformance work without pretending that either
-candidate is already a published or immutable upstream contract.
+The published SOFRS v2 and SOFAUDIT v2 contracts are imported immutably under
+`contracts/reporting/v2.0/` and `contracts/comparison/v2.0/`; their upstream
+commit and byte digests are pinned by `contracts/upstream.lock.json`. The
+unpublished SOFAction v2 contract remains under
+`contracts/action/candidate-v2.0/` and is isolated by
+`contracts/upstream-candidate.lock.json`.
 
 ## Runtime Shape
 
@@ -547,11 +545,9 @@ and assembly, checks report-object equality, and snapshots the validator
 implementation before issuing a receipt. `sof validate-sofrs-receipt` rechecks
 the seven-artifact closure.
 
-This path currently uses the candidate Paper XII lock. It becomes a stable
-canonical reporting surface only after the same schema bytes are recoverable
-from a Paper XII release-content commit and move into `upstream.lock.json`.
+This path uses the immutable SOFRS v2 bytes pinned in `upstream.lock.json`.
 
-## Candidate SOFAUDIT Validation
+## SOFAUDIT Validation
 
 `sof validate-sofaudit AUDIT` first validates the Paper XIII v2 schema and then
 executes cross-field semantics. It revalidates both bound SOFRS v2 reports and
@@ -600,9 +596,8 @@ The validated engineering claims for `0.1.0` are:
 - an artifact closure can be frozen and independently rechecked;
 - a promotion package cannot add evidence outside the frozen closure;
 - vendored upstream contracts can be verified against their recorded digests;
-- candidate SOFRS assembly preserves an exact CompilerOutput and rejects item
-  drift without claiming upstream publication;
-- candidate SOFAUDIT validation rejects fabricated role, regime, profile,
+- SOFRS assembly preserves an exact CompilerOutput and rejects item drift;
+- SOFAUDIT validation rejects fabricated role, regime, profile,
   alignment, guard, basis, claim-class, digest, and oracle declarations;
 - candidate SOFAction validation replays a closed policy predicate tree and
   rejects audit-projection, receipt, carrier, and candidate-set tampering;
@@ -624,3 +619,11 @@ conformance, large-scale artifact-store behavior, a published end-to-end
 canonical application/report path, or scientific adequacy of an adapter. It
 also does not establish candidate selection, authorization, action execution,
 causal-effect certification, policy correctness, or a REST API.
+
+## Citation and Release Identity
+
+The immutable public source identity for this release is the
+[`v0.1.0` tag](https://github.com/dooven-prime/sof-runtime/tree/v0.1.0).
+`CITATION.cff` records the software citation metadata. The runtime tag identifies
+an implementation; the owning RIME papers and their digest-locked contracts
+remain the normative definition sources.

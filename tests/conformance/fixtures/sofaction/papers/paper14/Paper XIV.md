@@ -15,11 +15,11 @@ effect remain downstream.*
 ## Abstract
 
 **Problem.** An aligned SOF audit may contain nonzero coordinates, licensed
-transformation differences, or unresolved coordinates. None carries action
-meaning by itself. A direct map from mismatch counts to repair, rollback, or
-deploy conflates semantic interpretation with policy.
+transformation differences, or unresolved coordinates. None of these carries
+action meaning by itself. A direct map from mismatch counts to repair,
+rollback, or deploy conflates semantic interpretation with policy.
 
-**Approach.** Paper XIV introduces an explicit typed action object
+**Approach.** This paper introduces an explicit typed action object
 
 $$
 I_{\mathrm{interp}}
@@ -32,10 +32,10 @@ A_{\mathrm{cand}}
 \operatorname{Generate}(I_{\mathrm{interp}},K_{\mathrm{ctx}},\Pi_{\mathrm{policy}}).
 $$
 
-$K_{\mathrm{ctx}}$ records actor, scope, objective, constraints, time,
-authority, and uncertainty conditions. $\Pi_{\mathrm{policy}}$ is a versioned
-Policy Profile with applicability, rules, typed exceptions, and an explicit
-precedence graph.
+The context $K_{\mathrm{ctx}}$ records actor, scope, objective, constraints,
+time, authority, and uncertainty conditions. The profile
+$\Pi_{\mathrm{policy}}$ is a versioned Policy Profile with applicability,
+rules, typed exceptions, and an explicit precedence graph.
 $I_{\mathrm{interp}}$ contains policy-relative Interpretation Records, and
 $A_{\mathrm{cand}}$ contains bounded Candidate Actions. Missing context or an
 inapplicable policy produces `NoDisposition`, an empty Candidate Action Set,
@@ -53,7 +53,7 @@ downstream. The controlled workbench validates 29 v2 objects: 28 migrated Paper
 XIII records remain unresolved, while one native GridWorld F4 audit yields
 only policy-relative review candidates.
 
-**Implications.** Paper XIV does not provide a universal repair theorem, a
+**Implications.** This paper does not provide a universal repair theorem, a
 decision engine, or an action-effect certificate. It defines a reusable SOF
 action object in which difference is interpreted only under explicit context
 and policy. Causal effect estimation, feasibility, cost, authorization, and
@@ -128,14 +128,14 @@ families; it is not an executed or selected plan.
 | Symbol | Meaning |
 |--------|--------------------|
 | $\Delta_{\mathrm{audit}}$ | immutable sparse typed audit projection consumed from Paper XIII |
-| $K_{\mathrm{ctx}}$ | Paper XIV `ActionContext`, independently admitted and never derived from the audit |
-| $\Pi_{\mathrm{policy}}$ | Paper XIV `PolicyProfile`, the sole normative rule input in the v2 contract |
-| $I_{\mathrm{interp}}$ | Paper XIV `InterpretationRecord` output relative to the admitted context and policy |
-| $A_{\mathrm{cand}}$ | Paper XIV bounded `CandidateActionSet` output |
-| `DispositionResult` | Paper XIV result class closing the interpretation and candidate sets |
+| $K_{\mathrm{ctx}}$ | `ActionContext`, independently admitted and never derived from the audit |
+| $\Pi_{\mathrm{policy}}$ | `PolicyProfile`, the sole normative rule input in the v2 contract |
+| $I_{\mathrm{interp}}$ | `InterpretationRecord` output relative to the admitted context and policy |
+| $A_{\mathrm{cand}}$ | bounded `CandidateActionSet` output |
+| `DispositionResult` | result class closing the interpretation and candidate sets |
 | selected plan, authorization, outcome, and effect | downstream reserved contracts, not fields or conclusions of `.sofaction` |
 
-The table names the objects owned by Paper XIV or consumed as typed inputs;
+The table names the objects owned here or consumed as typed inputs;
 selection and external authority approval remain downstream contracts.
 
 ## Related Work and Novelty Boundary
@@ -143,7 +143,7 @@ selection and external authority approval remain downstream contracts.
 **Program interfaces.** Paper X supplies capability-aware compilation and
 evidence gating, Paper XI supplies typed wall records, Paper XII supplies the
 single-report protocol, and Paper XIII supplies explicit aligned comparison
-objects \cite{paper10,paper11,paper12,paper13}. Paper XIV consumes the sparse
+objects \cite{paper10,paper11,paper12,paper13}. This paper consumes the sparse
 audit projection from Paper XIII; it does not revise report admission,
 alignment, wall ownership, or compiler soundness.
 
@@ -151,7 +151,7 @@ alignment, wall ownership, or compiler soundness.
 
 Structural causal models distinguish observational association from
 interventional claims and provide identification criteria for causal effects
-\cite{pearl1995causal}. Paper XIV does not identify effects of its candidate
+\cite{pearl1995causal}. This paper does not identify effects of its candidate
 actions. Its intended-diagnostic-consequence fields are targets conditional on
 declared preconditions. A causal model would be an additional domain-specific
 input required before counterfactual or intervention-effect claims could be
@@ -161,7 +161,7 @@ made.
 
 Reiter's diagnosis theory computes diagnoses from a system description and
 observations that conflict with intended behavior \cite{reiter1987diagnosis}.
-Paper XIV shares the insistence that discrepancy alone is insufficient, but it
+This paper shares the insistence that discrepancy alone is insufficient, but it
 does not infer minimal faulty component sets. It interprets typed SOF audit
 coordinates relative to an explicit comparison context and emits candidate
 families rather than diagnoses.
@@ -170,7 +170,7 @@ families rather than diagnoses.
 
 STRIPS represents actions through state-transforming operators, while later
 action-language work formalizes descriptions of action effects
-\cite{fikes1971strips,gelfond1998action}. Paper XIV borrows the discipline of
+\cite{fikes1971strips,gelfond1998action}. This paper borrows the discipline of
 explicit targets, preconditions, effects, and limitations. It does not solve a
 planning problem, define executable transition semantics, or claim closure and
 composition laws for an Action Algebra.
@@ -184,7 +184,7 @@ policy is an explicit normative input to interpretation, while selection and
 authorization remain downstream. A policy rule may support a candidate without
 making that candidate objectively correct.
 
-**Novelty boundary.** Paper XIV contributes the context-indexed interpretation
+**Novelty boundary.** This paper contributes the context-indexed interpretation
 interface, the closed Policy Predicate Language, uncertainty propagation, and
 bounded candidate dispositions. It does not provide causal effect estimation,
 feasibility, authorization, optimal selection, post-action observation, or an
@@ -204,11 +204,11 @@ $$
 
 The signature contains the typed coordinates requested by the Paper
 XIII Audit Profile. Legacy `action_response_failure` appears only in archived
-v1 inputs; it is not an active Paper XIV intervention field.
+v1 inputs; it is not an active intervention field in this contract.
 
 ### Action Context and Policy Profile
 
-> **Definition (Action Context).** The Paper XIV context object is
+> **Definition (Action Context).** The context object is
 > $$
 > K_{\mathrm{ctx}}
 > =
@@ -231,19 +231,19 @@ v1 inputs; it is not an active Paper XIV intervention field.
 > \end{aligned}
 > $$
 > A policy profile supplies normative basis, uncertainty handling, candidate
-> dispositions, and rule precedence. It does not become a ground-truth oracle
-> and does not select or authorize an action merely by matching a rule.
+> dispositions, and rule precedence. It does not function as a ground-truth
+> oracle, nor does it select or authorize an action merely by matching a rule.
 
 The admission contract treats both objects independently. Admission separates
 contract validation, applicability, and completeness. A missing field or
-unsupported contract is rejected as incomplete; a valid but inapplicable
-policy is recorded separately as not applicable. Either state stops
-interpretation. Absence of context or policy is therefore not evidence of
-failure.
+unsupported contract is rejected as incomplete, whereas a valid but
+inapplicable policy is recorded separately as not applicable. Either state
+stops interpretation. The absence of context or policy is therefore not
+evidence of failure.
 
 ### Policy Predicate Language
 
-Paper XIV v2 freezes Policy Predicate Language v1.0 as a closed, recursively
+SOFAction v2 freezes Policy Predicate Language v1.0 as a closed, recursively
 typed expression language. Boolean nodes are `all`, `any`, and `not`. Leaf
 nodes are limited to coordinate existence, state, carrier, and relation;
 comparison role and contract status; authority and uncertainty status;
@@ -258,8 +258,9 @@ false or zero. A typed exception has its own predicate and an explicit set of
 rules that it suppresses. `precedence_edges` is the sole precedence source. If
 several active rules match and no one rule precedes all other matches, the
 interpreter emits `policy_conflict` rather than selecting by declaration order.
-Deterministic replay re-executes the predicate tree and recomputes the
-selected rule and assessment kind from the frozen audit, context, and policy.
+Deterministic replay re-executes the predicate tree and recomputes both the
+selected rule and the assessment kind from the frozen audit, context, and
+policy.
 Uncertainty handling is itself a versioned machine object, not a free-text
 instruction. Policy Predicate Language v1.0 uses
 $\mathbb T_3=\{\mathrm{TRUE},\mathrm{FALSE},\mathrm{UNRESOLVED}\}$ with
@@ -284,7 +285,7 @@ interpreter/profile version closure.
 > an inconclusive state. It never rewrites the source coordinate or promotes
 > `UNRESOLVED`, `NOT_DECLARED`, or a declared baseline into a defect.
 
-Severity, confidence, and assessment are policy- and context-relative. They
+Severity, confidence, and assessment are policy- and context-relative; they
 are not intrinsic magnitudes of $\Delta_i$. Every record retains the source
 coordinate state, the context identifier, the applicable policy rules, and its
 negative boundary.
@@ -336,7 +337,7 @@ themselves authorized. Authorization is reserved for a future external
 
 ### The Executable Factorization
 
-The canonical Paper XIV object is
+The canonical action object is
 
 $$
 \boxed{
@@ -379,8 +380,8 @@ v2 artifact contract.
 ## Core Propositions
 
 > **Proposition (No Action Without Context and Policy).** There is no admitted
-> Paper XIV mapping $\Delta_{\mathrm{audit}}\mapsto A_{\mathrm{cand}}$ in the
-> absence of an admitted $K_{\mathrm{ctx}}$ and an applicable
+> mapping $\Delta_{\mathrm{audit}}\mapsto A_{\mathrm{cand}}$ under this contract
+> without an admitted $K_{\mathrm{ctx}}$ and an applicable
 > $\Pi_{\mathrm{policy}}$. The permitted construction is
 > $$
 > I_{\mathrm{interp}}
@@ -539,7 +540,7 @@ The canonical machine-readable contract is the versioned SOFAction v2 schema
 | Failure modes | non-implication, applicability, and epistemic boundaries |
 
 The schema is closed: unknown predicate, context, policy, interpretation, and
-candidate fields are rejected, and normative evidence cannot be a bare string.
+candidate fields are rejected. Normative evidence cannot be a bare string.
 Semantic conformance additionally requires source-receipt and digest closure,
 exact Audit Projection preservation, context and policy admission,
 deterministic predicate and precedence replay, interpretation and candidate
@@ -574,7 +575,7 @@ or service objectives, but matching a policy rule does not make a candidate
 objectively correct. These quantities are not coordinates of the Paper XIII
 audit projection.
 
-### Claim Spine
+## Claim Spine
 
 Definitions and negative ownership boundaries are not additional
 reader-facing evidence levels. Certificate classes identify what a finite
@@ -600,10 +601,10 @@ safety, or authorization.
 ## Controlled Validation
 
 The controlled v2 workbench consumes 28 migrated Paper XIII SOFAUDIT records and
-one native GridWorld F4 factual audit. All 29 retain an exact audit projection,
-an explicit ActionContext, and an applicable PolicyProfile. The migrated
-records contain only unresolved or not-declared coordinate states and therefore
-produce no affirmative candidates. The native F4 record produces only
+one native GridWorld F4 factual audit. All 29 objects retain an exact audit
+projection, an explicit ActionContext, and an applicable PolicyProfile. The
+migrated records contain only unresolved or not-declared coordinate states and
+therefore produce no affirmative candidates. The native F4 record produces only
 `Investigate` and `RequestEvidence` candidates under the declared review
 policy.
 
@@ -625,7 +626,7 @@ authorization, causal effect, and safety are not tested by this workbench.
 
 ## Claim Boundary
 
-Paper XIV establishes the typed Action Object and four protocol propositions.
+This paper establishes the typed Action Object and four protocol propositions.
 It does not claim:
 
 - a universal repair theorem,
@@ -652,7 +653,7 @@ The protocol boundary is now:
 | XII | single-system diagnostic report | .sofreport | What was measured? |
 | XIII | aligned comparison object and factual signature | .sofaudit | How do two reports differ? |
 | XIV | `SOFActionObject = (Delta_audit, K_ctx, Pi_policy, I_interp, A_cand)` | .sofaction | Under which context and policy can a difference be interpreted and which bounded candidates are supported? |
-| Downstream policy | objective-relative selector | reserved .sofplan | Which candidate should be chosen? |
+| Downstream selector | objective-relative selector | reserved .sofplan | Which candidate should be chosen? |
 
 This separation allows the same factual audit record to be interpreted under
 different admissible contexts or policies without rewriting Paper XIII
@@ -675,7 +676,7 @@ Several extensions remain open.
 
 ## Conclusion
 
-Paper XIV fixes the semantic object between comparison and any downstream
+This paper fixes the semantic object between comparison and any downstream
 disposition:
 
 $$
@@ -720,6 +721,7 @@ evidence producers, not semantic authorities.
 | A5 | optional downstream selector; excluded from canonical `.sofaction` evidence | `experiments/paper14/policy_selector.py` |
 | A6 | generated v2 action artifacts and validation receipts | `experiments/paper14/results/` |
 | A7 | focused hostile tests and checked-artifact/receipt closure | `tests/test_sof_action.py`; `tests/test_sofaction_v2.py` |
+| A8 | public reference runtime, wheel-install external-adopter workflow, and Level 3 conformance surface | [`sof-runtime` v0.1.0](https://github.com/dooven-prime/sof-runtime/tree/v0.1.0) |
 
 Validation checks include schema closure, source digest closure, exact Audit
 Projection preservation, Paper XIII validation-receipt binding, context and
@@ -755,8 +757,11 @@ The automated controls include:
 - and omission of policy selection and post-action observations from canonical
   workbench artifacts.
 
-These controls establish implementation fidelity to the formal interface. They
-do not establish domain intervention effectiveness. A1--A7 establish only
+The tagged runtime release is a public reference implementation, not a
+normative definition source; its vendored contracts are independently bound to
+the upstream release-content commit or isolated as explicit candidates. These
+controls establish implementation fidelity to the formal interface. They do
+not establish domain intervention effectiveness. A1--A8 establish only
 their declared schema, protocol-conformance, replay, and bounded-output
 targets; they do not establish policy correctness, feasibility, authorization,
 selection, post-action outcome, or causal effect. Full generated paths and

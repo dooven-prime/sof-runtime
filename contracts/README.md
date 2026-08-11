@@ -29,17 +29,14 @@ receipt closure, preserves the audit projection, and verifies candidate-set
 faithfulness. Candidate import does not promote Paper XIV into the canonical
 upstream contract surface.
 
-`contracts/reporting/candidate-v2.0/` is a byte-pinned integration snapshot of
-the active Paper XII SOFRS v2 candidate: report envelope, Assembly Profile, and
-validation receipt. It remains outside `upstream.lock.json` because the source
-schemas are not yet reproducible from a `rime-lite` commit. The separate
-`upstream-candidate.lock.json` records this limitation explicitly. A passing
-candidate reporting test establishes assembly conformance to those bytes; it
-does not publish or promote the protocol.
+`contracts/reporting/v2.0/` is the immutable SOFRS v2 report envelope, Assembly
+Profile, and validation-receipt snapshot imported from the release-content
+commit in `upstream.lock.json`. A passing reporting test establishes assembly
+conformance to those bytes; it does not establish adapter adequacy.
 
-`contracts/comparison/candidate-v2.0/` similarly vendors the active Paper XIII
-SOFAUDIT v2 schema, receipt, coordinate registry, and official profiles. JSON
-Schema validates shape only. Runtime semantic
+`contracts/comparison/v2.0/` similarly vendors the published SOFAUDIT v2
+schema, receipt, coordinate registry, and official profiles. JSON Schema
+validates shape only. Runtime semantic
 validation additionally rechecks the two SOFRS reports and receipts and
 recomputes roles, regime, profile closure, alignment properties, inherited
 guards, comparison basis, claim compatibility, and artifact closure. Passing

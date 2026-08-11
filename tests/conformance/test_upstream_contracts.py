@@ -34,6 +34,10 @@ class UpstreamContractTests(unittest.TestCase):
         )
         self.assertEqual(lock["status"], "candidate_not_canonical")
         self.assertEqual(lock["source_state"], "uncommitted_worktree")
+        self.assertTrue(lock["entries"])
+        self.assertTrue(
+            all(entry["role"].startswith("candidate_action_") for entry in lock["entries"])
+        )
 
     def test_upstream_input_fixtures_validate(self) -> None:
         pairs = (

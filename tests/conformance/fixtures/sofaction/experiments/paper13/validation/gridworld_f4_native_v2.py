@@ -35,7 +35,11 @@ from experiments.paper12.validation.validate_sofrs_v2 import (  # noqa: E402
 )
 from schemas.contract_api import file_digest, load_json  # noqa: E402
 from schemas.sofcompiler.api import compile_output_v1  # noqa: E402
-from experiments.paper13.validation.audit_profiles import GRIDWORLD_PROFILE  # noqa: E402
+from experiments.paper13.validation.audit_profiles import (  # noqa: E402
+    GRIDWORLD_PROFILE,
+    GRIDWORLD_PROFILE_PATH,
+    REGISTRY_PATH,
+)
 from schemas.sofrs.api import (  # noqa: E402
     build_v2_report_validation_receipt,
     v2_report_validation_receipt_errors,
@@ -573,6 +577,12 @@ def build_audit() -> dict[str, Any]:
         audit_artifact("artifact.object-oracle-result", "object-oracle-result", OBJECT_CERTIFICATE),
         audit_artifact("artifact.audit-result", "audit-result", AUDIT_RESULT),
         audit_artifact("artifact.audit-generator", "audit-generator", Path(__file__)),
+        audit_artifact("artifact.audit-profile", "audit-profile", GRIDWORLD_PROFILE_PATH),
+        audit_artifact(
+            "artifact.coordinate-semantics-registry",
+            "coordinate-semantics-registry",
+            REGISTRY_PATH,
+        ),
     ]
     artifact_by_id = {item["id"]: item for item in artifacts}
     reference_basis = role_basis("reference")
@@ -625,6 +635,8 @@ def build_audit() -> dict[str, Any]:
                 for key, value in GRIDWORLD_PROFILE.items()
                 if key not in {"applicable_regimes", "profile_contract_version", "profile_revision", "negative_boundary"}
             },
+            "profile_artifact_id": "artifact.audit-profile",
+            "coordinate_registry_artifact_id": "artifact.coordinate-semantics-registry",
             "applicable_regime": "strict_vs_strict",
         },
         "alignment": {"sector_alignment": alignment("sector", [f"cell-{index}" for index in range(25)]), "observable_alignment": alignment("observable", list(gridworld.ACTION_NAMES))},

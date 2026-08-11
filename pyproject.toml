@@ -42,14 +42,14 @@ sof_runtime = ["templates/expert_adapter_v1/**/*.txt"]
 "sof_runtime_contracts/reporting" = [
   "contracts/reporting/README.md",
 ]
-"sof_runtime_contracts/reporting/candidate-v2.0" = [
-  "contracts/reporting/candidate-v2.0/*.json",
+"sof_runtime_contracts/reporting/v2.0" = [
+  "contracts/reporting/v2.0/*.json",
 ]
 "sof_runtime_contracts/comparison" = [
   "contracts/comparison/README.md",
 ]
-"sof_runtime_contracts/comparison/candidate-v2.0" = [
-  "contracts/comparison/candidate-v2.0/*.json",
+"sof_runtime_contracts/comparison/v2.0" = [
+  "contracts/comparison/v2.0/*.json",
 ]
 "sof_runtime_contracts/action" = [
   "contracts/action/README.md",
