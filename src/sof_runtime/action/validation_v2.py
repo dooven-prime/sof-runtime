@@ -1,4 +1,4 @@
-"""Runtime-only validation for the unpublished Paper XIV SOFAction v2 object."""
+"""Runtime validation for the published Paper XIV SOFAction v2 object."""
 
 from __future__ import annotations
 

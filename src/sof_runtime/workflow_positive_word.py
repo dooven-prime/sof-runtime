@@ -269,7 +269,7 @@ def run_positive_word_support(
             convenience_path=request_path,
             artifact=request_artifact,
             schema_id="sof.run-request.v1",
-            producer="sof-runtime@0.1.0",
+            producer="sof-runtime@0.2.0",
             input_refs=["artifact.source"],
         ),
     ]
@@ -456,7 +456,7 @@ def run_positive_word_support(
     response_ref = runtime_ref(
         response_artifact,
         schema_id="sof.run-response.v1",
-        producer="sof-runtime@0.1.0",
+        producer="sof-runtime@0.2.0",
         input_refs=[
             "artifact.run-request",
             "artifact.positive-word-bundle",

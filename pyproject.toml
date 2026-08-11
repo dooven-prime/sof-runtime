@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sof-runtime"
-version = "0.1.0"
+version = "0.2.0"
 description = "Reference runtime for versioned Sectorized Observable Framework contracts"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -28,7 +28,6 @@ sof_runtime = ["templates/expert_adapter_v1/**/*.txt"]
 "sof_runtime_contracts" = [
   "contracts/README.md",
   "contracts/upstream.lock.json",
-  "contracts/upstream-candidate.lock.json",
 ]
 "sof_runtime_contracts/compiler/v1.0" = [
   "contracts/compiler/v1.0/*.json",
@@ -54,8 +53,8 @@ sof_runtime = ["templates/expert_adapter_v1/**/*.txt"]
 "sof_runtime_contracts/action" = [
   "contracts/action/README.md",
 ]
-"sof_runtime_contracts/action/candidate-v2.0" = [
-  "contracts/action/candidate-v2.0/*.json",
+"sof_runtime_contracts/action/v2.0" = [
+  "contracts/action/v2.0/*.json",
 ]
 "sof_runtime_contracts/sources/automata/v1.0" = [
   "contracts/sources/automata/v1.0/*.json",

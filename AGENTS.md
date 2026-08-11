@@ -13,13 +13,9 @@ or overwrite domain-specific scientific conclusions.
 
 - Treat `contracts/compiler/` as immutable vendored upstream material.
 - Verify vendored files against `contracts/upstream.lock.json`.
-- Treat `contracts/reporting/v2.0/` and `contracts/comparison/v2.0/` as
-  immutable upstream material and verify them against
-  `contracts/upstream.lock.json`.
-- Treat `contracts/action/candidate-v2.0/` as an explicitly non-canonical Paper
-  XIV integration snapshot. Verify it against
-  `contracts/upstream-candidate.lock.json`, but never cite that candidate lock
-  as publication or upstream acceptance.
+- Treat `contracts/reporting/v2.0/`, `contracts/comparison/v2.0/`, and
+  `contracts/action/v2.0/` as immutable upstream material and verify them
+  against `contracts/upstream.lock.json`.
 - Put runtime-only protocols under `contracts/runtime/`.
 - Put domain payloads under versioned `contracts/sources/` or
   `contracts/extensions/`.
@@ -151,7 +147,7 @@ Run before release:
 ```bash
 python tools/build_rust_plugins.py
 python tools/verify_digests.py
-python tools/import_candidate_contracts.py --upstream-root ../rime-lite
+python tools/import_contracts.py --upstream-root ../rime-lite
 python -m unittest discover -s tests
 python tools/check_wheel_install.py
 ```

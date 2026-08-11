@@ -1,9 +1,15 @@
 {
   "lock_version": "1.0",
   "upstream_repository": "https://github.com/dooven-prime/rime-lite",
-  "upstream_commit": "abed9f18a29be85a872b1ac1f6f83b0d6997ed0b",
+  "upstream_commit": "c58633494257757e3316f31d8a7cfedc2e75af4e",
   "import_policy": "immutable",
   "imported_at": "2026-08-11",
+  "latest_promotion": {
+    "contract_family": "SOFAction v2",
+    "release_tag": "paper14-v2.0",
+    "release_content_commit": "c58633494257757e3316f31d8a7cfedc2e75af4e",
+    "publication_doi": "10.5281/zenodo.21880943"
+  },
   "entries": [
     {
       "role": "canonical_contract",
@@ -106,6 +112,18 @@
       "upstream_path": "schemas/sofaudit/paper13-gridworld-f4-native-profile-v2.0.json",
       "local_path": "contracts/comparison/v2.0/gridworld-f4-native-profile.json",
       "sha256": "93728478c21d1b9af85c57abfccad857f0cbb62103bead52cf77f2e7ec973a6f"
+    },
+    {
+      "role": "canonical_action_contract",
+      "upstream_path": "schemas/sofaction/v2.0.schema.json",
+      "local_path": "contracts/action/v2.0/sofaction.schema.json",
+      "sha256": "aee54df74bcc44b73f21f8a28dd2792c0fde90987fe7209441237af5a5163a3e"
+    },
+    {
+      "role": "canonical_action_contract",
+      "upstream_path": "schemas/sofaction/validation-receipt-v2.0.schema.json",
+      "local_path": "contracts/action/v2.0/validation-receipt.schema.json",
+      "sha256": "56e535c97a6370d3e933738b8b356038bd81394aa9c467f8614a1cf0d49db734"
     }
   ]
 }

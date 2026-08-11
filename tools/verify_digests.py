@@ -6,10 +6,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-LOCKS = (
-    ROOT / "contracts" / "upstream.lock.json",
-    ROOT / "contracts" / "upstream-candidate.lock.json",
-)
+LOCKS = (ROOT / "contracts" / "upstream.lock.json",)
 
 
 def main() -> None:

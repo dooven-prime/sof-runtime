@@ -18,25 +18,35 @@ class UpstreamContractTests(unittest.TestCase):
             Draft202012Validator.check_schema(load_json(schema_path))
 
     def test_vendored_digests_match_lock(self) -> None:
-        for lock_name in ("upstream.lock.json", "upstream-candidate.lock.json"):
-            lock = load_json(PROJECT_ROOT / "contracts" / lock_name)
-            for entry in lock["entries"]:
-                path = PROJECT_ROOT / entry["local_path"]
-                self.assertTrue(path.is_file(), entry["local_path"])
-                self.assertEqual(
-                    hashlib.sha256(path.read_bytes()).hexdigest(),
-                    entry["sha256"],
-                )
+        lock = load_json(PROJECT_ROOT / "contracts" / "upstream.lock.json")
+        for entry in lock["entries"]:
+            path = PROJECT_ROOT / entry["local_path"]
+            self.assertTrue(path.is_file(), entry["local_path"])
+            self.assertEqual(
+                hashlib.sha256(path.read_bytes()).hexdigest(),
+                entry["sha256"],
+            )
 
-    def test_candidate_lock_cannot_claim_canonical_status(self) -> None:
-        lock = load_json(
-            PROJECT_ROOT / "contracts" / "upstream-candidate.lock.json"
-        )
-        self.assertEqual(lock["status"], "candidate_not_canonical")
-        self.assertEqual(lock["source_state"], "uncommitted_worktree")
-        self.assertTrue(lock["entries"])
+    def test_published_sofaction_is_in_immutable_inventory(self) -> None:
+        lock = load_json(PROJECT_ROOT / "contracts" / "upstream.lock.json")
+        promotion = lock["latest_promotion"]
+        self.assertEqual(promotion["contract_family"], "SOFAction v2")
+        self.assertEqual(promotion["release_tag"], "paper14-v2.0")
+        self.assertEqual(promotion["publication_doi"], "10.5281/zenodo.21880943")
+        action_entries = [
+            entry
+            for entry in lock["entries"]
+            if entry["role"] == "canonical_action_contract"
+        ]
+        self.assertEqual(len(action_entries), 2)
         self.assertTrue(
-            all(entry["role"].startswith("candidate_action_") for entry in lock["entries"])
+            all(
+                entry["local_path"].startswith("contracts/action/v2.0/")
+                for entry in action_entries
+            )
+        )
+        self.assertFalse(
+            (PROJECT_ROOT / "contracts" / "upstream-candidate.lock.json").exists()
         )
 
     def test_upstream_input_fixtures_validate(self) -> None:

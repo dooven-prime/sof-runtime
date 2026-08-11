@@ -3,7 +3,7 @@
 - `unit/`: carrier, validator, and layered run-identity behavior.
 - `conformance/`: immutable upstream contracts, exact Compile_v1 fixture,
   SOFRS faithful-assembly/receipt integration, SOFAUDIT semantic validation,
-  and candidate SOFAction replay.
+  and published SOFAction replay.
 - `golden/`: complete source-to-validated-RunResponse extension runs.
 - `regression/`: evidence promotion and missing-capability boundaries.
 - `cross_language/`: JSON stdin/stdout executable protocol and the scoped
@@ -34,8 +34,9 @@ the independent-oracle requirement for external-object claims.
 The SOFAction runtime slice consumes a Paper XIII receipt-bound fixture and
 independently replays Paper XIV Policy Predicate Language v1.0. Hostile cases
 reject arbitrary predicates, projection rewrites, and candidate-set deletion.
-This is a runtime-only integration test; it does not publish or promote Paper
-XIV.
+This is a runtime conformance test against the published Paper XIV contract;
+it does not establish policy correctness, authorization, execution, outcome,
+or causal effect.
 
 The Rust positive-word suite additionally checks exact `sof-cjson-v1` bytes,
 SHA-256 parity, NFC and numeric rejection, semantic-run identity, bundle and

@@ -102,7 +102,7 @@ def main() -> None:
         )
     print(
         "PASS: installed wheel carries compiler, runtime, reporting, comparison, "
-        "and candidate action contracts, exposes downstream validators, and completes a validated run"
+        "and action contracts, exposes downstream validators, and completes a validated run"
     )
 
 

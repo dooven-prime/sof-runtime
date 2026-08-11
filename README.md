@@ -61,12 +61,10 @@ Canonical compiler contracts are vendored immutably from the commit recorded
 in `contracts/upstream.lock.json`. Experimental carrier payloads live under
 `contracts/extensions/`; they do not modify the upstream contracts.
 
-The published SOFRS v2 and SOFAUDIT v2 contracts are imported immutably under
-`contracts/reporting/v2.0/` and `contracts/comparison/v2.0/`; their upstream
-commit and byte digests are pinned by `contracts/upstream.lock.json`. The
-unpublished SOFAction v2 contract remains under
-`contracts/action/candidate-v2.0/` and is isolated by
-`contracts/upstream-candidate.lock.json`.
+The published SOFRS v2, SOFAUDIT v2, and SOFAction v2 contracts are imported
+immutably under `contracts/reporting/v2.0/`, `contracts/comparison/v2.0/`, and
+`contracts/action/v2.0/`. Their upstream release-content commit and byte
+digests are pinned by `contracts/upstream.lock.json`.
 
 ## Runtime Shape
 
@@ -110,11 +108,11 @@ The initial runtime provides:
 - in-process and external-executable plugin boundaries;
 - capability-aware compilation;
 - faithful `CompilerOutput`-to-SOFRS assembly, report revalidation, and
-  digest-bound validation receipts against the pinned Paper XII candidate;
-- semantic SOFAUDIT validation against the pinned Paper XIII candidate,
+  digest-bound validation receipts against the pinned Paper XII contract;
+- semantic SOFAUDIT validation against the pinned Paper XIII contract,
   including report/receipt closure, alignment-map recomputation, guard and
   coordinate coupling, comparison-basis checks, and independent-oracle gates;
-- candidate SOFAction v2 validation against a Paper XIII receipt-bound
+- SOFAction v2 validation against a Paper XIII receipt-bound
   audit, including closed Policy Predicate replay, audit projection
   preservation, carrier closure, and Candidate Action Set regeneration;
 - debug JSON and Markdown inspection;
@@ -470,7 +468,7 @@ Run the conformance suite with:
 python tools/build_rust_plugins.py
 python -m unittest discover -s tests
 python tools/verify_digests.py
-python tools/import_candidate_contracts.py --upstream-root ../rime-lite
+python tools/import_contracts.py --upstream-root ../rime-lite
 python tools/check_wheel_install.py
 ```
 
@@ -524,7 +522,7 @@ independence. The plugin cannot write artifact paths; storage remains an
 orchestrator responsibility. This establishes one scoped Python/Rust
 conformance pair, not general multi-language conformance.
 
-## Candidate SOFRS Assembly
+## SOFRS Assembly
 
 The reference reporting path is:
 
@@ -563,20 +561,22 @@ sources, independent recomputation, oracle result, and audit result with a
 declared no-cache independence boundary. A declared reference alone supports
 only difference from that baseline.
 
-## Candidate SOFAction Validation
+## SOFAction Validation
 
-`sof validate-sofaction ACTION --repository-root ROOT` validates the unpublished
-Paper XIV SOFAction v2 candidate binding. The validator consumes an exact Paper
-XIII SOFAUDIT v2 artifact and its `PASS` validation receipt, replays the closed
+`sof validate-sofaction ACTION --repository-root ROOT` validates the published
+Paper XIV SOFAction v2 contract. The validator consumes an exact Paper XIII
+SOFAUDIT v2 artifact and its `PASS` validation receipt, replays the closed
 Policy Predicate Language v1.0, rejects unresolved coordinates as affirmative
 support, and independently regenerates the candidate action IDs. The schema and
-receipt bytes are pinned in `upstream-candidate.lock.json`; that candidate lock
-supports integration testing and does not promote Paper XIV into the canonical
-contract set.
+receipt bytes are pinned in `upstream.lock.json` to the Paper XIV v2
+release-content commit `c58633494257757e3316f31d8a7cfedc2e75af4e` and
+[DOI 10.5281/zenodo.21880943](https://doi.org/10.5281/zenodo.21880943).
+Runtime conformance does not establish policy correctness, authorization,
+execution, outcome, or causal effect.
 
 ## Status
 
-Version `0.1.0` is:
+Version `0.2.0` is:
 
 > A language-neutral runtime and artifact-conformance seed with two validated
 > mathematical vertical slices and one byte-identical cross-language
@@ -587,7 +587,9 @@ through the same evidence bus. The positive-word carrier additionally has
 byte-identical Python and Rust implementations under the declared canonical
 JSON and semantic-environment contracts.
 
-The validated engineering claims for `0.1.0` are:
+This release promotes the published SOFAction v2 schema and receipt from the
+candidate integration inventory into the immutable upstream inventory. The
+validated engineering claims for `0.2.0` are:
 
 - two mathematically distinct carriers use the same evidence bus;
 - canonical identity is consistent across the Python and Rust implementations;
@@ -599,7 +601,7 @@ The validated engineering claims for `0.1.0` are:
 - SOFRS assembly preserves an exact CompilerOutput and rejects item drift;
 - SOFAUDIT validation rejects fabricated role, regime, profile,
   alignment, guard, basis, claim-class, digest, and oracle declarations;
-- candidate SOFAction validation replays a closed policy predicate tree and
+- SOFAction validation replays a closed policy predicate tree and
   rejects audit-projection, receipt, carrier, and candidate-set tampering;
 - the public Level 1A--3 facade exposes the staged object chain
   `Realization -> Report -> Comparison -> Interpretation -> CandidateAction`,
@@ -612,7 +614,7 @@ The validated engineering claims for `0.1.0` are:
 - an installed Python wheel carries the contracts and completes a validated
   runtime execution.
 
-These claims concern runtime and artifact conformance. Version `0.1.0` is not
+These claims concern runtime and artifact conformance. Version `0.2.0` is not
 a new SOF specification, a scientific authority, or a publication identity.
 It does not establish universal carrier coverage, general multi-language
 conformance, large-scale artifact-store behavior, a published end-to-end
@@ -623,7 +625,7 @@ causal-effect certification, policy correctness, or a REST API.
 ## Citation and Release Identity
 
 The immutable public source identity for this release is the
-[`v0.1.0` tag](https://github.com/dooven-prime/sof-runtime/tree/v0.1.0).
+[`v0.2.0` tag](https://github.com/dooven-prime/sof-runtime/tree/v0.2.0).
 `CITATION.cff` records the software citation metadata. The runtime tag identifies
 an implementation; the owning RIME papers and their digest-locked contracts
 remain the normative definition sources.

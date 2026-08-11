@@ -21,13 +21,13 @@ validated extension-only realization; it is not eligible for Manifest, Typed
 SOF IR, CompilerOutput, or SOFRS assembly until an upstream carrier contract
 is accepted.
 
-`contracts/action/candidate-v2.0/` is the byte-pinned Paper XIV SOFAction v2
-schema and validation-receipt candidate imported through
-`upstream-candidate.lock.json`. The runtime action validator replays the
-closed Policy Predicate Language, checks the Paper XIII audit and validation
-receipt closure, preserves the audit projection, and verifies candidate-set
-faithfulness. Candidate import does not promote Paper XIV into the canonical
-upstream contract surface.
+`contracts/action/v2.0/` is the immutable, byte-pinned Paper XIV SOFAction v2
+schema and validation-receipt contract imported through `upstream.lock.json`.
+The runtime action validator replays the closed Policy Predicate Language,
+checks the Paper XIII audit and validation-receipt closure, preserves the audit
+projection, and verifies candidate-set faithfulness. Passing that validator
+does not establish policy correctness, authorization, execution, outcome, or
+causal effect.
 
 `contracts/reporting/v2.0/` is the immutable SOFRS v2 report envelope, Assembly
 Profile, and validation-receipt snapshot imported from the release-content
@@ -59,7 +59,7 @@ Verify the vendored snapshot with:
 
 ```bash
 python tools/verify_digests.py
-python tools/import_candidate_contracts.py --upstream-root ../rime-lite
+python tools/import_contracts.py --upstream-root ../rime-lite
 ```
 
 Restore it from the frozen Git commit with:
