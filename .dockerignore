@@ -1,0 +1,11 @@
+.git
+.github
+.idea
+.pytest_cache
+.venv
+build
+dist
+runs
+**/__pycache__
+**/*.pyc
+**/target

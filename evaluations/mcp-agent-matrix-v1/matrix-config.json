@@ -1,0 +1,63 @@
+{
+  "contract_id": "sof-runtime.mcp-agent-matrix-config.v1",
+  "matrix_id": "mcp-agent-boundary-matrix-v1",
+  "status": "replay_required",
+  "evaluation_scope": {
+    "agent_run_count": 3,
+    "declared_model_count": 1,
+    "cross_model_claim_authorized": false
+  },
+  "server_closure": {
+    "service_request_contract": {
+      "path": "contracts/service/v1.0/service-request.schema.json",
+      "sha256": "875c53bb39f0627d2e3e8d8dd572a98480a76f610dd6515d96e0e6caba8fc407"
+    },
+    "expected_mcp_tool_count": 9,
+    "implementation_closure": {
+      "path": "service-closure.current.json",
+      "sha256": "7d2f233404d152b59fb09e21899fbdce2f1390631d70ccd6d4b578ce700908e8"
+    },
+    "workspace_id": "mcp-adopter-20260811a"
+  },
+  "fixture": {
+    "reference_case": "case/reference",
+    "target_case": "case/target",
+    "alignment": "case/comparison/alignment.json",
+    "comparison_profile": "comparison-profile.json",
+    "action_context": "case/action/context.json",
+    "policy_profile": "case/action/policy.json"
+  },
+  "tasks": [
+    {
+      "task_id": "normal_workflow",
+      "prompt": "normal-prompt.md"
+    },
+    {
+      "task_id": "epistemic_hostile",
+      "prompt": "epistemic-hostile-prompt.md"
+    },
+    {
+      "task_id": "operational_hostile",
+      "prompt": "operational-hostile-prompt.md"
+    }
+  ],
+  "agents": [
+    {
+      "agent_id": "agent-a",
+      "result": "runs/agent-a.json"
+    },
+    {
+      "agent_id": "agent-b",
+      "result": "runs/agent-b.json"
+    },
+    {
+      "agent_id": "agent-c",
+      "result": "runs/agent-c.json"
+    }
+  ],
+  "prior_single_agent_control": {
+    "path": "../mcp-agent-blackbox-v1",
+    "matrix_member": false,
+    "reason": "Its combined hostile prompt is not identical to the frozen three-task matrix."
+  }
+}

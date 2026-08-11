@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -37,10 +38,14 @@ def main() -> None:
         scripts = environment_dir / ("Scripts" if os.name == "nt" else "bin")
         python = scripts / ("python.exe" if os.name == "nt" else "python")
         wheel = next(wheel_dir.glob("*.whl"))
-        run(str(python), "-m", "pip", "install", "--no-deps", str(wheel))
+        run(str(python), "-m", "pip", "install", f"{wheel}[service]")
 
         workspace = work / "workspace"
         workspace.mkdir()
+        service_root = workspace / "service"
+        adopter_case = service_root / "adopter" / "case"
+        shutil.copytree(ROOT / "examples" / "external-adapter-finite-state", adopter_case)
+        shutil.copytree(ROOT / "profiles", workspace / "profiles")
         env = os.environ.copy()
         env["SOF_RUNTIME_WORKSPACE"] = str(workspace)
         run(
@@ -50,7 +55,8 @@ def main() -> None:
                 "from sof_runtime.action import validate_action; "
                 "from sof_runtime.comparison import validate_audit; "
                 "from sof_runtime.paths import (ACTION_CONTRACT_ROOT, "
-                "COMPARISON_CONTRACT_ROOT, REPORTING_CONTRACT_ROOT); "
+                "COMPARISON_CONTRACT_ROOT, REPORTING_CONTRACT_ROOT, "
+                "SERVICE_CONTRACT_ROOT); "
                 "required=('sofrs.schema.json','assembly-profile.schema.json',"
                 "'validation-receipt.schema.json'); "
                 "assert all((REPORTING_CONTRACT_ROOT / name).is_file() "
@@ -60,7 +66,32 @@ def main() -> None:
                 "'coordinate-semantics-registry.json')); "
                 "assert all((ACTION_CONTRACT_ROOT / name).is_file() for name in "
                 "('sofaction.schema.json','validation-receipt.schema.json')); "
+                "assert all((SERVICE_CONTRACT_ROOT / name).is_file() for name in "
+                "('service-request.schema.json','service-response.schema.json',"
+                "'service-error.schema.json','job.schema.json')); "
                 "assert callable(validate_audit) and callable(validate_action)"
+            ),
+            env=env,
+        )
+        run(
+            str(python),
+            "-c",
+            (
+                "from fastapi.testclient import TestClient; "
+                "from sof_runtime.transports.http import create_app; "
+                f"root=r'{service_root}'; "
+                "client=TestClient(create_app(workspace_root=root)); "
+                "payload={'contract_id':'sof-runtime.service-request.v1',"
+                "'request_id':'wheel-http-1','workspace_id':'adopter',"
+                "'operation':'realize','input':{'case_directory':'case',"
+                "'run_directory':'run'}}; "
+                "response=client.post('/v1/realizations',json=payload); "
+                "assert response.status_code == 200, response.text; "
+                "body=response.json(); "
+                "assert body['status']=='succeeded'; "
+                "assert body['result']['canonical_compilable'] is True; "
+                "assert body['semantic_run_id'].startswith('semrun:sha256:'); "
+                "assert len(body['artifacts']) == 5"
             ),
             env=env,
         )
@@ -102,7 +133,8 @@ def main() -> None:
         )
     print(
         "PASS: installed wheel carries compiler, runtime, reporting, comparison, "
-        "and action contracts, exposes downstream validators, and completes a validated run"
+        "action, and service contracts, exposes downstream validators, completes a "
+        "validated run, and serves an HTTP realization from the installed wheel"
     )
 
 

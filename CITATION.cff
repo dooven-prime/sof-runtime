@@ -6,8 +6,8 @@ authors:
   - family-names: "Chen"
     given-names: "WuJun"
     orcid: "https://orcid.org/0009-0007-9561-2892"
-version: "0.2.0"
+version: "0.3.0"
 date-released: "2026-08-11"
 repository-code: "https://github.com/dooven-prime/sof-runtime"
-url: "https://github.com/dooven-prime/sof-runtime/tree/v0.2.0"
+url: "https://github.com/dooven-prime/sof-runtime/tree/v0.3.0"
 license: MIT

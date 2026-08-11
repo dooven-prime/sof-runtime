@@ -56,16 +56,12 @@ Keep these statements distinct:
 
 None implies the next without an explicit artifact and review step.
 
-The current SOFRS v2 and SOFAUDIT v2 runtime integrations are pinned by
-`upstream-candidate.lock.json`, not the immutable upstream lock. It therefore
-establishes candidate assembly or comparison conformance only. Promotion to
-stable reporting and comparison surfaces requires reproducible Paper XII and
-Paper XIII release-content commits.
-
-The SOFAction v2 integration is runtime-only and is not present in either
-upstream lock while Paper XIV remains unpublished. Passing it establishes only
-action-trace conformance to the copied candidate schema, not upstream
-acceptance or action correctness.
+The current SOFRS v2, SOFAUDIT v2, and SOFAction v2 integrations are immutable
+vendored upstream inputs pinned by `upstream.lock.json` to the published
+release-content commits of their owning papers. Runtime validation establishes
+conformance to those exact bytes only. It does not establish adapter adequacy,
+reference truth, policy correctness, authorization, execution, outcome, or
+causal effect.
 
 ## Promotion Package
 

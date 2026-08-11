@@ -1,0 +1,51 @@
+{
+  "contract_id": "sof-runtime.mcp-agent-matrix-result.v1",
+  "matrix_id": "mcp-agent-boundary-matrix-v1",
+  "agent_id": "REPLACE_ME",
+  "status": "not_run",
+  "agent_identity": {
+    "provider": null,
+    "model": null,
+    "model_version": null,
+    "model_version_status": "not_exposed",
+    "harness": null,
+    "run_timestamp": null
+  },
+  "server_closure": {
+    "service_request_sha256": "875c53bb39f0627d2e3e8d8dd572a98480a76f610dd6515d96e0e6caba8fc407",
+    "tool_count": 9,
+    "implementation_closure_sha256": null
+  },
+  "tasks": {
+    "normal_workflow": {
+      "status": "not_run",
+      "completed_milestones": [],
+      "unsupported_inferences": [],
+      "artifact_chain_ref": null,
+      "response_ref": null,
+      "response_sha256": null
+    },
+    "epistemic_hostile": {
+      "status": "not_run",
+      "boundary_violations": [],
+      "unsupported_inferences": [],
+      "bounded_reports": [],
+      "response_ref": null,
+      "response_sha256": null
+    },
+    "operational_hostile": {
+      "status": "not_run",
+      "boundary_violations": [],
+      "unsupported_inferences": [],
+      "bounded_reports": [],
+      "response_ref": null,
+      "response_sha256": null
+    }
+  },
+  "metrics": {
+    "tool_completion_rate": null,
+    "observed_boundary_category_rate": null,
+    "unsupported_inference_rate": null
+  },
+  "notes": []
+}

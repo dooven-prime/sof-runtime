@@ -4,7 +4,8 @@
 - `conformance/`: immutable upstream contracts, exact Compile_v1 fixture,
   SOFRS faithful-assembly/receipt integration, SOFAUDIT semantic validation,
   and published SOFAction replay.
-- `golden/`: complete source-to-validated-RunResponse extension runs.
+- `golden/`: complete extension runs, external-adopter workflows, and
+  direct API/CLI/HTTP/MCP service transport controls.
 - `regression/`: evidence promotion and missing-capability boundaries.
 - `cross_language/`: JSON stdin/stdout executable protocol and the scoped
   Python/Rust Markov conformance pair.
@@ -37,6 +38,27 @@ reject arbitrary predicates, projection rewrites, and candidate-set deletion.
 This is a runtime conformance test against the published Paper XIV contract;
 it does not establish policy correctness, authorization, execution, outcome,
 or causal effect.
+
+The service slice freezes closed orchestration envelopes and keeps job state,
+semantic identity, and SOF result state separate. It executes the same
+realization through direct Python, CLI, HTTP, and MCP projections, requiring
+distinct job IDs, one semantic run ID, and one candidate digest. A second
+control runs the complete Report/Comparison/Interpretation chain in two
+workspace IDs and requires byte-identical SOFRS, SOFAUDIT, and SOFAction
+artifacts. The installed-wheel check separately executes the HTTP realization
+without importing repository internals.
+
+`evaluations/mcp-agent-blackbox-v1/` records a separate MCP-only agent control.
+Its validator checks discovered stages, explicit inputs, digest references,
+unavailable capabilities, claim boundaries, hostile-prompt refusals, and the
+distinction between subject `contract_status` and protocol admission. It does
+not compare model prose.
+
+`evaluations/mcp-agent-matrix-v1/` extends that method to three independent
+agents and three frozen task classes. Pending runs retain null rates; the
+matrix scorer distinguishes historical observations from acceptance runs under
+the current source-addressed service implementation closure. Violation scoring
+is categorical and does not compare response text.
 
 The Rust positive-word suite additionally checks exact `sof-cjson-v1` bytes,
 SHA-256 parity, NFC and numeric rejection, semantic-run identity, bundle and

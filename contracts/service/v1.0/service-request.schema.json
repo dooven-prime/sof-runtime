@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/service/v1.0/service-request.schema.json",
+  "title": "SOF Runtime Service Request v1",
+  "oneOf": [
+    {"$ref": "#/$defs/realize"},
+    {"$ref": "#/$defs/report"},
+    {"$ref": "#/$defs/compare"},
+    {"$ref": "#/$defs/interpret"},
+    {"$ref": "#/$defs/validate"},
+    {"$ref": "#/$defs/explain"}
+  ],
+  "$defs": {
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?![/\\\\]).+$"
+    },
+    "base": {
+      "type": "object",
+      "required": ["contract_id", "request_id", "workspace_id", "operation", "input"],
+      "properties": {
+        "contract_id": {"const": "sof-runtime.service-request.v1"},
+        "request_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+        "workspace_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+        "operation": {
+          "enum": ["realize", "report", "compare", "interpret", "validate", "explain"]
+        },
+        "input": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "realize": {
+      "allOf": [
+        {"$ref": "#/$defs/base"},
+        {
+          "properties": {
+            "operation": {"const": "realize"},
+            "input": {
+              "type": "object",
+              "required": ["case_directory", "run_directory"],
+              "properties": {
+                "case_directory": {"$ref": "#/$defs/relativePath"},
+                "run_directory": {"$ref": "#/$defs/relativePath"}
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      ]
+    },
+    "report": {
+      "allOf": [
+        {"$ref": "#/$defs/base"},
+        {
+          "properties": {
+            "operation": {"const": "report"},
+            "input": {
+              "type": "object",
+              "required": ["realization_run_directory", "out_directory"],
+              "properties": {
+                "realization_run_directory": {"$ref": "#/$defs/relativePath"},
+                "out_directory": {"$ref": "#/$defs/relativePath"},
+                "compiler_profile": {"$ref": "#/$defs/relativePath"},
+                "assembly_profile": {"$ref": "#/$defs/relativePath"}
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      ]
+    },
+    "reportRef": {
+      "type": "object",
+      "required": ["report", "receipt"],
+      "properties": {
+        "report": {"$ref": "#/$defs/relativePath"},
+        "receipt": {"$ref": "#/$defs/relativePath"}
+      },
+      "additionalProperties": false
+    },
+    "compare": {
+      "allOf": [
+        {"$ref": "#/$defs/base"},
+        {
+          "properties": {
+            "operation": {"const": "compare"},
+            "input": {
+              "type": "object",
+              "required": ["reference", "target", "alignment", "comparison_profile", "out_directory"],
+              "properties": {
+                "reference": {"$ref": "#/$defs/reportRef"},
+                "target": {"$ref": "#/$defs/reportRef"},
+                "alignment": {"$ref": "#/$defs/relativePath"},
+                "comparison_profile": {"$ref": "#/$defs/relativePath"},
+                "out_directory": {"$ref": "#/$defs/relativePath"}
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      ]
+    },
+    "interpret": {
+      "allOf": [
+        {"$ref": "#/$defs/base"},
+        {
+          "properties": {
+            "operation": {"const": "interpret"},
+            "input": {
+              "type": "object",
+              "required": ["audit", "receipt", "context", "policy", "out_directory"],
+              "properties": {
+                "audit": {"$ref": "#/$defs/relativePath"},
+                "receipt": {"$ref": "#/$defs/relativePath"},
+                "context": {"$ref": "#/$defs/relativePath"},
+                "policy": {"$ref": "#/$defs/relativePath"},
+                "out_directory": {"$ref": "#/$defs/relativePath"}
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      ]
+    },
+    "validate": {
+      "allOf": [
+        {"$ref": "#/$defs/base"},
+        {
+          "properties": {
+            "operation": {"const": "validate"},
+            "input": {
+              "type": "object",
+              "required": ["validation_kind", "artifact"],
+              "properties": {
+                "validation_kind": {
+                  "enum": ["sofrs", "sofrs_receipt", "sofaudit", "sofaudit_receipt", "sofaction", "sofaction_receipt"]
+                },
+                "artifact": {"$ref": "#/$defs/relativePath"}
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      ]
+    },
+    "explain": {
+      "allOf": [
+        {"$ref": "#/$defs/base"},
+        {
+          "properties": {
+            "operation": {"const": "explain"},
+            "input": {
+              "type": "object",
+              "required": ["run_directory"],
+              "properties": {
+                "run_directory": {"$ref": "#/$defs/relativePath"}
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      ]
+    }
+  }
+}

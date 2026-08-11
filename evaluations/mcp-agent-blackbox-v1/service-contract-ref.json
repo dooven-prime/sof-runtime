@@ -1,0 +1,10 @@
+{
+  "contract_id": "sof-runtime.mcp-service-contract-ref.v1",
+  "artifact": {
+    "path": "contracts/service/v1.0/service-request.schema.json",
+    "media_type": "application/schema+json",
+    "sha256": "875c53bb39f0627d2e3e8d8dd572a98480a76f610dd6515d96e0e6caba8fc407",
+    "title": "SOF Runtime Service Request v1"
+  },
+  "boundary": "The service contract owns orchestration semantics only."
+}

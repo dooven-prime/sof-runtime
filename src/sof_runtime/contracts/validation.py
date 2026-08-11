@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
+from referencing import Registry, Resource
 
 
 class ContractError(ValueError):
@@ -65,12 +66,48 @@ def validation_errors(payload: Any, schema: dict[str, Any]) -> list[str]:
     ]
 
 
+def _local_schema_registry(schema_path: Path) -> Registry:
+    contracts_root = next(
+        (
+            parent
+            for parent in schema_path.parents
+            if parent.name in {"contracts", "sof_runtime_contracts"}
+        ),
+        None,
+    )
+    registry = Registry()
+    if contracts_root is None:
+        return registry
+    for candidate in contracts_root.rglob("*.schema.json"):
+        document = load_json(candidate)
+        identifier = document.get("$id") if isinstance(document, dict) else None
+        if isinstance(identifier, str):
+            registry = registry.with_resource(
+                identifier,
+                Resource.from_contents(document),
+            )
+    return registry
+
+
 def validate_contract(
     payload: Any,
     schema_path: str | Path,
     *,
     label: str = "payload",
 ) -> None:
-    errors = validation_errors(payload, load_json(schema_path))
+    resolved_schema_path = Path(schema_path).resolve()
+    schema = load_json(resolved_schema_path)
+    Draft202012Validator.check_schema(schema)
+    validator = Draft202012Validator(
+        schema,
+        registry=_local_schema_registry(resolved_schema_path),
+    )
+    errors = [
+        f"{'.'.join(str(part) for part in error.path) or '<root>'}: {error.message}"
+        for error in sorted(
+            validator.iter_errors(payload),
+            key=lambda item: [str(part) for part in item.path],
+        )
+    ]
     if errors:
         raise ContractError(f"{label} contract failed: " + "; ".join(errors))

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sof-runtime"
-version = "0.2.0"
+version = "0.3.0"
 description = "Reference runtime for versioned Sectorized Observable Framework contracts"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -12,6 +12,21 @@ license = {text = "MIT"}
 authors = [{name = "WuJun Chen"}]
 dependencies = [
   "jsonschema>=4.23.0",
+]
+
+[project.optional-dependencies]
+service = [
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.32,<1",
+  "mcp>=2,<3",
+]
+mcp = [
+  "mcp>=2,<3",
+]
+all = [
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.32,<1",
+  "mcp>=2,<3",
 ]
 
 [project.scripts]
@@ -55,6 +70,9 @@ sof_runtime = ["templates/expert_adapter_v1/**/*.txt"]
 ]
 "sof_runtime_contracts/action/v2.0" = [
   "contracts/action/v2.0/*.json",
+]
+"sof_runtime_contracts/service/v1.0" = [
+  "contracts/service/v1.0/*.json",
 ]
 "sof_runtime_contracts/sources/automata/v1.0" = [
   "contracts/sources/automata/v1.0/*.json",

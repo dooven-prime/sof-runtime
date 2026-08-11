@@ -1,0 +1,61 @@
+{
+  "contract_id": "sof-runtime.mcp-tool-surface.v1",
+  "server": "sof-runtime",
+  "protocol_version": "2025-11-25",
+  "tool_count": 9,
+  "tools": [
+    {
+      "name": "sof_get_contract",
+      "role": "read frozen service orchestration contracts",
+      "description_nonempty": true
+    },
+    {
+      "name": "sof_realize",
+      "role": "create a validated Realization from a supplied case bundle",
+      "description_nonempty": true
+    },
+    {
+      "name": "sof_report",
+      "role": "create SOFRS only from a canonical-compilable Realization",
+      "description_nonempty": true
+    },
+    {
+      "name": "sof_compare",
+      "role": "create SOFAUDIT from two reports and explicit alignment/profile",
+      "description_nonempty": true
+    },
+    {
+      "name": "sof_interpret",
+      "role": "create policy-relative interpretation and bounded candidates",
+      "description_nonempty": true
+    },
+    {
+      "name": "sof_validate",
+      "role": "run an existing semantic validator without claim promotion",
+      "description_nonempty": true
+    },
+    {
+      "name": "sof_get_artifact",
+      "role": "retrieve one artifact by workspace locator and exact digest",
+      "description_nonempty": true
+    },
+    {
+      "name": "sof_get_receipt",
+      "role": "retrieve one receipt by workspace locator and exact digest",
+      "description_nonempty": true
+    },
+    {
+      "name": "sof_explain",
+      "role": "render deterministic source-addressed provenance and boundaries",
+      "description_nonempty": true
+    }
+  ],
+  "absent_authority_tools": [
+    "sof_select",
+    "sof_recommend",
+    "sof_authorize",
+    "sof_execute",
+    "sof_observe_outcome",
+    "sof_certify_effect"
+  ]
+}

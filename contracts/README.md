@@ -21,6 +21,13 @@ validated extension-only realization; it is not eligible for Manifest, Typed
 SOF IR, CompilerOutput, or SOFRS assembly until an upstream carrier contract
 is accepted.
 
+`contracts/service/v1.0/` defines runtime-owned orchestration envelopes for
+Python, CLI, HTTP, and MCP projections. It owns request routing, workspace
+confinement, job lifecycle, and artifact retrieval only. A `JobState` is not a
+SOF result state, evidence level, disposition, or claim status. Service
+contracts do not redefine SOFRS, SOFAUDIT, SOFAction, their profiles, or their
+validators.
+
 `contracts/action/v2.0/` is the immutable, byte-pinned Paper XIV SOFAction v2
 schema and validation-receipt contract imported through `upstream.lock.json`.
 The runtime action validator replays the closed Policy Predicate Language,

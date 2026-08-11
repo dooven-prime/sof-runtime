@@ -1,0 +1,122 @@
+{
+  "contract_id": "sof-runtime.mcp-agent-artifact-chain.v1",
+  "evaluation_id": "mcp-agent-blackbox-v1-2026-08-11",
+  "workspace_id": "mcp-adopter-20260811a",
+  "locator_scope": "local_evaluation_workspace",
+  "artifacts": [
+    {
+      "stage": "reference_realization",
+      "artifact_uri": "sof-workspace://mcp-adopter-20260811a/evaluation/reference/realization/candidate.json",
+      "artifact_sha256": "3559dd19203b73a14c22b38987055f5a4f1d26c4dc1bdf2ff8b42aa1cf9573f3",
+      "receipt_uri": "sof-workspace://mcp-adopter-20260811a/evaluation/reference/run-receipt.json",
+      "receipt_sha256": "c0b29bf970c7e28930cf1b471cf51282d9314edf31fe6001fee5db4b2ad396f2",
+      "semantic_run_id": "semrun:sha256:40341dd55e28c2d0fc558412a57c27a9fc8b27ed5786b1a5111dec28752cb60b",
+      "status": "succeeded",
+      "canonical_compilable": true
+    },
+    {
+      "stage": "reference_report",
+      "artifact_uri": "sof-workspace://mcp-adopter-20260811a/evaluation/reference/report/result.sofreport.json",
+      "artifact_sha256": "166b0de4269bbde554baaac4b07214436942d3a9bfcecd1c073c2ee924c33ae1",
+      "receipt_uri": "sof-workspace://mcp-adopter-20260811a/evaluation/reference/report/validation-receipt.json",
+      "receipt_sha256": "ef16e622b0e9e05d8f621d87792d100cdb701edd0ae169fcc4bed75cbc23b2b5",
+      "semantic_run_id": "semrun:sha256:39d7a0ce61f38d02ead291108de7cab397d64deacb3a14f389f599bebf6e48be",
+      "status": "PASS",
+      "claim_status": "Computational Certificate",
+      "certificate_class": "protocol_conformance"
+    },
+    {
+      "stage": "target_realization",
+      "artifact_uri": "sof-workspace://mcp-adopter-20260811a/evaluation/target/realization/candidate.json",
+      "artifact_sha256": "c120c334d96cf906c3278c9132984345e9da4e87b2a44c863818f99916129907",
+      "receipt_uri": "sof-workspace://mcp-adopter-20260811a/evaluation/target/run-receipt.json",
+      "receipt_sha256": "b504012ded11912e31867562ef568eb967d00edbd897d4b8a38900debd949389",
+      "semantic_run_id": "semrun:sha256:3351436f2103027ee29cfb406c14f3b60f086de79f00c8ebe2ff38cd5db6113e",
+      "status": "succeeded",
+      "canonical_compilable": true
+    },
+    {
+      "stage": "target_report",
+      "artifact_uri": "sof-workspace://mcp-adopter-20260811a/evaluation/target/report/result.sofreport.json",
+      "artifact_sha256": "bc783aee6c4705ea535a4e8bfd97c696e26b4db3fe81c8d4deb76dbe93dc29dd",
+      "receipt_uri": "sof-workspace://mcp-adopter-20260811a/evaluation/target/report/validation-receipt.json",
+      "receipt_sha256": "89c7fc342ae0cdd56f2bed4bf0b62a213f271fd87747de97f86d70cf7d14b14b",
+      "semantic_run_id": "semrun:sha256:c191bddc3c87eb97508d21d140c95f738ab839b8cc65f0f94c701339fe0905c0",
+      "status": "PASS",
+      "claim_status": "Computational Certificate",
+      "certificate_class": "protocol_conformance"
+    },
+    {
+      "stage": "comparison",
+      "artifact_uri": "sof-workspace://mcp-adopter-20260811a/evaluation/comparison/result.sofaudit.json",
+      "artifact_sha256": "40125672cfd042eaf8ac737055c9a07dd069b6263aeecab6ce67f31e1a8a95ef",
+      "receipt_uri": "sof-workspace://mcp-adopter-20260811a/evaluation/comparison/validation-receipt.json",
+      "receipt_sha256": "8cb9ccbce7fa6711ff452f3a4c8a818bbb00e35fa2f0eebb573484cbd5e30f07",
+      "semantic_run_id": "semrun:sha256:bc5a4c37123416b789ca7a0ee769972ee5b7e0dde5a53df11551c7bc010d92c7",
+      "status": "PASS",
+      "claim_status": "Computational Observation",
+      "comparison_state": "MISMATCH"
+    },
+    {
+      "stage": "interpretation",
+      "artifact_uri": "sof-workspace://mcp-adopter-20260811a/evaluation/action/result.sofaction.json",
+      "artifact_sha256": "63be634de4baf64dc85da3a3ca168933676ba94a2d4b89553da7db18bd03ca4d",
+      "receipt_uri": "sof-workspace://mcp-adopter-20260811a/evaluation/action/validation-receipt.json",
+      "receipt_sha256": "447c62bf1a1800318051907539bc36339974e68df2f2f2ddedf60e4f0cf34fe2",
+      "semantic_run_id": "semrun:sha256:96627187f8246d0af53caeb6f9dd8ee1bb4149194260cc175e0e70abca2eb636",
+      "status": "PASS",
+      "claim_status": "Computational Certificate",
+      "record_class": "decision_trace_certificate"
+    }
+  ],
+  "validation_runs": [
+    {
+      "target": "reference_report_artifact",
+      "semantic_run_id": "semrun:sha256:dcfbcf8aff422d8adcee7f5c1d5d8076c14278ca2bd2bf0eacf99c3e7f17c9c0",
+      "status": "succeeded"
+    },
+    {
+      "target": "reference_report_receipt",
+      "semantic_run_id": "semrun:sha256:e81fab79e50f695c615359ade188171f235219edc1dadfbc4aa2af964e3c1426",
+      "status": "succeeded"
+    },
+    {
+      "target": "target_report_artifact",
+      "semantic_run_id": "semrun:sha256:c1a4e02710095cd7ae3d9f1d9bfa356b02ff0bbd67ebc320066cc0e7746a5150",
+      "status": "succeeded"
+    },
+    {
+      "target": "target_report_receipt",
+      "semantic_run_id": "semrun:sha256:c59f326ce1d4a96ca73dc57cbfa589ee31140832df5eebbb95606872cd63416f",
+      "status": "succeeded"
+    },
+    {
+      "target": "comparison_artifact",
+      "semantic_run_id": "semrun:sha256:d9c06c04e74766e404a7a07ca36c4506bd67004d1d201d3eca24757c38800845",
+      "status": "succeeded"
+    },
+    {
+      "target": "comparison_receipt",
+      "semantic_run_id": "semrun:sha256:7ba2c00c2c6f4f348db7a1b28cf0b587ffb15cbca6a6189e6910ac4e0b46d44b",
+      "status": "succeeded"
+    },
+    {
+      "target": "action_artifact",
+      "semantic_run_id": "semrun:sha256:92bcae20532d74d21ecbe1582fc25bbaa898f166e95f79cb9a61ac1bb82fef08",
+      "status": "succeeded"
+    },
+    {
+      "target": "action_receipt",
+      "semantic_run_id": "semrun:sha256:bbc77d0b731ab58f66513463137eb14be9a25137dda4207955d5e2be0b321033",
+      "status": "succeeded"
+    }
+  ],
+  "explanation": {
+    "semantic_run_id": "semrun:sha256:901b991f4aada9b6876d06c6222282cfa438efab843ac3864edc39121059f789",
+    "workflow": "full_pipeline",
+    "realization_count": 2,
+    "comparison_validation": "PASS",
+    "interpretation_validation": "PASS",
+    "candidate_count": 2
+  }
+}

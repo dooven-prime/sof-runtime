@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/service/v1.0/service-response.schema.json",
+  "title": "SOF Runtime Service Response v1",
+  "type": "object",
+  "required": ["contract_id", "request_id", "job_id", "semantic_run_id", "workspace_id", "operation", "status", "result", "artifacts"],
+  "properties": {
+    "contract_id": {"const": "sof-runtime.service-response.v1"},
+    "request_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "job_id": {"type": "string", "pattern": "^job:[0-9a-f]{32}$"},
+    "semantic_run_id": {"type": "string", "pattern": "^semrun:sha256:[0-9a-f]{64}$"},
+    "workspace_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+    "operation": {"enum": ["realize", "report", "compare", "interpret", "validate", "explain"]},
+    "status": {"const": "succeeded"},
+    "result": {
+      "oneOf": [
+        {"$ref": "#/$defs/realizeResult"},
+        {"$ref": "#/$defs/reportResult"},
+        {"$ref": "#/$defs/compareResult"},
+        {"$ref": "#/$defs/interpretResult"},
+        {"$ref": "#/$defs/validateResult"},
+        {"$ref": "#/$defs/explainResult"}
+      ]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {"$ref": "../../runtime/v1.0/artifact-ref.schema.json"}
+    }
+  },
+  "$defs": {
+    "realizeResult": {
+      "type": "object",
+      "required": ["source_id", "eligibility", "canonical_compilable"],
+      "properties": {
+        "source_id": {"type": "string", "minLength": 1},
+        "eligibility": {"enum": ["canonical_compilable", "extension_only"]},
+        "canonical_compilable": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "reportResult": {
+      "type": "object",
+      "required": ["report_id"],
+      "properties": {"report_id": {"type": "string", "minLength": 1}},
+      "additionalProperties": false
+    },
+    "compareResult": {
+      "type": "object",
+      "required": ["audit_id"],
+      "properties": {"audit_id": {"type": "string", "minLength": 1}},
+      "additionalProperties": false
+    },
+    "interpretResult": {
+      "type": "object",
+      "required": ["action_record_id", "candidate_actions"],
+      "properties": {
+        "action_record_id": {"type": "string", "minLength": 1},
+        "candidate_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["action_id", "disposition"],
+            "properties": {
+              "action_id": {"type": "string", "minLength": 1},
+              "disposition": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "validateResult": {
+      "type": "object",
+      "required": ["validation_kind", "validator_result"],
+      "properties": {
+        "validation_kind": {
+          "enum": ["sofrs", "sofrs_receipt", "sofaudit", "sofaudit_receipt", "sofaction", "sofaction_receipt"]
+        },
+        "validator_result": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "explainResult": {
+      "type": "object",
+      "required": ["explanation"],
+      "properties": {"explanation": {"type": "object"}},
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {"if": {"properties": {"operation": {"const": "realize"}}}, "then": {"properties": {"result": {"$ref": "#/$defs/realizeResult"}}}},
+    {"if": {"properties": {"operation": {"const": "report"}}}, "then": {"properties": {"result": {"$ref": "#/$defs/reportResult"}}}},
+    {"if": {"properties": {"operation": {"const": "compare"}}}, "then": {"properties": {"result": {"$ref": "#/$defs/compareResult"}}}},
+    {"if": {"properties": {"operation": {"const": "interpret"}}}, "then": {"properties": {"result": {"$ref": "#/$defs/interpretResult"}}}},
+    {"if": {"properties": {"operation": {"const": "validate"}}}, "then": {"properties": {"result": {"$ref": "#/$defs/validateResult"}}}},
+    {"if": {"properties": {"operation": {"const": "explain"}}}, "then": {"properties": {"result": {"$ref": "#/$defs/explainResult"}}}}
+  ],
+  "additionalProperties": false
+}

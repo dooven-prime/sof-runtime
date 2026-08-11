@@ -254,6 +254,37 @@ def command_init_adapter(args: argparse.Namespace) -> None:
     _print({"status": "PASS", "scaffold": str(destination), "runnable": False})
 
 
+def command_service_execute(args: argparse.Namespace) -> None:
+    from sof_runtime.service import ServiceApplication
+
+    response = ServiceApplication(args.workspace_root).execute(load_json(args.request))
+    _print(response)
+
+
+def command_serve(args: argparse.Namespace) -> None:
+    try:
+        import uvicorn
+    except ImportError as error:
+        raise SystemExit("sof serve requires 'sof-runtime[service]'") from error
+    from sof_runtime.transports.http import create_app
+
+    uvicorn.run(
+        create_app(workspace_root=args.workspace_root, mcp_host=args.host),
+        host=args.host,
+        port=args.port,
+    )
+
+
+def command_mcp(args: argparse.Namespace) -> None:
+    from sof_runtime.transports.mcp import create_server
+
+    server = create_server(workspace_root=args.workspace_root)
+    options = {}
+    if args.transport == "streamable-http":
+        options.update(host=args.host, port=args.port)
+    server.run(transport=args.transport, **options)
+
+
 def command_validate(args: argparse.Namespace) -> None:
     response = load_json(args.response)
     validators = {
@@ -503,6 +534,45 @@ def build_parser() -> argparse.ArgumentParser:
     init.add_argument("--domain", required=True)
     init.add_argument("--out-dir", type=Path, default=Path.cwd())
     init.set_defaults(func=command_init_adapter)
+
+    service = subparsers.add_parser(
+        "service",
+        help="execute a versioned service request through the shared job model",
+    )
+    service_subparsers = service.add_subparsers(required=True)
+    service_execute = service_subparsers.add_parser("execute")
+    service_execute.add_argument("request", type=Path)
+    service_execute.add_argument(
+        "--workspace-root",
+        type=Path,
+        default=PROJECT_ROOT / "runs" / "service",
+    )
+    service_execute.set_defaults(func=command_service_execute)
+
+    serve = subparsers.add_parser("serve", help="run the optional HTTP service")
+    serve.add_argument(
+        "--workspace-root",
+        type=Path,
+        default=PROJECT_ROOT / "runs" / "service",
+    )
+    serve.add_argument("--host", default="127.0.0.1")
+    serve.add_argument("--port", type=int, default=8080)
+    serve.set_defaults(func=command_serve)
+
+    mcp = subparsers.add_parser("mcp", help="run the optional MCP server")
+    mcp.add_argument(
+        "--workspace-root",
+        type=Path,
+        default=PROJECT_ROOT / "runs" / "service",
+    )
+    mcp.add_argument(
+        "--transport",
+        choices=("stdio", "streamable-http"),
+        default="stdio",
+    )
+    mcp.add_argument("--host", default="127.0.0.1")
+    mcp.add_argument("--port", type=int, default=8000)
+    mcp.set_defaults(func=command_mcp)
 
     validate = subparsers.add_parser("validate")
     validate.add_argument("response", type=Path)

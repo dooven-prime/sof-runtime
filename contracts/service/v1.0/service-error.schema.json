@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/service/v1.0/service-error.schema.json",
+  "title": "SOF Runtime Service Error v1",
+  "type": "object",
+  "required": ["contract_id", "code", "message"],
+  "properties": {
+    "contract_id": {"const": "sof-runtime.service-error.v1"},
+    "request_id": {"type": ["string", "null"]},
+    "job_id": {"type": ["string", "null"]},
+    "code": {
+      "enum": ["invalid_request", "path_violation", "not_found", "dependency_unavailable", "execution_failed"]
+    },
+    "message": {"type": "string", "minLength": 1},
+    "details": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "additionalProperties": false
+}

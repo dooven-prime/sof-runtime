@@ -73,3 +73,10 @@ sof full-pipeline \
 
 The final artifact contains a candidate set only; it performs no action
 selection, authorization, execution, or effect claim.
+
+The example intentionally sets `ActionContext.contract_status` to
+`nonconforming`. This is a supplied status of the evaluated finite-state
+subject, not a claim that the ActionContext machine contract is invalid.
+`context_admission.contract_validation = admitted` records the separate fact
+that the ActionContext object passed the declared protocol checks. Neither
+field establishes domain-level defect or contract correctness.

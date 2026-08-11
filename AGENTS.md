@@ -17,6 +17,7 @@ or overwrite domain-specific scientific conclusions.
   `contracts/action/v2.0/` as immutable upstream material and verify them
   against `contracts/upstream.lock.json`.
 - Put runtime-only protocols under `contracts/runtime/`.
+- Put transport-neutral orchestration contracts under `contracts/service/`.
 - Put domain payloads under versioned `contracts/sources/` or
   `contracts/extensions/`.
 - Never add a new canonical SOF carrier, result state, or claim status locally.
@@ -42,6 +43,24 @@ create evidence.
 Public interchange uses JSON Schema, JSON/JSONL, artifact URIs, SHA-256, and
 explicit contract versions. Python objects and pickle files are not public
 contracts.
+
+Service contracts own orchestration semantics only: request routing,
+workspace confinement, job lifecycle, artifact projection, and retrieval.
+They must not own carrier semantics, report assembly rules, comparison
+coordinates, policy predicates, or candidate generation. `ServiceApplication`
+may delegate only to `RuntimeAPI`, existing validators, and deterministic
+artifact explanation. HTTP and MCP must call the same application methods.
+
+Keep `JobState` distinct from every SOF result state. `job_id` identifies an
+execution attempt; `semantic_run_id` identifies the transport-independent
+semantic input closure. Neither `job_id` nor `workspace_id` may enter a
+canonical SOF artifact. The service's semantic-ID-addressed execution cache
+must preserve normative artifact digests across workspace and transport
+projections for the same admitted input and environment.
+
+The active transport order is HTTP, then MCP. gRPC remains unimplemented until
+a concrete streaming or generated-client requirement exists. Do not create a
+parallel gRPC object model or protobuf-owned SOF semantics.
 
 ## Public Runtime API
 
@@ -148,9 +167,16 @@ Run before release:
 python tools/build_rust_plugins.py
 python tools/verify_digests.py
 python tools/import_contracts.py --upstream-root ../rime-lite
+python tools/check_service_implementation_closure.py evaluations/mcp-agent-matrix-v1/service-closure.current.json
+python tools/validate_mcp_agent_evaluation.py evaluations/mcp-agent-blackbox-v1
+python tools/score_mcp_agent_matrix.py evaluations/mcp-agent-matrix-v1 --check-summary
 python -m unittest discover -s tests
 python tools/check_wheel_install.py
 ```
+
+After any runtime, packaging, service-schema, or upstream-lock change, refresh
+`evaluations/mcp-agent-matrix-v1/service-closure.current.json` with the closure
+tool's `--write` option before running the check-only release command above.
 
 Do not commit ordinary contents of `runs/`. Promote only compact fixtures,
 certificates, and release artifacts deliberately.

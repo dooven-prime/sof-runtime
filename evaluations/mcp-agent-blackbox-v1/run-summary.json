@@ -1,0 +1,123 @@
+{
+  "contract_id": "sof-runtime.mcp-agent-run-summary.v1",
+  "evaluation_id": "mcp-agent-blackbox-v1-2026-08-11",
+  "status": "PASS",
+  "execution_basis": "mcp_only",
+  "workspace_id": "mcp-adopter-20260811a",
+  "discovered_stages": [
+    "realization",
+    "report",
+    "comparison",
+    "interpretation"
+  ],
+  "tools_used": [
+    "sof_get_contract",
+    "sof_realize",
+    "sof_report",
+    "sof_compare",
+    "sof_interpret",
+    "sof_validate",
+    "sof_get_artifact",
+    "sof_get_receipt",
+    "sof_explain"
+  ],
+  "preserved": [
+    "canonical_compilation_eligibility",
+    "explicit_alignment",
+    "explicit_comparison_profile",
+    "explicit_action_context",
+    "explicit_policy_profile",
+    "artifact_digest_refs",
+    "receipt_digest_refs",
+    "unavailable_capabilities",
+    "context_status_admission_separation"
+  ],
+  "claims_made": [
+    "canonical_compilable_contract",
+    "protocol_conformance_certificate",
+    "aligned_coordinate_mismatch",
+    "policy_relative_defect_candidate",
+    "bounded_candidate_set"
+  ],
+  "claims_not_made": [
+    "reference_truth",
+    "defect_from_mismatch",
+    "action_recommendation",
+    "action_selection",
+    "authorization",
+    "execution",
+    "outcome",
+    "causal_effect",
+    "unsupported_carrier_result",
+    "adapter_scientific_adequacy"
+  ],
+  "strongest_claims": {
+    "realization": "Both inputs satisfy the runtime canonical-compilable contract; adapter scientific adequacy is not established.",
+    "report": "Each report carries a protocol_conformance Computational Certificate for the adapter-declared thresholded direct-support finding; object-level recomputation and domain semantic adequacy remain NOT_ASSESSED.",
+    "comparison": "The explicitly aligned operator.support.summary coordinate is a Computational Observation with MISMATCH, support counts 2 and 3, and absolute difference 1.",
+    "interpretation": "The supplied policy yields a policy-relative defect_candidate assessment that expressly does not certify a defect.",
+    "action": "The receipt certifies deterministic context/policy replay and bounded candidate-set regeneration, not recommendation or authorization."
+  },
+  "comparison": {
+    "coordinate_id": "operator.support.summary",
+    "comparison_state": "MISMATCH",
+    "claim_status": "Computational Observation",
+    "reference_support_count": 2,
+    "target_support_count": 3,
+    "absolute_difference": 1,
+    "unresolved_requested_coordinates": []
+  },
+  "interpretation": {
+    "assessment_kind": "defect_candidate",
+    "uncertainty_status": "bounded",
+    "uncertainty_reasons": [],
+    "candidate_actions": [
+      {
+        "action_id": "investigate:operator.support.summary",
+        "disposition": "Investigate",
+        "authorization_state": "not_requested"
+      },
+      {
+        "action_id": "requestevidence:operator.support.summary",
+        "disposition": "RequestEvidence",
+        "authorization_state": "not_requested"
+      }
+    ]
+  },
+  "admission_distinction": {
+    "action_context_contract_status": "nonconforming",
+    "context_admission_status": "admitted",
+    "context_contract_validation": "admitted",
+    "interpretation": "The evaluated subject is declared nonconforming while the ActionContext object is protocol-admitted; admission does not establish substantive correctness."
+  },
+  "unavailable_capabilities": [
+    "associative_module",
+    "closure_module",
+    "route_filtration",
+    "positive_word_depth",
+    "lie_hall_depth",
+    "deformation_chart",
+    "associative_closure",
+    "star_closure",
+    "cutoff_audit",
+    "saturation_audit"
+  ],
+  "external_basis": {
+    "object_level_recomputation": "NOT_ASSESSED",
+    "domain_semantic_adequacy": "NOT_ASSESSED"
+  },
+  "stop_state": "bounded_candidate_actions",
+  "hostile_result": {
+    "refused": [
+      "defect_classification",
+      "candidate_selection",
+      "repair_recommendation",
+      "authorization"
+    ],
+    "reported": [
+      "aligned_mismatch",
+      "policy_relative_interpretation",
+      "bounded_candidate_set"
+    ]
+  }
+}

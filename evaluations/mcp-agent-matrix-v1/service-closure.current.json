@@ -1,0 +1,255 @@
+{
+  "contract_id": "sof-runtime.service-implementation-closure.v1",
+  "runtime_version": "0.3.0",
+  "files": [
+    {
+      "path": "pyproject.toml",
+      "sha256": "2a7ca16911d66e9747a0a088283e3cb27573a83e4beac412998555db75ba4196"
+    },
+    {
+      "path": "contracts/upstream.lock.json",
+      "sha256": "0494f24b8a3758d84a472309e4ea6781996302804db733da274b26b932412b71"
+    },
+    {
+      "path": "contracts/service/v1.0/job.schema.json",
+      "sha256": "a4ab8f87aaa3dced1c69540bc5887b42c5c36147d6fe05db394de08be84213e4"
+    },
+    {
+      "path": "contracts/service/v1.0/service-error.schema.json",
+      "sha256": "28d876cd54ea8ff925b1f0509b5430e9e3930db69a17577c7c408e61ff9c798d"
+    },
+    {
+      "path": "contracts/service/v1.0/service-request.schema.json",
+      "sha256": "875c53bb39f0627d2e3e8d8dd572a98480a76f610dd6515d96e0e6caba8fc407"
+    },
+    {
+      "path": "contracts/service/v1.0/service-response.schema.json",
+      "sha256": "f21a15b5f37289c96b58b5a13d6b75b133c1c4d7d7520fd0b6f2dbc0667a115c"
+    },
+    {
+      "path": "src/sof_runtime/__init__.py",
+      "sha256": "b79b01ab70ae0503113528cac6f3a6d68431e3e8a1faf1d538a55afaa149f039"
+    },
+    {
+      "path": "src/sof_runtime/action/__init__.py",
+      "sha256": "0f19e10b63739fea6d6d1bb15123fdf55cebd99857d2dfc4e19b4bb9b9a641c6"
+    },
+    {
+      "path": "src/sof_runtime/action/producer_v2.py",
+      "sha256": "e14969b768b8d61ded6e226e65fcb8204d706d9f4fbea6b19b988be34631378c"
+    },
+    {
+      "path": "src/sof_runtime/action/validation_v2.py",
+      "sha256": "f64aaf1769054de504fac8c8beefbc2b0e174e2c96cf9f421ec5f68072ec57fe"
+    },
+    {
+      "path": "src/sof_runtime/adapters/__init__.py",
+      "sha256": "3a1020d3d2b763df4acd490709b3ec989118e534deaac811ec09596a86b4f2ae"
+    },
+    {
+      "path": "src/sof_runtime/adapters/automata.py",
+      "sha256": "9dd74c4fc424fdb0c4a6a8b3356621b5afd24c9d7714904f4a85f72afdd09f72"
+    },
+    {
+      "path": "src/sof_runtime/adapters/expert.py",
+      "sha256": "d805eda7bfab435ba6e9cb045c5fceb191fc4c1e6971f2ca6789b5d0447db234"
+    },
+    {
+      "path": "src/sof_runtime/adapters/markov.py",
+      "sha256": "fcdce87a9e2e60bb042003da7fa19c1340fc8cc512a0cd78486e7b9dd824e8a2"
+    },
+    {
+      "path": "src/sof_runtime/api/__init__.py",
+      "sha256": "670d12bcd195eea4297b1bf37d67ba4497195b101561d9418adba931e97ae8df"
+    },
+    {
+      "path": "src/sof_runtime/api/models.py",
+      "sha256": "ef0e318bc31db9fbf36931d478beff970f38315386779b515b59654d81d07867"
+    },
+    {
+      "path": "src/sof_runtime/api/runtime.py",
+      "sha256": "0acf01e72f77b8368ffa516f97aaebd28a36484f4ee727d2e1f15e0f111b2416"
+    },
+    {
+      "path": "src/sof_runtime/artifacts/__init__.py",
+      "sha256": "c50a015fe357e38ec4487aa2020a70cec14b6e0dddc8e5a3924af4fdb87fd26a"
+    },
+    {
+      "path": "src/sof_runtime/artifacts/digest.py",
+      "sha256": "fd1a389493def7fee229a789f8a9f508b116968d755909155c8fad20139dd0fe"
+    },
+    {
+      "path": "src/sof_runtime/artifacts/store.py",
+      "sha256": "4bfe43828033864b9102abd932c81a40b5fc2601613c663b048cf839a03e4bc5"
+    },
+    {
+      "path": "src/sof_runtime/carriers/__init__.py",
+      "sha256": "a72bc6106a58cc531b858fb7bc68f7e48fa6b00916420ae31b5523d625187c6c"
+    },
+    {
+      "path": "src/sof_runtime/carriers/positive_word_support.py",
+      "sha256": "3da065f1629f7b2e3ba0ced98ea96e1fb019e96a5b94f3d03ec90b8a346bee5a"
+    },
+    {
+      "path": "src/sof_runtime/carriers/rank_collapse.py",
+      "sha256": "956f1e4cecf53e812009aee22337c632e4692579889e0511b827eea1112cbbe2"
+    },
+    {
+      "path": "src/sof_runtime/cli/__init__.py",
+      "sha256": "bf4c27f7b63726a724ff888e272f4c0ea904e64c9b4b07e6c935c62721948af4"
+    },
+    {
+      "path": "src/sof_runtime/cli/main.py",
+      "sha256": "62eafeeb0ee86cbc54cedf82b282296ff74f3b906f7bbe4eb1a647f160509cc2"
+    },
+    {
+      "path": "src/sof_runtime/cli/scaffold.py",
+      "sha256": "771db9c682581ba2c09f8102b0e97e5cd386da3958d597f15a227399e42e52b2"
+    },
+    {
+      "path": "src/sof_runtime/comparison/__init__.py",
+      "sha256": "f7df055f1d7007d525b721398b84b5d87a2bfe1bdea307b47488e56b3f332550"
+    },
+    {
+      "path": "src/sof_runtime/comparison/producer_v2.py",
+      "sha256": "102a774a09c387e9db3198fc3eff97aafb806c7ff06b4fb0210c99e75c5e9a91"
+    },
+    {
+      "path": "src/sof_runtime/comparison/validation_v2.py",
+      "sha256": "6664701a28865264bbe1c0ee5107e2bb3b95d7fd8054005d60b40a1a59609880"
+    },
+    {
+      "path": "src/sof_runtime/compiler/__init__.py",
+      "sha256": "1512c226749ad34a07d7fbd987e7492ea1304ada51e1a8f5c43827d8f70e853a"
+    },
+    {
+      "path": "src/sof_runtime/compiler/compile_v1.py",
+      "sha256": "16ef91e95e8399854354029993ae6d8b2b1f012f83fae156044ba0430f76342a"
+    },
+    {
+      "path": "src/sof_runtime/contracts/__init__.py",
+      "sha256": "250efd477d4d5b569fde4d0289799e78e51717986bded8054864393f87ba75ce"
+    },
+    {
+      "path": "src/sof_runtime/contracts/validation.py",
+      "sha256": "a0f4f9901aee35c27799126a63248f11978a7303c0a2c7806d6b0feae6b11100"
+    },
+    {
+      "path": "src/sof_runtime/evidence_bus.py",
+      "sha256": "cac0c48788eda8b0cce031341269e44b5078faceebdb0189572fbcd04eaf95fb"
+    },
+    {
+      "path": "src/sof_runtime/explain.py",
+      "sha256": "fe5bc4dea45a19696595a25ed26758610582bc91ff0f912c3a0641e2edff8e99"
+    },
+    {
+      "path": "src/sof_runtime/models/__init__.py",
+      "sha256": "37ca0ba9dbf0d58fc92ea52a3597747946df40caa2df8adf9109c2d9eb99074f"
+    },
+    {
+      "path": "src/sof_runtime/paths.py",
+      "sha256": "d962c3a892f58f00783fa4acd5235a40068016c287b6098f5aa89aa4ede661c9"
+    },
+    {
+      "path": "src/sof_runtime/plugins/__init__.py",
+      "sha256": "b520ce711455a2a8c2b85d593c05e398086ede36fe9d4ad9cc532f73ee5e71f8"
+    },
+    {
+      "path": "src/sof_runtime/plugins/protocol.py",
+      "sha256": "423024e8aad58f2db78e072d028a8d4cec813276df2d09c7f0bc8cde555c8925"
+    },
+    {
+      "path": "src/sof_runtime/reporting/__init__.py",
+      "sha256": "9378336ec46e289cba9eb628bc3da0c5f23da5cdb0f2d62390696730afd7cb33"
+    },
+    {
+      "path": "src/sof_runtime/reporting/assembly_v2.py",
+      "sha256": "21137aced870455a6d65b7ec8910d72959002393d556489a2d6fbe01a72f3186"
+    },
+    {
+      "path": "src/sof_runtime/reporting/validation_v2.py",
+      "sha256": "299c716b7ee398b4a5fa37928efba5d178bda071be1f8785810e536547fcd3ee"
+    },
+    {
+      "path": "src/sof_runtime/run_identity.py",
+      "sha256": "d38c28465f2c8e78a0261e9296452354575c8b10aba437ac699d1e716caf11dd"
+    },
+    {
+      "path": "src/sof_runtime/sdk/__init__.py",
+      "sha256": "0bc12863a437f9cf0ed71d78c6f90a562d902a08771dd9e381367ad93e298298"
+    },
+    {
+      "path": "src/sof_runtime/serializers/__init__.py",
+      "sha256": "936482ecc57dfda1f9a77d8c30a7420470ca783ebd36138096ebc7102bc24039"
+    },
+    {
+      "path": "src/sof_runtime/serializers/debug.py",
+      "sha256": "79fe01feef1251f12ae839c8b3c187f2aaf902b42216b87dec61cd0699cce779"
+    },
+    {
+      "path": "src/sof_runtime/service/__init__.py",
+      "sha256": "7738c2dcd42d4dcaad149987aeb85b1eb1b1d703be994338837802ae886a4961"
+    },
+    {
+      "path": "src/sof_runtime/service/application.py",
+      "sha256": "11c190f81b7be50c72687347d788ff2543ec9300f0da20d8476875257455ee9f"
+    },
+    {
+      "path": "src/sof_runtime/service/jobs.py",
+      "sha256": "1a83f1d89b02098727668e3eb65c552f13c5c0d1afd43b1683b599f75649c785"
+    },
+    {
+      "path": "src/sof_runtime/service/lifecycle.py",
+      "sha256": "bacc672f08b1142cae60f404db68a29caeeba98ef894f3e300de41b43d297109"
+    },
+    {
+      "path": "src/sof_runtime/service/workspace.py",
+      "sha256": "a8137a2d83ea5af27bcca80835c428b82bcd9d5ebfb4602465392ae7310efec8"
+    },
+    {
+      "path": "src/sof_runtime/transports/__init__.py",
+      "sha256": "cacc3b30c4c384d3cda09b92f9f91df811958e183774a4128e874bb381e16c97"
+    },
+    {
+      "path": "src/sof_runtime/transports/http/__init__.py",
+      "sha256": "5abaf4212df43f25dcd2e0cef8da2b25a97b6756bdfe28f38f172d64f7c22a3e"
+    },
+    {
+      "path": "src/sof_runtime/transports/http/app.py",
+      "sha256": "3512a23e6a6d742a26cfc5388fb7a5d3511ebd2855901b56d4e157721a849a0b"
+    },
+    {
+      "path": "src/sof_runtime/transports/mcp/__init__.py",
+      "sha256": "0668eb9e4b0691b1bb4cfab06f242f8188fdb9e8bca45485a5f911a5a1957495"
+    },
+    {
+      "path": "src/sof_runtime/transports/mcp/server.py",
+      "sha256": "4bda5cfe08072c44cf9155cb859a38b580dc1afb66aaca9d799f1b25001aec97"
+    },
+    {
+      "path": "src/sof_runtime/validation/__init__.py",
+      "sha256": "189263167fdbdc194909df7daf07913359bbd56e3a0b1326690506d3da6d6712"
+    },
+    {
+      "path": "src/sof_runtime/validation/positive_word_support.py",
+      "sha256": "2bccddbc384e87d1da5b384d18625814f81ef3e453513c5aec760903f1480614"
+    },
+    {
+      "path": "src/sof_runtime/validation/rank_collapse.py",
+      "sha256": "9033898b8c4738a41a80b0fa49a8eda10cda613fd2dcff1c79466a32920b997e"
+    },
+    {
+      "path": "src/sof_runtime/workflow.py",
+      "sha256": "e2877851ee99b9e83492b6fdc67a850d8e87f5c4746c298c1ec8f6a441173556"
+    },
+    {
+      "path": "src/sof_runtime/workflow_external_adapter.py",
+      "sha256": "e4e68f1cccfbdcd91403ce273dd6dd1e30b219d3113b62790183201eee00641f"
+    },
+    {
+      "path": "src/sof_runtime/workflow_positive_word.py",
+      "sha256": "a71f82c72aaa28d814fbb0bd2bfb028ee25b21b714409fe66e5b8bf391ad73af"
+    }
+  ],
+  "closure_sha256": "7d2f233404d152b59fb09e21899fbdce2f1390631d70ccd6d4b578ce700908e8"
+}

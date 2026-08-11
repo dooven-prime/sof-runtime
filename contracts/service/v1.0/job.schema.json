@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/service/v1.0/job.schema.json",
+  "title": "SOF Runtime Service Job v1",
+  "type": "object",
+  "required": ["contract_id", "job_id", "request_id", "workspace_id", "operation", "state", "submitted_at"],
+  "properties": {
+    "contract_id": {"const": "sof-runtime.service-job.v1"},
+    "job_id": {"type": "string", "pattern": "^job:[0-9a-f]{32}$"},
+    "request_id": {"type": "string", "minLength": 1},
+    "workspace_id": {"type": "string", "minLength": 1},
+    "operation": {"enum": ["realize", "report", "compare", "interpret", "validate", "explain"]},
+    "state": {"enum": ["queued", "running", "succeeded", "failed"]},
+    "submitted_at": {"type": "string", "format": "date-time"},
+    "started_at": {"type": "string", "format": "date-time"},
+    "completed_at": {"type": "string", "format": "date-time"},
+    "response": {"$ref": "service-response.schema.json"},
+    "error": {"$ref": "service-error.schema.json"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"state": {"const": "queued"}}},
+      "then": {
+        "not": {
+          "anyOf": [
+            {"required": ["started_at"]},
+            {"required": ["completed_at"]},
+            {"required": ["response"]},
+            {"required": ["error"]}
+          ]
+        }
+      }
+    },
+    {
+      "if": {"properties": {"state": {"const": "running"}}},
+      "then": {
+        "required": ["started_at"],
+        "not": {
+          "anyOf": [
+            {"required": ["completed_at"]},
+            {"required": ["response"]},
+            {"required": ["error"]}
+          ]
+        }
+      }
+    },
+    {
+      "if": {"properties": {"state": {"const": "succeeded"}}},
+      "then": {
+        "required": ["started_at", "completed_at", "response"],
+        "not": {"required": ["error"]}
+      }
+    },
+    {
+      "if": {"properties": {"state": {"const": "failed"}}},
+      "then": {
+        "required": ["started_at", "completed_at", "error"],
+        "not": {"required": ["response"]}
+      }
+    }
+  ],
+  "additionalProperties": false
+}

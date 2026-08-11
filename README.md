@@ -120,6 +120,9 @@ The initial runtime provides:
   realization candidate without assuming canonical carrier eligibility;
 - a Level 1B workflow that enters Manifest, Typed SOF IR, CompilerOutput, and
   SOFRS assembly only for a canonical-compilable realization;
+- a versioned, transport-neutral service application with workspace
+  confinement, distinct job and semantic identities, and optional HTTP/MCP
+  projections in `v0.3.0`;
 - two complete validated extension slices with distinct source and carrier
   semantics: synchronizing-automata rank collapse and single-letter Markov
   positive-word support.
@@ -163,10 +166,9 @@ source-addressed realization receipt and may be packaged as a promotion
 proposal. It must not create a Manifest, Typed SOF IR, CompilerOutput, or
 SOFRS report until the corresponding carrier contract is accepted upstream.
 
-There is intentionally no REST service contract in this release. Applications
-may call `RuntimeAPI`, use the `sof` CLI, or implement the external executable
-plugin protocol. A future service wrapper must preserve these source-addressed
-operations rather than introduce a competing semantic contract.
+Version `v0.3.0` adds one service contract over the same `RuntimeAPI`; it does
+not add a competing semantic object model. The immutable `v0.2.0` tag remains
+the pre-service release boundary.
 
 Technology responsibilities are explicit:
 
@@ -184,8 +186,8 @@ The repository separates immutable upstream contracts, local runtime
 envelopes, carrier extensions, applications, profiles, and tests:
 
 ```text
-contracts/       upstream locks, compiler/reporting contracts, runtime envelopes, extensions
-src/sof_runtime/ adapters, carriers, validators, compiler, artifacts, CLI
+contracts/       upstream locks, canonical contracts, runtime/service envelopes, extensions
+src/sof_runtime/ adapters, validators, RuntimeAPI, service, HTTP/MCP transports, CLI
 applications/    domain-specific admission and claim boundaries
 plugins/         in-process and external executable declarations
 profiles/        versioned compiler selections
@@ -197,6 +199,91 @@ runs/            ignored local executions
 Large runtime outputs belong under `runs/` and are ignored by Git. Reviewed
 certificates, summaries, and compact fixtures become promotion candidates only
 through an explicit source-addressed package.
+
+## Service and Transports
+
+The public transport architecture has one orchestration contract and one
+semantic execution facade:
+
+```text
+canonical JSON artifacts and receipts
+                 ^
+              RuntimeAPI
+                 ^
+        ServiceApplication
+         /       |       \
+       CLI      HTTP      MCP -> agent
+```
+
+`ServiceApplication` may call only `RuntimeAPI`, existing validators, and the
+deterministic explanation reader. HTTP and MCP parse requests and project the
+same response envelopes. They do not implement compilation, comparison, or
+interpretation rules. JSON Schema remains the wire contract; OpenAPI and MCP
+tool schemas are transport views of it.
+
+The four intended entry surfaces are:
+
+| Surface | Entry point |
+|---|---|
+| Python | `from sof_runtime.api import RuntimeAPI` |
+| CLI | `sof ...` and `sof service execute ...` |
+| HTTP | `POST /v1/realizations`, `/reports`, `/comparisons`, `/interpretations`, `/validations`, `/explanations` |
+| MCP | `sof_realize`, `sof_report`, `sof_compare`, `sof_interpret`, `sof_validate`, `sof_explain`, `sof_get_contract`, `sof_get_artifact`, `sof_get_receipt` |
+
+Install the optional transport dependencies with:
+
+```text
+python -m pip install "sof-runtime[service]"
+sof serve --workspace-root runs/service --host 127.0.0.1 --port 8080
+sof mcp --workspace-root runs/service --transport stdio
+```
+
+`sof serve` exposes HTTP and Streamable HTTP MCP on the same process; the MCP
+endpoint is `/mcp`. The separate `sof mcp` command remains available for stdio
+clients. Both projections share one `ServiceApplication` and add no scientific
+semantics.
+
+Every synchronous HTTP or MCP operation still passes through the shared job
+ledger. `job_id` identifies one execution attempt. `semantic_run_id` hashes
+the semantic input closure and excludes request ID, job ID, workspace ID,
+transport, and output path. `workspace_id` controls storage and resolution
+only. It is never passed to `RuntimeAPI` or written into canonical SOF
+artifacts. Thus repeated transport calls may have different jobs while
+retaining one semantic identity and, under the same canonical environment,
+byte-identical normative artifacts.
+
+The service executes in a semantic-ID-addressed cache and mirrors completed
+outputs into the requested workspace. This prevents workspace-relative paths
+from changing SOFRS, SOFAUDIT, or SOFAction identity. Workspace paths are
+closed against absolute paths and traversal. Artifact retrieval requires both
+an admitted workspace/cache locator and the expected SHA-256.
+
+`sof explain` discovers realization, report, comparison, and interpretation
+stages from typed artifacts, validation receipts, and their digest-bound source
+references. Directory names are presentation only. Public service projections
+emit workspace or repository-relative locators and do not disclose absolute
+server filesystem paths.
+
+The HTTP reference app also serves service schemas and job records. It does
+not provide authentication, authorization, tenant isolation, distributed job
+queues, object-store replication, TLS termination, or production multi-worker
+coordination. Those remain deployment responsibilities. gRPC is intentionally
+deferred until a concrete streaming or generated-client requirement appears.
+See [`services/api/README.md`](services/api/README.md).
+
+The MCP-only external-agent control is recorded under
+[`evaluations/mcp-agent-blackbox-v1/`](evaluations/mcp-agent-blackbox-v1/).
+Its acceptance test checks semantic invariants and authority boundaries rather
+than exact model wording.
+
+The follow-on
+[`evaluations/mcp-agent-matrix-v1/`](evaluations/mcp-agent-matrix-v1/)
+freezes one normal workflow prompt and separate epistemic and operational
+hostile prompts for independent agents. It reports completion, boundary
+violation, and unsupported-inference rates only after every declared run is
+complete under the same source-addressed service implementation closure. The
+first recorded same-model matrix predates that implementation pin and is
+retained as a historical observation requiring replay.
 
 ## External Adapter Workflow
 
@@ -271,6 +358,14 @@ that SOFAUDIT, its validation receipt, an `ActionContext`, and a
 `PolicyProfile`; it emits a policy-relative decision trace and a finite
 `CandidateAction` set. Candidate actions are not selected, authorized,
 executed, or certified as effective by this workflow.
+
+`ActionContext.contract_status` is not the admission status of the
+`ActionContext` object. It records the supplied status of the evaluated subject
+relative to an external, transformation, or business contract. Machine
+admission is recorded separately under `context_admission.status` and
+`context_admission.contract_validation`. A context may therefore be complete,
+applicable, and admitted while describing a subject as `nonconforming`; the
+admission result does not establish or repair that substantive status.
 
 `RuntimeAPI.compare()` requires `alignment`, `profile`, and `out_dir` as
 explicit keyword inputs. `RuntimeAPI.full_pipeline()` likewise requires
@@ -574,22 +669,22 @@ release-content commit `c58633494257757e3316f31d8a7cfedc2e75af4e` and
 Runtime conformance does not establish policy correctness, authorization,
 execution, outcome, or causal effect.
 
-## Status
+## Published Status
 
-Version `0.2.0` is:
+Version `0.3.0` is:
 
-> A language-neutral runtime and artifact-conformance seed with two validated
-> mathematical vertical slices and one byte-identical cross-language
-> implementation.
+> A source-addressed SOF runtime with one transport-neutral service contract,
+> Python and CLI facades, HTTP and MCP projections, and explicit epistemic and
+> authority boundaries.
 
 The two slices exercise rank collapse and single-letter positive-word support
 through the same evidence bus. The positive-word carrier additionally has
 byte-identical Python and Rust implementations under the declared canonical
 JSON and semantic-environment contracts.
 
-This release promotes the published SOFAction v2 schema and receipt from the
-candidate integration inventory into the immutable upstream inventory. The
-validated engineering claims for `0.2.0` are:
+This release preserves the published SOFRS, SOFAUDIT, and SOFAction contracts
+as digest-locked upstream inputs. It adds orchestration semantics only. The
+validated engineering claims for `0.3.0` are:
 
 - two mathematically distinct carriers use the same evidence bus;
 - canonical identity is consistent across the Python and Rust implementations;
@@ -612,20 +707,36 @@ validated engineering claims for `0.2.0` are:
   provenance output, and `sof init-adapter` generates a non-runnable scaffold
   with explicit known non-claims;
 - an installed Python wheel carries the contracts and completes a validated
-  runtime execution.
+  runtime execution;
+- one closed service envelope is projected through direct Python, CLI, HTTP,
+  and MCP surfaces without changing the underlying SOF semantics;
+- `JobState`, `job_id`, workspace location, and transport remain separate from
+  SOF result state and transport-independent `semantic_run_id`;
+- repeated admitted inputs preserve normative artifact digests across the
+  tested direct API, CLI, HTTP, MCP, and workspace projections;
+- public HTTP/MCP/explanation responses omit absolute server paths, and
+  explanation discovers stages from the artifact/receipt graph rather than
+  directory names;
+- the installed-wheel black-box runs the HTTP realization workflow using only
+  packaged contracts and public imports;
+- the MCP agent controls preserve explicit alignment and policy inputs while
+  treating mismatch, candidate generation, authorization, and effect as
+  separate claims. The first three-run matrix remains historical and requires
+  replay under the current implementation closure.
 
-These claims concern runtime and artifact conformance. Version `0.2.0` is not
+These claims concern runtime and artifact conformance. Version `0.3.0` is not
 a new SOF specification, a scientific authority, or a publication identity.
 It does not establish universal carrier coverage, general multi-language
 conformance, large-scale artifact-store behavior, a published end-to-end
-canonical application/report path, or scientific adequacy of an adapter. It
-also does not establish candidate selection, authorization, action execution,
-causal-effect certification, policy correctness, or a REST API.
+canonical application/report path, production service security or
+availability, or scientific adequacy of an adapter. It also does not establish
+candidate selection, authorization, action execution, causal-effect
+certification, or policy correctness. No gRPC contract is defined.
 
 ## Citation and Release Identity
 
 The immutable public source identity for this release is the
-[`v0.2.0` tag](https://github.com/dooven-prime/sof-runtime/tree/v0.2.0).
+[`v0.3.0` tag](https://github.com/dooven-prime/sof-runtime/tree/v0.3.0).
 `CITATION.cff` records the software citation metadata. The runtime tag identifies
 an implementation; the owning RIME papers and their digest-locked contracts
 remain the normative definition sources.
