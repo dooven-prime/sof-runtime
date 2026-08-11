@@ -15,7 +15,7 @@
     "expected_mcp_tool_count": 9,
     "implementation_closure": {
       "path": "service-closure.current.json",
-      "sha256": "7d2f233404d152b59fb09e21899fbdce2f1390631d70ccd6d4b578ce700908e8"
+      "sha256": "c5bd38280bea060fbfdbeb5039891d4efbef5b67e4db6eb9ed8c31d629059acc"
     },
     "workspace_id": "mcp-adopter-20260811a"
   },

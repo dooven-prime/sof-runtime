@@ -122,7 +122,7 @@ The initial runtime provides:
   SOFRS assembly only for a canonical-compilable realization;
 - a versioned, transport-neutral service application with workspace
   confinement, distinct job and semantic identities, and optional HTTP/MCP
-  projections in `v0.3.0`;
+  projections in `v0.3.1`;
 - two complete validated extension slices with distinct source and carrier
   semantics: synchronizing-automata rank collapse and single-letter Markov
   positive-word support.
@@ -166,9 +166,10 @@ source-addressed realization receipt and may be packaged as a promotion
 proposal. It must not create a Manifest, Typed SOF IR, CompilerOutput, or
 SOFRS report until the corresponding carrier contract is accepted upstream.
 
-Version `v0.3.0` adds one service contract over the same `RuntimeAPI`; it does
-not add a competing semantic object model. The immutable `v0.2.0` tag remains
-the pre-service release boundary.
+Version `v0.3.1` provides one service contract over the same `RuntimeAPI`; it
+does not add a competing semantic object model. The immutable `v0.2.0` tag
+remains the pre-service release boundary. Version `v0.3.1` supersedes `v0.3.0`
+only to restore clean-checkout fixtures without changing service semantics.
 
 Technology responsibilities are explicit:
 
@@ -671,7 +672,7 @@ execution, outcome, or causal effect.
 
 ## Published Status
 
-Version `0.3.0` is:
+Version `0.3.1` is:
 
 > A source-addressed SOF runtime with one transport-neutral service contract,
 > Python and CLI facades, HTTP and MCP projections, and explicit epistemic and
@@ -684,7 +685,7 @@ JSON and semantic-environment contracts.
 
 This release preserves the published SOFRS, SOFAUDIT, and SOFAction contracts
 as digest-locked upstream inputs. It adds orchestration semantics only. The
-validated engineering claims for `0.3.0` are:
+validated engineering claims for `0.3.1` are:
 
 - two mathematically distinct carriers use the same evidence bus;
 - canonical identity is consistent across the Python and Rust implementations;
@@ -724,7 +725,7 @@ validated engineering claims for `0.3.0` are:
   separate claims. The first three-run matrix remains historical and requires
   replay under the current implementation closure.
 
-These claims concern runtime and artifact conformance. Version `0.3.0` is not
+These claims concern runtime and artifact conformance. Version `0.3.1` is not
 a new SOF specification, a scientific authority, or a publication identity.
 It does not establish universal carrier coverage, general multi-language
 conformance, large-scale artifact-store behavior, a published end-to-end
@@ -736,7 +737,7 @@ certification, or policy correctness. No gRPC contract is defined.
 ## Citation and Release Identity
 
 The immutable public source identity for this release is the
-[`v0.3.0` tag](https://github.com/dooven-prime/sof-runtime/tree/v0.3.0).
+[`v0.3.1` tag](https://github.com/dooven-prime/sof-runtime/tree/v0.3.1).
 `CITATION.cff` records the software citation metadata. The runtime tag identifies
 an implementation; the owning RIME papers and their digest-locked contracts
 remain the normative definition sources.

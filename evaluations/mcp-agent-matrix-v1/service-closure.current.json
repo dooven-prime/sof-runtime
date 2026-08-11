@@ -1,10 +1,10 @@
 {
   "contract_id": "sof-runtime.service-implementation-closure.v1",
-  "runtime_version": "0.3.0",
+  "runtime_version": "0.3.1",
   "files": [
     {
       "path": "pyproject.toml",
-      "sha256": "2a7ca16911d66e9747a0a088283e3cb27573a83e4beac412998555db75ba4196"
+      "sha256": "f07d17c476269f873d172b26b29e82c571da0d0557f0c31a92f2d3604ef2f1a9"
     },
     {
       "path": "contracts/upstream.lock.json",
@@ -28,7 +28,7 @@
     },
     {
       "path": "src/sof_runtime/__init__.py",
-      "sha256": "b79b01ab70ae0503113528cac6f3a6d68431e3e8a1faf1d538a55afaa149f039"
+      "sha256": "e28edb5da2711fc53413926405fdd3572af15a33beeeecde1dda46d4c625ca4b"
     },
     {
       "path": "src/sof_runtime/action/__init__.py",
@@ -251,5 +251,5 @@
       "sha256": "a71f82c72aaa28d814fbb0bd2bfb028ee25b21b714409fe66e5b8bf391ad73af"
     }
   ],
-  "closure_sha256": "7d2f233404d152b59fb09e21899fbdce2f1390631d70ccd6d4b578ce700908e8"
+  "closure_sha256": "c5bd38280bea060fbfdbeb5039891d4efbef5b67e4db6eb9ed8c31d629059acc"
 }
