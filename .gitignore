@@ -39,7 +39,7 @@ ENV/
 !/runs/.gitkeep
 
 # Rust build output
-**/target/
+/plugins/rust/**/target/
 
 # Local configuration and credentials
 .env

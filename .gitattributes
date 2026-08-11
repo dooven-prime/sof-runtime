@@ -12,3 +12,6 @@
 *.zarr binary
 *.pdf binary
 *.png binary
+
+# Published byte-addressed conformance closure; do not normalize line endings.
+tests/conformance/fixtures/sofaction/** -text -diff

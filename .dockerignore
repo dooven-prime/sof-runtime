@@ -8,4 +8,4 @@ dist
 runs
 **/__pycache__
 **/*.pyc
-**/target
+plugins/rust/**/target
