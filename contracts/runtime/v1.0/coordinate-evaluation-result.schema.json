@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/runtime/v1.0/coordinate-evaluation-result.schema.json",
+  "title": "SOF Runtime Coordinate Evaluation Result v1",
+  "description": "A transport-neutral runtime intermediate. The emitted SOFAUDIT coordinate remains governed by the upstream contract.",
+  "type": "object",
+  "required": [
+    "result_contract_id",
+    "evaluator_id",
+    "evaluator_version",
+    "coordinate_id",
+    "coordinate_family",
+    "value_schema_id",
+    "status",
+    "comparison_state",
+    "reference_value",
+    "target_value",
+    "normalized_reference_value",
+    "normalized_target_value",
+    "pair_encoding",
+    "relation",
+    "delta",
+    "unit",
+    "metric_result",
+    "reason"
+  ],
+  "properties": {
+    "result_contract_id": {"const": "sof-runtime.coordinate-evaluation-result.v1"},
+    "evaluator_id": {"type": "string", "minLength": 1},
+    "evaluator_version": {"const": "1.0"},
+    "coordinate_id": {"type": "string", "minLength": 1},
+    "coordinate_family": {"type": "string", "minLength": 1},
+    "value_schema_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["computed", "unavailable"]},
+    "comparison_state": {"enum": ["ALIGNED", "MISMATCH", "NOT_DECLARED", "NOT_APPLICABLE", "INCOMPARABLE", "UNRESOLVED"]},
+    "reference_value": {},
+    "target_value": {},
+    "normalized_reference_value": {},
+    "normalized_target_value": {},
+    "pair_encoding": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["declaration", "reference_input_form", "target_input_form"],
+          "properties": {
+            "declaration": {
+              "type": "object",
+              "required": ["kind", "accepted_forms", "index_base", "normalization"],
+              "properties": {
+                "kind": {"const": "sector_endpoint"},
+                "accepted_forms": {"const": ["label", "zero_based_index"]},
+                "index_base": {"const": 0},
+                "normalization": {"const": "report_sector_label"}
+              },
+              "additionalProperties": false
+            },
+            "reference_input_form": {"enum": ["label", "zero_based_index"]},
+            "target_input_form": {"enum": ["label", "zero_based_index"]}
+          },
+          "additionalProperties": false
+        },
+        {"type": "null"}
+      ]
+    },
+    "relation": {"type": ["string", "null"]},
+    "delta": {},
+    "unit": {"type": ["string", "null"]},
+    "metric_result": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["metric_id", "status", "value"],
+          "properties": {
+            "metric_id": {"enum": ["absolute-difference", "discrete-mismatch", "coordinatewise-record"]},
+            "status": {"const": "computed"},
+            "value": {"type": "number", "minimum": 0}
+          },
+          "additionalProperties": false
+        },
+        {"type": "null"}
+      ]
+    },
+    "reason": {"type": ["string", "null"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "computed"}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "comparison_state": {"enum": ["ALIGNED", "MISMATCH"]},
+          "reference_value": {"type": "object"},
+          "target_value": {"type": "object"},
+          "normalized_reference_value": {"type": "object"},
+          "normalized_target_value": {"type": "object"},
+          "pair_encoding": {"type": ["object", "null"]},
+          "relation": {"type": "string"},
+          "metric_result": {"type": "object"},
+          "reason": {"type": "null"}
+        }
+      },
+      "else": {
+        "properties": {
+          "comparison_state": {"enum": ["NOT_DECLARED", "NOT_APPLICABLE", "INCOMPARABLE", "UNRESOLVED"]},
+          "reference_value": {"type": "null"},
+          "target_value": {"type": "null"},
+          "normalized_reference_value": {"type": "null"},
+          "normalized_target_value": {"type": "null"},
+          "pair_encoding": {"type": "null"},
+          "relation": {"type": "null"},
+          "delta": {"type": "null"},
+          "unit": {"type": "null"},
+          "metric_result": {"type": "null"},
+          "reason": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

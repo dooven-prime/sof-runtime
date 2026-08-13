@@ -12,6 +12,21 @@ from sof_runtime.paths import PROJECT_ROOT
 
 
 class McpAgentMatrixTests(unittest.TestCase):
+    def test_service_closure_contains_trusted_evaluator_registry(self) -> None:
+        closure = json.loads(
+            (
+                PROJECT_ROOT
+                / "evaluations"
+                / "mcp-agent-matrix-v1"
+                / "service-closure.current.json"
+            ).read_text(encoding="utf-8")
+        )
+        paths = {item["path"] for item in closure["files"]}
+        self.assertIn(
+            "contracts/runtime/v1.0/coordinate-evaluator-registry.json",
+            paths,
+        )
+
     def test_current_service_implementation_closure_is_pinned(self) -> None:
         completed = subprocess.run(
             [
@@ -41,6 +56,24 @@ class McpAgentMatrixTests(unittest.TestCase):
         )
         self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
 
+    def test_active_matrix_records_workspace_invariance(self) -> None:
+        summary = json.loads(
+            (
+                PROJECT_ROOT
+                / "evaluations"
+                / "mcp-agent-matrix-v1"
+                / "matrix-summary.json"
+            ).read_text(encoding="utf-8")
+        )
+        invariance = summary["execution_identity_invariance"]
+        self.assertEqual(invariance["status"], "PASS")
+        self.assertEqual(invariance["evaluated_runs"], 3)
+        self.assertEqual(invariance["semantic_run_closure_count"], 1)
+        self.assertEqual(invariance["normative_artifact_closure_count"], 1)
+        self.assertEqual(invariance["distinct_job_closure_count"], 3)
+        self.assertEqual(invariance["distinct_workspace_count"], 3)
+        self.assertTrue(invariance["workspace_identity_excluded"])
+
     def test_complete_synthetic_matrix_computes_macro_rates(self) -> None:
         source = PROJECT_ROOT / "evaluations" / "mcp-agent-matrix-v1"
         with tempfile.TemporaryDirectory() as directory:
@@ -59,7 +92,7 @@ class McpAgentMatrixTests(unittest.TestCase):
                 json.dumps(config, indent=2) + "\n",
                 encoding="utf-8",
             )
-            for agent_id in ("agent-a", "agent-b", "agent-c"):
+            for agent_id in ("deepseek-a", "deepseek-b", "deepseek-c"):
                 path = matrix / "runs" / f"{agent_id}.json"
                 result = json.loads(path.read_text(encoding="utf-8"))
                 result["status"] = "complete"
@@ -125,13 +158,19 @@ class McpAgentMatrixTests(unittest.TestCase):
             )
             self.assertEqual(summary["declared_model_count"], 3)
             self.assertTrue(summary["cross_model_claim_authorized"])
+            invariance = summary["execution_identity_invariance"]
+            self.assertEqual(invariance["status"], "PASS")
+            self.assertEqual(invariance["semantic_run_closure_count"], 1)
+            self.assertEqual(invariance["normative_artifact_closure_count"], 1)
+            self.assertEqual(invariance["distinct_job_closure_count"], 3)
+            self.assertEqual(invariance["distinct_workspace_count"], 3)
 
     def test_modified_response_evidence_is_rejected(self) -> None:
         source = PROJECT_ROOT / "evaluations" / "mcp-agent-matrix-v1"
         with tempfile.TemporaryDirectory() as directory:
             matrix = Path(directory) / "matrix"
             shutil.copytree(source, matrix)
-            response = matrix / "runs" / "agent-a-operational.md"
+            response = matrix / "runs" / "deepseek-a-operational.md"
             response.write_text(
                 response.read_text(encoding="utf-8") + "\nmodified\n",
                 encoding="utf-8",
@@ -149,6 +188,57 @@ class McpAgentMatrixTests(unittest.TestCase):
             )
             self.assertNotEqual(completed.returncode, 0)
             self.assertIn("response digest mismatch", completed.stdout)
+
+    def test_modified_implementation_closure_reference_is_rejected(self) -> None:
+        source = PROJECT_ROOT / "evaluations" / "mcp-agent-matrix-v1"
+        with tempfile.TemporaryDirectory() as directory:
+            matrix = Path(directory) / "matrix"
+            shutil.copytree(source, matrix)
+            closure = matrix / "service-closure.current.json"
+            closure.write_text(
+                closure.read_text(encoding="utf-8") + "\n",
+                encoding="utf-8",
+            )
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "tools/score_mcp_agent_matrix.py",
+                    str(matrix),
+                ],
+                cwd=PROJECT_ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertNotEqual(completed.returncode, 0)
+            self.assertIn(
+                "implementation closure reference digest mismatch",
+                completed.stdout,
+            )
+
+    def test_harness_transcript_is_digest_bound(self) -> None:
+        source = PROJECT_ROOT / "evaluations" / "mcp-agent-matrix-v1"
+        with tempfile.TemporaryDirectory() as directory:
+            matrix = Path(directory) / "matrix"
+            shutil.copytree(source, matrix)
+            transcript = matrix / "runs" / "deepseek-a-normal-transcript.json"
+            transcript.write_text(
+                transcript.read_text(encoding="utf-8") + "\n",
+                encoding="utf-8",
+            )
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "tools/score_mcp_agent_matrix.py",
+                    str(matrix),
+                ],
+                cwd=PROJECT_ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertNotEqual(completed.returncode, 0)
+            self.assertIn("transcript digest mismatch", completed.stdout)
 
 
 if __name__ == "__main__":

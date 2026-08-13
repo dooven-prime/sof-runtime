@@ -21,6 +21,9 @@ def _implementation_paths() -> list[Path]:
     paths.extend(
         sorted((PROJECT_ROOT / "contracts" / "service" / "v1.0").glob("*.json"))
     )
+    paths.extend(
+        sorted((PROJECT_ROOT / "contracts" / "runtime" / "v1.0").glob("*.json"))
+    )
     paths.extend(sorted((PROJECT_ROOT / "src" / "sof_runtime").rglob("*.py")))
     return paths
 
@@ -39,7 +42,8 @@ def _write_closure(path: Path) -> None:
         **basis,
         "closure_sha256": sha256_bytes(canonical_json_bytes(basis)),
     }
-    path.write_text(json.dumps(closure, indent=2) + "\n", encoding="utf-8")
+    with path.open("w", encoding="utf-8", newline="\n") as stream:
+        stream.write(json.dumps(closure, indent=2) + "\n")
 
 
 def main() -> int:

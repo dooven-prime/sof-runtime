@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import base64
 import mimetypes
-from pathlib import Path
+import re
 import shutil
+from pathlib import Path
 from threading import RLock
 from typing import Any, Callable
 from urllib.parse import urlparse
@@ -35,6 +36,28 @@ SERVICE_CONTRACT_NAMES = frozenset(
     }
 )
 
+_QUOTED_ABSOLUTE_PATH = re.compile(
+    r'''(?P<quote>["'])(?:[A-Za-z]:[\\/]|\\\\[^\\/\s]+[\\/][^\\/\s]+[\\/]|/)'''
+    r'''[^"'\r\n]*(?P=quote)'''
+)
+_WINDOWS_ABSOLUTE_PATH = re.compile(
+    r'''(?<![A-Za-z0-9_:/.-])(?:[A-Za-z]:[\\/]|\\\\[^\\/\s]+[\\/][^\\/\s]+[\\/])'''
+    r'''[^\s"'<>|]*'''
+)
+_POSIX_ABSOLUTE_PATH = re.compile(
+    r'''(?<![A-Za-z0-9_:/.-])/(?:[^/\s"'<>]+/)+[^\s"'<>]*'''
+)
+
+
+def _sanitize_public_message(message: str) -> str:
+    """Redact embedded host paths without interpreting the surrounding message."""
+    sanitized = _QUOTED_ABSOLUTE_PATH.sub(
+        lambda match: f"{match.group('quote')}<server-path>{match.group('quote')}",
+        message,
+    )
+    sanitized = _WINDOWS_ABSOLUTE_PATH.sub("<server-path>", sanitized)
+    return _POSIX_ABSOLUTE_PATH.sub("<server-path>", sanitized)
+
 
 class ServiceError(RuntimeError):
     def __init__(
@@ -46,14 +69,18 @@ class ServiceError(RuntimeError):
         job_id: str | None = None,
         details: list[str] | None = None,
     ):
-        super().__init__(message)
+        public_message = _sanitize_public_message(message)
+        public_details = [
+            _sanitize_public_message(detail) for detail in (details or [])
+        ]
+        super().__init__(public_message)
         self.payload = {
             "contract_id": "sof-runtime.service-error.v1",
             "request_id": request_id,
             "job_id": job_id,
             "code": code,
-            "message": message,
-            "details": details or [],
+            "message": public_message,
+            "details": public_details,
         }
 
 

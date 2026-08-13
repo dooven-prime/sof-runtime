@@ -1,0 +1,119 @@
+{
+  "lab_id": "sof-runtime.adapter-boundary-lab",
+  "lab_version": "1.0",
+  "purpose": "Finite adapter-boundary controls for carrier and policy assumptions.",
+  "common_known_nonclaims": [
+    "This evaluation does not produce a canonical SOFRS, SOFAUDIT, or SOFAction artifact.",
+    "No fixture establishes adapter scientific adequacy or domain truth.",
+    "No fixture establishes mixing time, rank collapse, Lie/Hall depth, action selection, authorization, execution, outcome, or causal effect."
+  ],
+  "fixtures": [
+    {
+      "fixture_id": "markov-positive",
+      "kind": "nonnegative_single_letter",
+      "source": {
+        "states": ["0", "1", "2", "3"],
+        "transition_numerators": [
+          [1, 1, 0, 0],
+          [0, 1, 1, 0],
+          [0, 0, 1, 1],
+          [1, 0, 0, 1]
+        ],
+        "row_denominators": [2, 2, 2, 2]
+      },
+      "strongest_claim_level": "Computational Certificate",
+      "strongest_claim": "For this finite exact-rational nonnegative single-letter operator, every declared off-diagonal support-graph path agrees with positive matrix-power support and the recomputed first-hit census.",
+      "known_nonclaims": [
+        "The result is not a mixing-time claim.",
+        "The result is not route depth, rank collapse, or Lie/Hall depth.",
+        "The graph equivalence is not declared for signed, complex, or multi-letter systems."
+      ]
+    },
+    {
+      "fixture_id": "signed-cancellation",
+      "kind": "signed_route_sum_cancellation",
+      "source": {
+        "matrix": [
+          [0, 1, 0, -1],
+          [0, 0, 1, 0],
+          [0, 0, 0, 0],
+          [0, 0, 1, 0]
+        ],
+        "word_length": 2,
+        "entry_rule": "strict_nonzero"
+      },
+      "strongest_claim_level": "Computational Observation",
+      "strongest_claim": "The union support graph contains two length-two routes from 0 to 2, while the signed matrix square has entry (0,2)=0 because the route contributions cancel.",
+      "known_nonclaims": [
+        "Union-graph reachability is not positive matrix-power support in this signed regime.",
+        "No route-depth or word-depth promotion is made.",
+        "The signed matrix is not admitted as an exact-rational Markov source."
+      ]
+    },
+    {
+      "fixture_id": "multi-letter-word",
+      "kind": "labelled_multi_letter_word",
+      "source": {
+        "states": ["0", "1", "2"],
+        "matrices": {
+          "A": [
+            [0, 1, 0],
+            [0, 0, 0],
+            [0, 0, 0]
+          ],
+          "B": [
+            [0, 0, 0],
+            [0, 0, 1],
+            [0, 0, 0]
+          ]
+        },
+        "selected_word": ["A", "A"],
+        "control_word": ["A", "B"],
+        "entry_rule": "strict_nonzero"
+      },
+      "strongest_claim_level": "Computational Observation",
+      "strongest_claim": "The unlabelled union graph has path 0->1->2, but selected word AA has zero (0,2) support; labelled word AB is the separate control with nonzero (0,2) support.",
+      "known_nonclaims": [
+        "Union-graph reachability does not determine a selected labelled word.",
+        "No multi-letter closure or exact depth theorem is asserted.",
+        "No canonical word carrier is created by this fixture."
+      ]
+    },
+    {
+      "fixture_id": "cutoff-unreached",
+      "kind": "finite_cutoff",
+      "source": {
+        "states": ["0", "1", "2", "3"],
+        "edges": [["0", "1"], ["1", "2"], ["2", "3"]],
+        "maximum_depth": 2,
+        "unreached_value": "UNREACHED_AT_CUTOFF"
+      },
+      "strongest_claim_level": "Computational Observation",
+      "strongest_claim": "Under cutoff d_max=2, pair 0->3 is recorded as UNREACHED_AT_CUTOFF while the finite depths 0->1=1 and 0->2=2 are observed.",
+      "known_nonclaims": [
+        "UNREACHED_AT_CUTOFF is not exact infinity.",
+        "The cutoff does not establish nonexistence of a later path.",
+        "No exact word-depth or saturation claim is made beyond the declared cutoff."
+      ]
+    },
+    {
+      "fixture_id": "threshold-sweep",
+      "kind": "threshold_sensitivity",
+      "source": {
+        "candidate_entries": [
+          {"pair": ["0", "1"], "value": "0.9e-12"},
+          {"pair": ["0", "2"], "value": "1.1e-12"}
+        ],
+        "thresholds": ["0.8e-12", "1.0e-12", "1.2e-12"],
+        "comparison": "strictly_greater_than"
+      },
+      "strongest_claim_level": "Computational Observation",
+      "strongest_claim": "For the declared strict-greater-than threshold rule, the finite support count changes across the supplied threshold sweep and is therefore threshold-relative.",
+      "known_nonclaims": [
+        "The sweep does not identify a scientifically privileged threshold.",
+        "Near-threshold support is not a stable domain fact without a declared numerical policy.",
+        "No tolerance-independent equivalence or adequacy claim is made."
+      ]
+    }
+  ]
+}

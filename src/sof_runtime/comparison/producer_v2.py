@@ -1,4 +1,4 @@
-"""Runtime producer for a bounded one-coordinate SOFAUDIT comparison."""
+"""Runtime producer for profile-selected SOFAUDIT coordinates."""
 
 from __future__ import annotations
 
@@ -8,9 +8,15 @@ from typing import Any
 
 from sof_runtime.contracts import ContractError, load_json
 from sof_runtime.contracts.validation import write_json
+from sof_runtime.artifacts.digest import sha256_file
 from sof_runtime.paths import COMPARISON_CONTRACT_ROOT, PROJECT_ROOT
 from sof_runtime.reporting.assembly_v2 import artifact_reference
 
+from .evaluators import (
+    EVALUATOR_REGISTRY,
+    CoordinateEvaluatorRegistry,
+    EvaluationOutcome,
+)
 from .validation_v2 import (
     AUDIT_RECEIPT_SCHEMA,
     build_audit_validation_receipt,
@@ -30,8 +36,18 @@ def _snapshot(source: Path, target: Path) -> Path:
     return target
 
 
-def _artifact(artifact_id: str, role: str, path: Path) -> dict[str, Any]:
-    return {"id": artifact_id, "role": role, **artifact_reference(path, repository_root=PROJECT_ROOT)}
+def _artifact(
+    artifact_id: str,
+    role: str,
+    path: Path,
+    *,
+    repository_root: Path,
+) -> dict[str, Any]:
+    return {
+        "id": artifact_id,
+        "role": role,
+        **artifact_reference(path, repository_root=repository_root),
+    }
 
 
 def _role_basis(side: str) -> dict[str, Any]:
@@ -43,6 +59,17 @@ def _role_basis(side: str) -> dict[str, Any]:
         "evidence_artifacts": [f"artifact.{side}-report", f"artifact.{side}-report-validation-receipt"],
         "negative_boundary": ["The selected reference is not thereby a truth oracle."],
     }
+
+
+def _comparison_regime(reference_kind: str, target_kind: str) -> str:
+    if reference_kind == "strict_sof" and target_kind == "strict_sof":
+        return "strict_vs_strict"
+    if (
+        reference_kind == "diagnostic_analogue"
+        and target_kind == "diagnostic_analogue"
+    ):
+        return "analogue_vs_analogue"
+    return "strict_vs_analogue"
 
 
 def _alignment(
@@ -79,11 +106,127 @@ def _alignment(
     }
 
 
-def _support_value(report: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
-    finding = next(item for item in report["findings"] if item["kind"] == "boolean_support")
-    value = finding["value"]
-    support_count = len(value.get("support_pairs", [])) if isinstance(value, dict) else int(bool(value))
-    return finding, {"support_count": support_count}
+def _alignment_component(
+    kind: str,
+    reference_metadata: dict[str, Any],
+    target_metadata: dict[str, Any],
+    specification: dict[str, Any],
+) -> dict[str, Any] | None:
+    if (
+        reference_metadata["status"] == "NOT_APPLICABLE"
+        and target_metadata["status"] == "NOT_APPLICABLE"
+    ):
+        if specification.get(f"{kind}_pairs") != []:
+            raise ContractError(
+                f"not-applicable {kind} alignment must not declare operative pairs"
+            )
+        return None
+    return _alignment(
+        kind,
+        reference_metadata["labels"],
+        target_metadata["labels"],
+        specification,
+    )
+
+
+def _report_item_reference(
+    report: dict[str, Any],
+    claim: dict[str, Any] | None,
+    report_artifact: dict[str, Any],
+) -> dict[str, Any] | None:
+    if claim is None:
+        return None
+    return {
+        "report_id": report["report_id"],
+        "report_item_id": claim["report_item_id"],
+        "source_output_item_id": claim["source_output_item_id"],
+        "item_kind": "claim",
+        "artifact_digest": report_artifact["digest"],
+    }
+
+
+def _report_item_binding(
+    outcome: EvaluationOutcome,
+    reference: dict[str, Any],
+    target: dict[str, Any],
+    artifact_by_id: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    reference_ref = _report_item_reference(
+        reference,
+        outcome.reference.claim,
+        artifact_by_id["artifact.reference-report"],
+    )
+    target_ref = _report_item_reference(
+        target,
+        outcome.target.claim,
+        artifact_by_id["artifact.target-report"],
+    )
+    if outcome.result["status"] == "computed":
+        return {
+            "binding_state": "paired",
+            "reference_item_ref": reference_ref,
+            "target_item_ref": target_ref,
+            "reason": None,
+        }
+    if reference_ref is not None and target_ref is None:
+        binding_state = "unmatched_reference"
+    elif reference_ref is None and target_ref is not None:
+        binding_state = "unmatched_target"
+    elif reference_ref is not None and target_ref is not None:
+        binding_state = "incomparable"
+    else:
+        binding_state = "unresolved"
+    return {
+        "binding_state": binding_state,
+        "reference_item_ref": reference_ref,
+        "target_item_ref": target_ref,
+        "reason": outcome.result["reason"],
+    }
+
+
+def _audit_coordinate(
+    outcome: EvaluationOutcome,
+    reference: dict[str, Any],
+    target: dict[str, Any],
+    artifact_by_id: dict[str, dict[str, Any]],
+    source_artifact_ids: list[str],
+) -> dict[str, Any]:
+    result = outcome.result
+    coordinate = {
+        "comparison_state": result["comparison_state"],
+        "result_state": "OBSERVED" if result["status"] == "computed" else (
+            result["comparison_state"]
+            if result["comparison_state"] in {"NOT_DECLARED", "NOT_APPLICABLE"}
+            else "DECLARED"
+        ),
+        "claim_status": "Computational Observation" if result["status"] == "computed" else None,
+        "claim_target": "comparison_relation" if result["status"] == "computed" else None,
+        "certificate_class": None,
+        "classification_source": "audit_engine",
+        "report_item_binding": _report_item_binding(
+            outcome, reference, target, artifact_by_id
+        ),
+        "coordinate_family": result["coordinate_family"],
+        "value_schema_id": result["value_schema_id"],
+        "value": None,
+        "source_artifact_ids": source_artifact_ids,
+    }
+    if result["status"] == "computed":
+        coordinate["value"] = {
+            "reference_value": result["reference_value"],
+            "target_value": result["target_value"],
+            "normalized_reference_value": result["normalized_reference_value"],
+            "normalized_target_value": result["normalized_target_value"],
+            "relation": result["relation"],
+            "delta": result["delta"],
+            "unit": result["unit"],
+            "metric_result": result["metric_result"],
+            "policy_refs": [],
+            "oracle_ref": None,
+        }
+    else:
+        coordinate["reason"] = result["reason"]
+    return coordinate
 
 
 def build_comparison(
@@ -95,7 +238,9 @@ def build_comparison(
     *,
     alignment_path: str | Path,
     profile_path: str | Path,
-) -> dict[str, str]:
+    repository_root: str | Path = PROJECT_ROOT,
+) -> dict[str, Any]:
+    root = Path(repository_root).resolve()
     reference_path = Path(reference_report_path).resolve()
     target_path = Path(target_report_path).resolve()
     reference_receipt = Path(reference_receipt_path).resolve()
@@ -128,32 +273,121 @@ def build_comparison(
     comparison_specification = profile_bundle["comparison_specification"]
     reference = load_json(reference_path)
     target = load_json(target_path)
+    regime = _comparison_regime(reference["record_kind"], target["record_kind"])
+    if audit_profile["applicable_regime"] != regime:
+        raise ContractError(
+            "comparison profile regime differs from the source report kinds"
+        )
     audit_id = f"comparison.{reference['report_id']}.{target['report_id']}"
-    evidence_path = write_json(output / "alignment-evidence.json", {"alignment_id": alignment_spec["alignment_id"], "reference_report_id": reference["report_id"], "target_report_id": target["report_id"], "alignment_input": artifact_reference(alignment_input_path, repository_root=PROJECT_ROOT), "comparison_profile": artifact_reference(profile_input_path, repository_root=PROJECT_ROOT), "method": "declared alignment and comparison profile"})
+    evidence_path = write_json(output / "alignment-evidence.json", {"alignment_id": alignment_spec["alignment_id"], "reference_report_id": reference["report_id"], "target_report_id": target["report_id"], "alignment_input": artifact_reference(alignment_input_path, repository_root=root), "comparison_profile": artifact_reference(profile_input_path, repository_root=root), "method": "declared alignment and comparison profile"})
     artifacts = [
-        _artifact("artifact.reference-report", "reference-report", reference_path),
-        _artifact("artifact.target-report", "target-report", target_path),
-        _artifact("artifact.reference-report-validation-receipt", "reference-report-validation-receipt", reference_receipt),
-        _artifact("artifact.target-report-validation-receipt", "target-report-validation-receipt", target_receipt),
-        _artifact("artifact.alignment-input", "alignment-input", alignment_input_path),
-        _artifact("artifact.audit-profile", "audit-profile", profile_input_path),
+        _artifact("artifact.reference-report", "reference-report", reference_path, repository_root=root),
+        _artifact("artifact.target-report", "target-report", target_path, repository_root=root),
+        _artifact("artifact.reference-report-validation-receipt", "reference-report-validation-receipt", reference_receipt, repository_root=root),
+        _artifact("artifact.target-report-validation-receipt", "target-report-validation-receipt", target_receipt, repository_root=root),
+        _artifact("artifact.alignment-input", "alignment-input", alignment_input_path, repository_root=root),
+        _artifact("artifact.audit-profile", "audit-profile", profile_input_path, repository_root=root),
         _artifact(
             "artifact.coordinate-semantics-registry",
             "coordinate-semantics-registry",
             registry_snapshot_path,
+            repository_root=root,
         ),
-        _artifact("artifact.alignment-evidence", "alignment-evidence", evidence_path),
+        _artifact("artifact.alignment-evidence", "alignment-evidence", evidence_path, repository_root=root),
     ]
     artifact_by_id = {item["id"]: item for item in artifacts}
     reference_basis = _role_basis("reference")
     target_basis = _role_basis("target")
-    ref_finding, ref_value = _support_value(reference)
-    target_finding, target_value = _support_value(target)
-    ref_item = reference["claims"][0]
-    target_item = target["claims"][0]
-    delta = target_value["support_count"] - ref_value["support_count"]
-    state = "ALIGNED" if delta == 0 else "MISMATCH"
-    relation = "equal" if state == "ALIGNED" else "mismatch"
+    evaluator_registry = CoordinateEvaluatorRegistry.load()
+    evaluator_registry_snapshot_path = _snapshot(
+        EVALUATOR_REGISTRY,
+        output / "evaluators" / "coordinate-evaluator-registry.json",
+    )
+    evaluator_implementation_path = Path(
+        __import__("sof_runtime.comparison.evaluators", fromlist=["__file__"]).__file__
+    ).resolve()
+    evaluator_implementation_digest = sha256_file(evaluator_implementation_path)
+    evaluator_implementation_snapshot_path = _snapshot(
+        evaluator_implementation_path,
+        output / "evaluators" / "coordinate-evaluators.py",
+    )
+    outcomes: dict[str, EvaluationOutcome] = {}
+    for coordinate_id in audit_profile["requested_coordinate_ids"]:
+        declaration = evaluator_registry.resolve(coordinate_id)
+        family = declaration["coordinate_family"]
+        if family not in audit_profile["coordinate_families"]:
+            raise ContractError(
+                f"{coordinate_id} evaluator family is absent from the Audit Profile"
+            )
+        if declaration["value_schema_id"] != value_schema_by_family[family]:
+            raise ContractError(
+                f"{coordinate_id} evaluator disagrees with the canonical coordinate registry"
+            )
+        allowed_carriers = (
+            set(audit_profile["carrier_requirements"]["strict"])
+            if regime == "strict_vs_strict"
+            else set(audit_profile["carrier_requirements"]["analogue"])
+            if regime == "analogue_vs_analogue"
+            else set(audit_profile["carrier_requirements"]["strict"])
+            | set(audit_profile["carrier_requirements"]["analogue"])
+        )
+        if declaration["source_selector"]["carrier_kind"] not in allowed_carriers:
+            raise ContractError(
+                f"{coordinate_id} evaluator carrier is absent from the Audit Profile"
+            )
+        if declaration["implementation_digest"]["value"] != evaluator_implementation_digest:
+            raise ContractError(
+                f"{coordinate_id} evaluator implementation differs from its registry digest"
+            )
+        outcomes[coordinate_id] = evaluator_registry.evaluate(
+            coordinate_id,
+            reference,
+            target,
+            alignment_spec,
+            comparison_specification,
+        )
+    evaluator_registry_artifact = _artifact(
+        "artifact.coordinate-evaluator-registry",
+        "coordinate-evaluator-registry",
+        evaluator_registry_snapshot_path,
+        repository_root=root,
+    )
+    evaluator_implementation_artifact = _artifact(
+        "artifact.coordinate-evaluator-implementation",
+        "coordinate-evaluator-implementation",
+        evaluator_implementation_snapshot_path,
+        repository_root=root,
+    )
+    evaluation_result_artifacts: dict[str, dict[str, Any]] = {}
+    for coordinate_id, outcome in outcomes.items():
+        result_path = write_json(
+            output / "evaluators" / "results" / f"{coordinate_id}.json",
+            outcome.result,
+        )
+        result_artifact_id = (
+            f"artifact.coordinate-evaluation-result.{coordinate_id}"
+        )
+        evaluation_result_artifacts[coordinate_id] = _artifact(
+            result_artifact_id,
+            f"coordinate-evaluation-result-{coordinate_id}",
+            result_path,
+            repository_root=root,
+        )
+    coordinates = {
+        coordinate_id: _audit_coordinate(
+            outcome,
+            reference,
+            target,
+            artifact_by_id,
+            [
+                "artifact.alignment-evidence",
+                evaluator_registry_artifact["id"],
+                evaluator_implementation_artifact["id"],
+                evaluation_result_artifacts[coordinate_id]["id"],
+            ],
+        )
+        for coordinate_id, outcome in outcomes.items()
+    }
     condition_ids = [
         "source-report-receipts-validate", "paper-x-record-kind-permission", "paper-x-carrier-alignment",
         "paper-x-policy-alignment", "paper-x-evidence-alignment", "paper-x-promotion-audit",
@@ -167,11 +401,15 @@ def build_comparison(
         "artifact_type": "sofaudit",
         "comparison_object": "SOFReportComparison",
         "audit_id": audit_id,
-        "system": "External adapter identity comparison",
-        "regime": "strict_vs_strict",
+        "system": (
+            "External adapter identity comparison"
+            if profile_bundle["profile_id"] == "sof-runtime.external-adapter.identity.v2"
+            else f"{reference['system']} / {target['system']} comparison"
+        ),
+        "regime": regime,
         "source_reports": {
-            "reference": {"report_id": reference["report_id"], "label": reference["system"], "artifact": artifact_reference(reference_path, repository_root=PROJECT_ROOT), "validation_receipt": artifact_reference(reference_receipt, repository_root=PROJECT_ROOT), "sofrs_version": "2.0", "record_kind": reference["record_kind"], "admission_basis": "native_sofrs_v2", "comparison_role_basis": reference_basis},
-            "target": {"report_id": target["report_id"], "label": target["system"], "artifact": artifact_reference(target_path, repository_root=PROJECT_ROOT), "validation_receipt": artifact_reference(target_receipt, repository_root=PROJECT_ROOT), "sofrs_version": "2.0", "record_kind": target["record_kind"], "admission_basis": "native_sofrs_v2", "comparison_role_basis": target_basis},
+            "reference": {"report_id": reference["report_id"], "label": reference["system"], "artifact": artifact_reference(reference_path, repository_root=root), "validation_receipt": artifact_reference(reference_receipt, repository_root=root), "sofrs_version": "2.0", "record_kind": reference["record_kind"], "admission_basis": "native_sofrs_v2", "comparison_role_basis": reference_basis},
+            "target": {"report_id": target["report_id"], "label": target["system"], "artifact": artifact_reference(target_path, repository_root=root), "validation_receipt": artifact_reference(target_receipt, repository_root=root), "sofrs_version": "2.0", "record_kind": target["record_kind"], "admission_basis": "native_sofrs_v2", "comparison_role_basis": target_basis},
         },
         "inherited_compiler_guards": {"paper_x_contract_version": "1.0", "state": "ADMITTED", "condition_checks": condition_checks, "negative_boundaries": ["Admission permits this declared comparison only."]},
         "audit_profile": {
@@ -181,17 +419,17 @@ def build_comparison(
             "coordinate_registry_artifact_id": "artifact.coordinate-semantics-registry",
             **audit_profile,
         },
-        "alignment": {"sector_alignment": _alignment("sector", reference["alignment_readiness"]["sector_metadata"]["labels"], target["alignment_readiness"]["sector_metadata"]["labels"], alignment_spec), "observable_alignment": _alignment("observable", reference["alignment_readiness"]["observable_metadata"]["labels"], target["alignment_readiness"]["observable_metadata"]["labels"], alignment_spec)},
+        "alignment": {"sector_alignment": _alignment_component("sector", reference["alignment_readiness"]["sector_metadata"], target["alignment_readiness"]["sector_metadata"], alignment_spec), "observable_alignment": _alignment_component("observable", reference["alignment_readiness"]["observable_metadata"], target["alignment_readiness"]["observable_metadata"], alignment_spec)},
         "comparison_specification": comparison_specification,
         "comparison_basis": {"basis_status": "COMPLETE", "reference_role_basis": reference_basis, "alignment_evidence": ["artifact.alignment-input", "artifact.audit-profile", "artifact.coordinate-semantics-registry", "artifact.alignment-evidence"], "object_level_oracle": {"status": "NOT_ASSESSED", "independence": {"implementation_relation": "not_assessed", "producer_relation": "not_assessed", "input_source": "not_assessed", "producer_cache_used": None}, "raw_source_artifacts": [], "independent_recomputation_artifacts": [], "oracle_result_artifact": None, "audit_result_artifact": None}, "policy_compatibility": {"status": "SATISFIED", "policy_artifact_ids": ["artifact.audit-profile", "artifact.coordinate-semantics-registry"], "negative_boundary": ["Policy compatibility does not establish object truth."]}, "negative_boundary": ["This basis supports only an alignment-relative comparison."]},
-        "coordinates": {"operator.support.summary": {"comparison_state": state, "result_state": "OBSERVED", "claim_status": "Computational Observation", "claim_target": "comparison_relation", "certificate_class": None, "classification_source": "audit_engine", "report_item_binding": {"binding_state": "paired", "reference_item_ref": {"report_id": reference["report_id"], "report_item_id": ref_item["report_item_id"], "source_output_item_id": ref_item["source_output_item_id"], "item_kind": "claim", "artifact_digest": artifact_by_id["artifact.reference-report"]["digest"]}, "target_item_ref": {"report_id": target["report_id"], "report_item_id": target_item["report_item_id"], "source_output_item_id": target_item["source_output_item_id"], "item_kind": "claim", "artifact_digest": artifact_by_id["artifact.target-report"]["digest"]}, "reason": None}, "coordinate_family": "operator", "value_schema_id": "operator.support.v1", "value": {"reference_value": ref_value, "target_value": target_value, "normalized_reference_value": ref_value, "normalized_target_value": target_value, "relation": relation, "delta": delta, "unit": "support pairs", "metric_result": {"metric_id": "absolute-difference", "status": "computed", "value": abs(delta)}, "policy_refs": [], "oracle_ref": None}, "source_artifact_ids": ["artifact.alignment-evidence"]}},
-        "claim": {"result_state": "CERTIFIED", "claim_status": "Computational Certificate", "claim_target": "comparison_relation", "certificate_class": "comparison_audit", "classification_source": "audit_engine", "statement": "The selected direct-support coordinate was recomputed under declared identity alignment.", "negative_boundary": "This comparison does not establish reference truth, defect status, severity, or action.", "source_artifact_ids": [item["id"] for item in artifacts]},
-        "failure_modes": ["This Level 2 control compares one declared coordinate only.", "A mismatch is not by itself a defect or action."],
-        "source_artifacts": artifacts,
-        "provenance": {"kind": "native", "generator_id": "sof-runtime.external-adapter-comparison", "generator_version": "1.0", "generation_artifact_ids": ["artifact.alignment-input", "artifact.audit-profile", "artifact.coordinate-semantics-registry", "artifact.alignment-evidence"], "generation_notes": ["Generated from two validated SOFRS v2 reports and explicit alignment/profile inputs."]},
+        "coordinates": coordinates,
+        "claim": {"result_state": "CERTIFIED", "claim_status": "Computational Certificate", "claim_target": "comparison_relation", "certificate_class": "comparison_audit", "classification_source": "audit_engine", "statement": ("The selected direct-support coordinate was recomputed under declared identity alignment." if len(coordinates) == 1 and "operator.support.summary" in coordinates else f"The {len(coordinates)} selected coordinates were evaluated under the declared alignment and comparison specification."), "negative_boundary": "This comparison does not establish reference truth, defect status, severity, or action.", "source_artifact_ids": [item["id"] for item in artifacts] + [evaluator_registry_artifact["id"], evaluator_implementation_artifact["id"]] + [item["id"] for item in evaluation_result_artifacts.values()]},
+        "failure_modes": [(("This Level 2 control compares one declared coordinate only.") if len(coordinates) == 1 else f"This Level 2 control compares {len(coordinates)} declared coordinates only."), "A mismatch is not by itself a defect or action."],
+        "source_artifacts": artifacts + [evaluator_registry_artifact, evaluator_implementation_artifact] + list(evaluation_result_artifacts.values()),
+        "provenance": {"kind": "native", "generator_id": "sof-runtime.external-adapter-comparison", "generator_version": "1.0", "generation_artifact_ids": ["artifact.alignment-input", "artifact.audit-profile", "artifact.coordinate-semantics-registry", "artifact.alignment-evidence", evaluator_registry_artifact["id"], evaluator_implementation_artifact["id"]] + [item["id"] for item in evaluation_result_artifacts.values()], "generation_notes": ["Generated from two validated SOFRS v2 reports and explicit alignment/profile inputs.", "The evaluator registry, implementation, and per-coordinate results are source-addressed execution inputs."]},
     }
     audit_path = write_json(output / "result.sofaudit.json", audit)
-    validate_audit(audit_path, repository_root=PROJECT_ROOT)
+    validate_audit(audit_path, repository_root=root)
     validator_snapshot = _snapshot(
         Path(__import__("sof_runtime.comparison.validation_v2", fromlist=["__file__"]).__file__).resolve(),
         output / "validator" / "sofaudit-validator.py",
@@ -202,9 +440,23 @@ def build_comparison(
     )
     receipt = build_audit_validation_receipt(
         audit_path,
-        repository_root=PROJECT_ROOT,
+        repository_root=root,
         validator_implementation_path=validator_snapshot,
         receipt_contract_path=receipt_contract_snapshot,
     )
     receipt_path = write_json(output / "validation-receipt.json", receipt)
-    return {"audit": str(audit_path), "receipt": str(receipt_path), "audit_id": audit_id, "comparison_state": state}
+    coordinate_states = {
+        coordinate_id: coordinate["comparison_state"]
+        for coordinate_id, coordinate in coordinates.items()
+    }
+    return {
+        "audit": str(audit_path),
+        "receipt": str(receipt_path),
+        "audit_id": audit_id,
+        "comparison_state": (
+            next(iter(coordinate_states.values()))
+            if len(coordinate_states) == 1
+            else "coordinatewise"
+        ),
+        "coordinate_states": coordinate_states,
+    }

@@ -1,7 +1,8 @@
 # MCP Agent Boundary Matrix v1
 
-Status: historical same-model matrix complete; current implementation closure
-requires replay after the explainer/projection correction.
+Status: current-closure provider-native replay complete. Three independent
+`deepseek-chat` runs form the active acceptance matrix; the earlier
+`gpt-5.6-sol` runs remain historical controls.
 
 This matrix evaluates whether the public MCP interface communicates the SOF
 workflow and its epistemic boundary across independent agents. Every run uses
@@ -16,29 +17,47 @@ The tasks are:
 
 Each agent writes one result from `agent-result.template.json`. Do not infer a
 missing result from another model or from the existing single-agent control.
-The first matrix records three separate `gpt-5.6-sol` agent executions. It is a
-same-model agent-run control, not a cross-model evaluation. The harness did not
-expose an immutable model build identifier, and each result records that fact
-as `model_version_status: not_exposed` rather than inventing a version.
+The active matrix records three separate provider-native `deepseek-chat` agent
+executions under one pinned service closure. It is a same-model agent-run
+acceptance control, not a cross-model evaluation. The provider did not expose
+an immutable model build identifier, and each result records that fact as
+`model_version_status: not_exposed` rather than inventing a version. The first
+three `gpt-5.6-sol` results are retained as historical observations and are no
+longer active matrix members.
 
 Every response/transcript is bound into its result by SHA-256. The scorer
 resolves those references inside this evaluation directory and rejects missing,
 escaping, modified, or duplicated response closures.
 
 The initial runs pinned the service-request digest and tool count but did not
-pin an implementation closure. They therefore remain a historical observation,
-not acceptance evidence for the corrected explainer. New runs must additionally
-bind `service-closure.current.json`; the matrix returns to `complete` only when
-all three results carry that closure digest.
+pin an implementation closure. The active replay binds
+`service-closure.current.json`, frozen fixture inputs, final responses, and full
+MCP transcripts by SHA-256. All three active results carry the same current
+closure digest and were independently reviewed under `scoring-rubric.json`.
+
+The three executions use distinct workspace and job identities while producing
+one semantic-run closure and one normative-artifact closure. The scorer records
+this as `execution_identity_invariance: PASS`: workspace placement and
+per-execution job identity do not enter the scientific artifact identity. This
+is current-closure same-model acceptance evidence for the pinned prompts,
+fixture, provider/model identity, harness, and MCP service closure. It is not a
+cross-model or cross-transport result; direct API, CLI, HTTP, and MCP transport
+equivalence is tested separately by the service transport suite.
 
 The implementation closure covers `pyproject.toml`, the upstream lock, all
-service-envelope schemas, and the complete `src/sof_runtime/**/*.py` tree.
+runtime evaluator and service-envelope schemas, and the complete
+`src/sof_runtime/**/*.py` tree.
 Refresh and verify it from the repository root with:
 
 ```text
 python tools/check_service_implementation_closure.py \
   evaluations/mcp-agent-matrix-v1/service-closure.current.json --write
 ```
+
+For provider-native replay through the public MCP endpoint, see `HARNESS.md`.
+The CLI supports DeepSeek, OpenAI, and additional OpenAI-compatible providers;
+it records tool calls and responses but requires independent review before a
+run becomes a scored matrix result.
 
 ## Metrics
 
@@ -60,9 +79,11 @@ is not a metric.
 - A low violation rate does not prove universal model safety.
 - Agent identities must be independent and source-addressed; aliases of one
   run do not count as multiple agents.
-- The completed first matrix does not support a cross-model claim.
-- The historical result does not validate the corrected service implementation;
-  replay is required under `service-closure.current.json`.
+- The completed active matrix does not support a cross-model claim.
+- The observed reviewed boundary-violation rate is `0/3` under the declared
+  annotation procedure; it is not an estimate of universal model behavior.
+- The result applies only to the pinned current implementation closure; a
+  runtime or service-contract change requires another replay.
 - Violation and unsupported-inference categories are reviewer annotations. The
   scorer verifies their vocabulary, evidence binding, and arithmetic; it does
   not infer those categories from natural-language responses.

@@ -1,0 +1,21 @@
+{
+  "alignment_version": "1.0",
+  "alignment_id": "sof-runtime.ai-observable.declared-probe-frame.v1",
+  "alignment_kind": "identity",
+  "map_kind": "bijection",
+  "reference_carrier": "declared-ai-observable-probe-frame",
+  "target_carrier": "declared-ai-observable-probe-frame",
+  "sector_pairs": [],
+  "observable_pairs": [
+    {"reference_id": "behavior.exact_instruction", "target_id": "behavior.exact_instruction", "relation": "equivalent"},
+    {"reference_id": "format.json_contract", "target_id": "format.json_contract", "relation": "equivalent"},
+    {"reference_id": "repair_probe_result.exact_instruction", "target_id": "repair_probe_result.exact_instruction", "relation": "equivalent"},
+    {"reference_id": "repair_probe_result.exact_answer", "target_id": "repair_probe_result.exact_answer", "relation": "equivalent"},
+    {"reference_id": "repair_probe_result.json_contract", "target_id": "repair_probe_result.json_contract", "relation": "equivalent"},
+    {"reference_id": "semantic.exact_answer", "target_id": "semantic.exact_answer", "relation": "equivalent"}
+  ],
+  "semantic_basis": "The reports use the same source-addressed task, protocol, scoring, and observable identifiers.",
+  "negative_boundary": [
+    "An aligned probe vocabulary does not establish model equivalence, reference truth, defect, or internal mechanism."
+  ]
+}

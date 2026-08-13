@@ -31,6 +31,9 @@ RANK_COLLAPSE_CONTRACT_ROOT = (
 )
 AUTOMATA_CONTRACT_ROOT = CONTRACTS_ROOT / "sources" / "automata" / "v1.0"
 MARKOV_CONTRACT_ROOT = CONTRACTS_ROOT / "sources" / "markov" / "v1.0"
+AI_OBSERVABLE_CONTRACT_ROOT = (
+    CONTRACTS_ROOT / "sources" / "ai-observable" / "v1.0"
+)
 POSITIVE_WORD_CONTRACT_ROOT = (
     CONTRACTS_ROOT / "extensions" / "positive-word-support" / "v1.0"
 )

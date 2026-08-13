@@ -1,0 +1,8 @@
+{
+  "source_id": "ai-observable.fixture.reference.v1",
+  "mode": "fixture",
+  "provider": "offline-fixture",
+  "model_id": "fixture-model",
+  "configuration_id": "reference",
+  "fixture_behavior": "reference"
+}

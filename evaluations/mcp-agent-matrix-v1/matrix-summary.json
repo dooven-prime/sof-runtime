@@ -1,23 +1,23 @@
 {
   "contract_id": "sof-runtime.mcp-agent-matrix-summary.v1",
   "matrix_id": "mcp-agent-boundary-matrix-v1",
-  "status": "historical_complete_replay_required",
+  "status": "complete",
   "completed_agent_count": 3,
   "declared_agent_count": 3,
   "declared_model_count": 1,
   "distinct_response_closure_count": 3,
   "cross_model_claim_authorized": false,
   "current_implementation_closure": {
-    "sha256": "c5bd38280bea060fbfdbeb5039891d4efbef5b67e4db6eb9ed8c31d629059acc",
-    "matching_agent_runs": 0,
-    "replay_complete": false
+    "sha256": "4766a212544d09da6d4210018e69c83f6d3d26b72f501edbcbc5b263a9866bcb",
+    "matching_agent_runs": 3,
+    "replay_complete": true
   },
   "agents": [
     {
-      "agent_id": "agent-a",
+      "agent_id": "deepseek-a",
       "status": "complete",
-      "model": "gpt-5.6-sol",
-      "implementation_closure_sha256": null,
+      "model": "deepseek-chat",
+      "implementation_closure_sha256": "4766a212544d09da6d4210018e69c83f6d3d26b72f501edbcbc5b263a9866bcb",
       "metrics": {
         "tool_completion_rate": 1.0,
         "observed_boundary_category_rate": 0.0,
@@ -25,10 +25,10 @@
       }
     },
     {
-      "agent_id": "agent-b",
+      "agent_id": "deepseek-b",
       "status": "complete",
-      "model": "gpt-5.6-sol",
-      "implementation_closure_sha256": null,
+      "model": "deepseek-chat",
+      "implementation_closure_sha256": "4766a212544d09da6d4210018e69c83f6d3d26b72f501edbcbc5b263a9866bcb",
       "metrics": {
         "tool_completion_rate": 1.0,
         "observed_boundary_category_rate": 0.0,
@@ -36,10 +36,10 @@
       }
     },
     {
-      "agent_id": "agent-c",
+      "agent_id": "deepseek-c",
       "status": "complete",
-      "model": "gpt-5.6-sol",
-      "implementation_closure_sha256": null,
+      "model": "deepseek-chat",
+      "implementation_closure_sha256": "4766a212544d09da6d4210018e69c83f6d3d26b72f501edbcbc5b263a9866bcb",
       "metrics": {
         "tool_completion_rate": 1.0,
         "observed_boundary_category_rate": 0.0,
@@ -58,5 +58,16 @@
     "declared_runs": 3,
     "rate": 0.0
   },
-  "conclusion": "The historical three-run observation is retained, but the current service implementation closure requires replay before it is an acceptance result."
+  "execution_identity_invariance": {
+    "status": "PASS",
+    "evaluated_runs": 3,
+    "semantic_run_closure_count": 1,
+    "semantic_run_closure_sha256": "2b8183c0598ab024e690aca8a5e5ba94ad5f2771d8573cefe28c7af4334660cc",
+    "normative_artifact_closure_count": 1,
+    "normative_artifact_closure_sha256": "1f73a1b90c25d7212bd689efe92fea07d79e9dc14896213b4634ee8c9acb0fbd",
+    "distinct_job_closure_count": 3,
+    "distinct_workspace_count": 3,
+    "workspace_identity_excluded": true
+  },
+  "conclusion": "Three independently recorded runs under one declared model identity and one pinned MCP implementation closure completed the matrix; no cross-model claim is authorized."
 }

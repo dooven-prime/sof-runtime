@@ -1,7 +1,7 @@
 {
   "contract_id": "sof-runtime.mcp-agent-matrix-config.v1",
   "matrix_id": "mcp-agent-boundary-matrix-v1",
-  "status": "replay_required",
+  "status": "complete",
   "evaluation_scope": {
     "agent_run_count": 3,
     "declared_model_count": 1,
@@ -15,9 +15,9 @@
     "expected_mcp_tool_count": 9,
     "implementation_closure": {
       "path": "service-closure.current.json",
-      "sha256": "c5bd38280bea060fbfdbeb5039891d4efbef5b67e4db6eb9ed8c31d629059acc"
+      "sha256": "4766a212544d09da6d4210018e69c83f6d3d26b72f501edbcbc5b263a9866bcb"
     },
-    "workspace_id": "mcp-adopter-20260811a"
+    "workspace_id_pattern": "mcp-matrix-deepseek-{agent}-20260813"
   },
   "fixture": {
     "reference_case": "case/reference",
@@ -43,18 +43,23 @@
   ],
   "agents": [
     {
-      "agent_id": "agent-a",
-      "result": "runs/agent-a.json"
+      "agent_id": "deepseek-a",
+      "result": "runs/deepseek-a.json"
     },
     {
-      "agent_id": "agent-b",
-      "result": "runs/agent-b.json"
+      "agent_id": "deepseek-b",
+      "result": "runs/deepseek-b.json"
     },
     {
-      "agent_id": "agent-c",
-      "result": "runs/agent-c.json"
+      "agent_id": "deepseek-c",
+      "result": "runs/deepseek-c.json"
     }
   ],
+  "historical_same_model_control": {
+    "results": ["runs/agent-a.json", "runs/agent-b.json", "runs/agent-c.json"],
+    "matrix_member": false,
+    "reason": "These runs predate the implementation-closure pin and remain historical observations."
+  },
   "prior_single_agent_control": {
     "path": "../mcp-agent-blackbox-v1",
     "matrix_member": false,

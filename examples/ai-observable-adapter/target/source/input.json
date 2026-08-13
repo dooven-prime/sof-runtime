@@ -1,0 +1,8 @@
+{
+  "source_id": "ai-observable.fixture.target.v1",
+  "mode": "fixture",
+  "provider": "offline-fixture",
+  "model_id": "fixture-model",
+  "configuration_id": "format-fragile",
+  "fixture_behavior": "format-fragile"
+}

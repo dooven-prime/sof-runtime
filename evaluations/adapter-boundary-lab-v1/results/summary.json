@@ -1,0 +1,317 @@
+{
+  "fixture_count": 5,
+  "input_closure": {
+    "fixtures_sha256": "9de0d4431406cca7fb0b2fc34bcd502eb1162dbdbde1e0ceff3c28cfa85c5a4f",
+    "runner_sha256": "53c59d6ee09cdd167b1a67d794a521d15b5bdc5d94e0ef47ed6c152572e2d32e"
+  },
+  "lab_id": "sof-runtime.adapter-boundary-lab",
+  "lab_version": "1.0",
+  "negative_boundary": [
+    "This evaluation does not produce a canonical SOFRS, SOFAUDIT, or SOFAction artifact.",
+    "No fixture establishes adapter scientific adequacy or domain truth.",
+    "No fixture establishes mixing time, rank collapse, Lie/Hall depth, action selection, authorization, execution, outcome, or causal effect."
+  ],
+  "results": [
+    {
+      "checks": {
+        "all_matrix_power_support_pairs_are_graph_reachable": true,
+        "graph_first_hits_equal_matrix_power_first_hits": true,
+        "row_sums_match_denominators": true
+      },
+      "fixture_id": "markov-positive",
+      "kind": "nonnegative_single_letter",
+      "known_nonclaims": [
+        "This evaluation does not produce a canonical SOFRS, SOFAUDIT, or SOFAction artifact.",
+        "No fixture establishes adapter scientific adequacy or domain truth.",
+        "No fixture establishes mixing time, rank collapse, Lie/Hall depth, action selection, authorization, execution, outcome, or causal effect.",
+        "The result is not a mixing-time claim.",
+        "The result is not route depth, rank collapse, or Lie/Hall depth.",
+        "The graph equivalence is not declared for signed, complex, or multi-letter systems."
+      ],
+      "method": "exact Fraction matrix powers and finite support-graph closure",
+      "observations": {
+        "graph_first_hits": [
+          {
+            "first_positive_depth": 1,
+            "source": "0",
+            "target": "1"
+          },
+          {
+            "first_positive_depth": 2,
+            "source": "0",
+            "target": "2"
+          },
+          {
+            "first_positive_depth": 3,
+            "source": "0",
+            "target": "3"
+          },
+          {
+            "first_positive_depth": 3,
+            "source": "1",
+            "target": "0"
+          },
+          {
+            "first_positive_depth": 1,
+            "source": "1",
+            "target": "2"
+          },
+          {
+            "first_positive_depth": 2,
+            "source": "1",
+            "target": "3"
+          },
+          {
+            "first_positive_depth": 2,
+            "source": "2",
+            "target": "0"
+          },
+          {
+            "first_positive_depth": 3,
+            "source": "2",
+            "target": "1"
+          },
+          {
+            "first_positive_depth": 1,
+            "source": "2",
+            "target": "3"
+          },
+          {
+            "first_positive_depth": 1,
+            "source": "3",
+            "target": "0"
+          },
+          {
+            "first_positive_depth": 2,
+            "source": "3",
+            "target": "1"
+          },
+          {
+            "first_positive_depth": 3,
+            "source": "3",
+            "target": "2"
+          }
+        ],
+        "matrix_power_first_hits": [
+          {
+            "first_positive_depth": 1,
+            "source": "0",
+            "target": "1"
+          },
+          {
+            "first_positive_depth": 2,
+            "source": "0",
+            "target": "2"
+          },
+          {
+            "first_positive_depth": 3,
+            "source": "0",
+            "target": "3"
+          },
+          {
+            "first_positive_depth": 3,
+            "source": "1",
+            "target": "0"
+          },
+          {
+            "first_positive_depth": 1,
+            "source": "1",
+            "target": "2"
+          },
+          {
+            "first_positive_depth": 2,
+            "source": "1",
+            "target": "3"
+          },
+          {
+            "first_positive_depth": 2,
+            "source": "2",
+            "target": "0"
+          },
+          {
+            "first_positive_depth": 3,
+            "source": "2",
+            "target": "1"
+          },
+          {
+            "first_positive_depth": 1,
+            "source": "2",
+            "target": "3"
+          },
+          {
+            "first_positive_depth": 1,
+            "source": "3",
+            "target": "0"
+          },
+          {
+            "first_positive_depth": 2,
+            "source": "3",
+            "target": "1"
+          },
+          {
+            "first_positive_depth": 3,
+            "source": "3",
+            "target": "2"
+          }
+        ],
+        "maximum_first_hit_depth": 3,
+        "pair_count": 12,
+        "reachable_pair_count": 12
+      },
+      "status": "PASS",
+      "strongest_claim": "For this finite exact-rational nonnegative single-letter operator, every declared off-diagonal support-graph path agrees with positive matrix-power support and the recomputed first-hit census.",
+      "strongest_claim_level": "Computational Certificate"
+    },
+    {
+      "checks": {
+        "matrix_square_entry_is_zero": true,
+        "route_contributions_cancel": true,
+        "two_union_graph_routes": true
+      },
+      "fixture_id": "signed-cancellation",
+      "kind": "signed_route_sum_cancellation",
+      "known_nonclaims": [
+        "This evaluation does not produce a canonical SOFRS, SOFAUDIT, or SOFAction artifact.",
+        "No fixture establishes adapter scientific adequacy or domain truth.",
+        "No fixture establishes mixing time, rank collapse, Lie/Hall depth, action selection, authorization, execution, outcome, or causal effect.",
+        "Union-graph reachability is not positive matrix-power support in this signed regime.",
+        "No route-depth or word-depth promotion is made.",
+        "The signed matrix is not admitted as an exact-rational Markov source."
+      ],
+      "method": "exact signed matrix multiplication with explicit route contributions",
+      "observations": {
+        "graph_route_count": 2,
+        "matrix_square_entry_0_2": "0",
+        "route_contributions": [
+          "1",
+          "-1"
+        ]
+      },
+      "status": "PASS",
+      "strongest_claim": "The union support graph contains two length-two routes from 0 to 2, while the signed matrix square has entry (0,2)=0 because the route contributions cancel.",
+      "strongest_claim_level": "Computational Observation"
+    },
+    {
+      "checks": {
+        "control_word_AB_is_nonzero": true,
+        "selected_word_AA_is_zero": true,
+        "union_graph_has_0_to_2_path": true
+      },
+      "fixture_id": "multi-letter-word",
+      "kind": "labelled_multi_letter_word",
+      "known_nonclaims": [
+        "This evaluation does not produce a canonical SOFRS, SOFAUDIT, or SOFAction artifact.",
+        "No fixture establishes adapter scientific adequacy or domain truth.",
+        "No fixture establishes mixing time, rank collapse, Lie/Hall depth, action selection, authorization, execution, outcome, or causal effect.",
+        "Union-graph reachability does not determine a selected labelled word.",
+        "No multi-letter closure or exact depth theorem is asserted.",
+        "No canonical word carrier is created by this fixture."
+      ],
+      "method": "label-preserving exact matrix products; union graph is computed separately",
+      "observations": {
+        "control_word": [
+          "A",
+          "B"
+        ],
+        "control_word_entry_0_2": "1",
+        "selected_word": [
+          "A",
+          "A"
+        ],
+        "selected_word_entry_0_2": "0",
+        "union_graph_path": [
+          "0",
+          "1",
+          "2"
+        ]
+      },
+      "status": "PASS",
+      "strongest_claim": "The unlabelled union graph has path 0->1->2, but selected word AA has zero (0,2) support; labelled word AB is the separate control with nonzero (0,2) support.",
+      "strongest_claim_level": "Computational Observation"
+    },
+    {
+      "checks": {
+        "cutoff_unreached_is_explicit": true,
+        "finite_depths_are_recorded": true,
+        "unreached_is_not_infinity": true
+      },
+      "fixture_id": "cutoff-unreached",
+      "kind": "finite_cutoff",
+      "known_nonclaims": [
+        "This evaluation does not produce a canonical SOFRS, SOFAUDIT, or SOFAction artifact.",
+        "No fixture establishes adapter scientific adequacy or domain truth.",
+        "No fixture establishes mixing time, rank collapse, Lie/Hall depth, action selection, authorization, execution, outcome, or causal effect.",
+        "UNREACHED_AT_CUTOFF is not exact infinity.",
+        "The cutoff does not establish nonexistence of a later path.",
+        "No exact word-depth or saturation claim is made beyond the declared cutoff."
+      ],
+      "method": "bounded breadth-first traversal with explicit cutoff state",
+      "observations": {
+        "maximum_depth": 2,
+        "pair_values": {
+          "0->1": 1,
+          "0->2": 2,
+          "0->3": "UNREACHED_AT_CUTOFF"
+        }
+      },
+      "status": "PASS",
+      "strongest_claim": "Under cutoff d_max=2, pair 0->3 is recorded as UNREACHED_AT_CUTOFF while the finite depths 0->1=1 and 0->2=2 are observed.",
+      "strongest_claim_level": "Computational Observation"
+    },
+    {
+      "checks": {
+        "strict_greater_than_is_used": true,
+        "sweep_changes_support_count": true
+      },
+      "fixture_id": "threshold-sweep",
+      "kind": "threshold_sensitivity",
+      "known_nonclaims": [
+        "This evaluation does not produce a canonical SOFRS, SOFAUDIT, or SOFAction artifact.",
+        "No fixture establishes adapter scientific adequacy or domain truth.",
+        "No fixture establishes mixing time, rank collapse, Lie/Hall depth, action selection, authorization, execution, outcome, or causal effect.",
+        "The sweep does not identify a scientifically privileged threshold.",
+        "Near-threshold support is not a stable domain fact without a declared numerical policy.",
+        "No tolerance-independent equivalence or adequacy claim is made."
+      ],
+      "method": "exact decimal Fraction threshold sweep under strict-greater-than",
+      "observations": {
+        "comparison": "strictly_greater_than",
+        "rows": [
+          {
+            "support_count": 2,
+            "support_pairs": [
+              [
+                "0",
+                "1"
+              ],
+              [
+                "0",
+                "2"
+              ]
+            ],
+            "threshold": "0.8e-12"
+          },
+          {
+            "support_count": 1,
+            "support_pairs": [
+              [
+                "0",
+                "2"
+              ]
+            ],
+            "threshold": "1.0e-12"
+          },
+          {
+            "support_count": 0,
+            "support_pairs": [],
+            "threshold": "1.2e-12"
+          }
+        ]
+      },
+      "status": "PASS",
+      "strongest_claim": "For the declared strict-greater-than threshold rule, the finite support count changes across the supplied threshold sweep and is therefore threshold-relative.",
+      "strongest_claim_level": "Computational Observation"
+    }
+  ],
+  "status": "PASS"
+}

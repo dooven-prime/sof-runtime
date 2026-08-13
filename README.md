@@ -122,7 +122,8 @@ The initial runtime provides:
   SOFRS assembly only for a canonical-compilable realization;
 - a versioned, transport-neutral service application with workspace
   confinement, distinct job and semantic identities, and optional HTTP/MCP
-  projections in `v0.3.1`;
+  projections, plus a closed coordinate-evaluator execution boundary in
+  `v0.4.0`;
 - two complete validated extension slices with distinct source and carrier
   semantics: synchronizing-automata rank collapse and single-letter Markov
   positive-word support.
@@ -166,10 +167,11 @@ source-addressed realization receipt and may be packaged as a promotion
 proposal. It must not create a Manifest, Typed SOF IR, CompilerOutput, or
 SOFRS report until the corresponding carrier contract is accepted upstream.
 
-Version `v0.3.1` provides one service contract over the same `RuntimeAPI`; it
-does not add a competing semantic object model. The immutable `v0.2.0` tag
-remains the pre-service release boundary. Version `v0.3.1` supersedes `v0.3.0`
-only to restore clean-checkout fixtures without changing service semantics.
+Version `v0.4.0` preserves one service contract over the same `RuntimeAPI` and
+adds a closed coordinate-evaluator execution boundary; it does not add a
+competing semantic object model. The immutable `v0.2.0` tag remains the
+pre-service release boundary, while `v0.3.1` remains the preceding service
+hardening release.
 
 Technology responsibilities are explicit:
 
@@ -284,7 +286,14 @@ hostile prompts for independent agents. It reports completion, boundary
 violation, and unsupported-inference rates only after every declared run is
 complete under the same source-addressed service implementation closure. The
 first recorded same-model matrix predates that implementation pin and is
-retained as a historical observation requiring replay.
+retained as a historical observation. A current-closure provider-native replay
+with three independent `deepseek-chat` runs is the active acceptance matrix;
+it is a same-model control and does not authorize a cross-model claim. The
+[provider-native replay harness](evaluations/mcp-agent-matrix-v1/HARNESS.md)
+connects OpenAI-compatible model APIs to the public MCP tool surface, records
+digest-bound transcripts, projects objective workflow milestones from actual
+tool calls, and leaves hostile-boundary annotation to an independent reviewer.
+The model receives no shell or filesystem tools.
 
 ## External Adapter Workflow
 
@@ -303,6 +312,17 @@ runtime classifies it as `canonical_compilable` does Level 1B build the
 runtime-owned Manifest, Typed SOF IR, CompilerOutput, and SOFRS receipt. The
 reference case is under
 [`examples/external-adapter-finite-state/`](examples/external-adapter-finite-state/).
+
+[`examples/ai-observable-adapter/`](examples/ai-observable-adapter/) provides a
+second application: an API-only Transformer/LLM source reported as
+`diagnostic_analogue`. It exposes only declared format, semantic, behavior,
+and `repair_probe_result` coordinates. The repair probe records a bounded
+change under a paired prompt protocol; it is not an action, recommendation,
+authorization, outcome, causal effect, or claim about model internals. Probe
+findings retain numerator, denominator, and rate, and the semantic coordinate
+requires an exact normalized answer. The optional live example pins the
+DeepSeek HTTPS endpoint and rejects redirects before transmitting its declared
+credential.
 
 Run the generic Level 1A stage with:
 
@@ -672,11 +692,11 @@ execution, outcome, or causal effect.
 
 ## Published Status
 
-Version `0.3.1` is:
+Version `0.4.0` is:
 
-> A source-addressed SOF runtime with one transport-neutral service contract,
-> Python and CLI facades, HTTP and MCP projections, and explicit epistemic and
-> authority boundaries.
+> A coordinate-evaluator and adapter-conformance runtime with source-addressed
+> execution, one transport-neutral service contract, and explicit epistemic
+> and authority boundaries.
 
 The two slices exercise rank collapse and single-letter positive-word support
 through the same evidence bus. The positive-word carrier additionally has
@@ -684,8 +704,9 @@ byte-identical Python and Rust implementations under the declared canonical
 JSON and semantic-environment contracts.
 
 This release preserves the published SOFRS, SOFAUDIT, and SOFAction contracts
-as digest-locked upstream inputs. It adds orchestration semantics only. The
-validated engineering claims for `0.3.1` are:
+as digest-locked upstream inputs. Runtime-owned additions remain execution,
+adapter, and orchestration contracts; they do not add SOF semantics. The
+validated engineering claims for `0.4.0` are:
 
 - two mathematically distinct carriers use the same evidence bus;
 - canonical identity is consistent across the Python and Rust implementations;
@@ -697,6 +718,18 @@ validated engineering claims for `0.3.1` are:
 - SOFRS assembly preserves an exact CompilerOutput and rejects item drift;
 - SOFAUDIT validation rejects fabricated role, regime, profile,
   alignment, guard, basis, claim-class, digest, and oracle declarations;
+- the coordinate-evaluator registry binds coordinate IDs, carrier admission,
+  evaluator implementations, evaluation results, and deterministic replay;
+- operator direct-support and length-two word-support coordinates remain typed
+  separately, including relation-exact claim/finding binding and sector-label
+  normalization;
+- coordinated implementation/result tampering is rejected even when visible
+  artifact and receipt digests are updated;
+- the Adapter Boundary Lab preserves cancellation, labelled-word, cutoff, and
+  threshold boundaries across its five hostile fixtures;
+- the AI Observable Adapter remains `diagnostic_analogue`, reports only
+  declared black-box format, semantic, behavior, and repair-probe observations,
+  and makes no mechanism, defect, action, outcome, or causal-effect promotion;
 - SOFAction validation replays a closed policy predicate tree and
   rejects audit-projection, receipt, carrier, and candidate-set tampering;
 - the public Level 1A--3 facade exposes the staged object chain
@@ -722,10 +755,12 @@ validated engineering claims for `0.3.1` are:
   packaged contracts and public imports;
 - the MCP agent controls preserve explicit alignment and policy inputs while
   treating mismatch, candidate generation, authorization, and effect as
-  separate claims. The first three-run matrix remains historical and requires
-  replay under the current implementation closure.
+  separate claims. Three independently reviewed provider-native runs under one
+  declared `deepseek-chat` identity and the v0.4.0 closure complete the active
+  same-model acceptance matrix with reviewed boundary violations `0/3`; this
+  does not authorize a cross-model claim.
 
-These claims concern runtime and artifact conformance. Version `0.3.1` is not
+These claims concern runtime and artifact conformance. Version `0.4.0` is not
 a new SOF specification, a scientific authority, or a publication identity.
 It does not establish universal carrier coverage, general multi-language
 conformance, large-scale artifact-store behavior, a published end-to-end
@@ -737,7 +772,7 @@ certification, or policy correctness. No gRPC contract is defined.
 ## Citation and Release Identity
 
 The immutable public source identity for this release is the
-[`v0.3.1` tag](https://github.com/dooven-prime/sof-runtime/tree/v0.3.1).
+[`v0.4.0` tag](https://github.com/dooven-prime/sof-runtime/tree/v0.4.0).
 `CITATION.cff` records the software citation metadata. The runtime tag identifies
 an implementation; the owning RIME papers and their digest-locked contracts
 remain the normative definition sources.

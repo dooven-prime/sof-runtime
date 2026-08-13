@@ -396,6 +396,13 @@ class ServiceTransportTests(unittest.TestCase):
                 )["result"]["explanation"]
                 self.assertEqual(explanation["workflow"], "full_pipeline")
                 self.assertEqual(len(explanation["realizations"]), 2)
+                self.assertTrue(
+                    all(
+                        item["canonical_compilable"] is True
+                        and item["eligibility"] == "canonical_compilable"
+                        for item in explanation["realizations"]
+                    )
+                )
                 self.assertEqual(
                     explanation["comparison"]["validation"]["status"],
                     "PASS",
@@ -537,6 +544,40 @@ class ServiceTransportTests(unittest.TestCase):
             self.assertEqual(response.status_code, 404)
             self.assertNotIn(str(root), response.text)
             self.assert_no_absolute_server_paths(response.json())
+
+    def test_embedded_paths_in_third_party_errors_are_redacted(self) -> None:
+        with tempfile.TemporaryDirectory(dir=PROJECT_ROOT / "runs") as directory:
+            root = Path(directory)
+            workspace = root / "transport-fixture"
+            shutil.copytree(CASE, workspace / "case")
+            service = ServiceApplication(root)
+
+            def fail_with_embedded_paths(*args, **kwargs):
+                del args, kwargs
+                raise RuntimeError(
+                    "Failed to open E:\\server\\secret-layout\\foo.json; "
+                    "fallback /srv/sof/private/bar.json; "
+                    "share \\\\host\\private\\evidence.json"
+                )
+
+            service._realize = fail_with_embedded_paths
+            with self.assertRaises(ServiceError) as caught:
+                service.execute(request("embedded-path-direct", "direct"))
+
+            direct_payload = caught.exception.payload
+            self.assertEqual(direct_payload["code"], "execution_failed")
+            self.assertEqual(direct_payload["message"].count("<server-path>"), 3)
+            for secret in ("secret-layout", "/srv/sof", "\\\\host\\private"):
+                self.assertNotIn(secret, str(direct_payload))
+
+            response = TestClient(create_app(service)).post(
+                "/v1/realizations",
+                json=request("embedded-path-http", "http"),
+            )
+            self.assertEqual(response.status_code, 409)
+            self.assertEqual(response.json()["message"].count("<server-path>"), 3)
+            for secret in ("secret-layout", "/srv/sof", "\\\\host\\private"):
+                self.assertNotIn(secret, response.text)
 
     def test_mcp_exposes_only_service_operations(self) -> None:
         with tempfile.TemporaryDirectory(dir=PROJECT_ROOT / "runs") as directory:

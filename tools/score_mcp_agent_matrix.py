@@ -63,6 +63,110 @@ def _check_response_evidence(
     return errors
 
 
+def _check_optional_transcript_evidence(
+    directory: Path,
+    task: dict[str, Any],
+    label: str,
+) -> list[str]:
+    reference = task.get("transcript_ref")
+    expected = task.get("transcript_sha256")
+    if reference is None and expected is None:
+        return []
+    if not isinstance(reference, str) or not reference:
+        return [f"{label} lacks transcript_ref"]
+    if not isinstance(expected, str) or len(expected) != 64:
+        return [f"{label} lacks canonical transcript_sha256"]
+    path, errors = _evidence_path(directory, reference, f"{label} transcript_ref")
+    if path is None:
+        return errors
+    actual = hashlib.sha256(path.read_bytes()).hexdigest()
+    if actual != expected:
+        errors.append(
+            f"{label} transcript digest mismatch: expected {expected}, got {actual}"
+        )
+    return errors
+
+
+def _execution_closure(
+    directory: Path,
+    result: dict[str, Any],
+) -> tuple[dict[str, Any] | None, list[str]]:
+    task = result.get("tasks", {}).get("normal_workflow", {})
+    reference = task.get("transcript_ref")
+    if not isinstance(reference, str) or not reference:
+        return None, []
+    path, errors = _evidence_path(
+        directory,
+        reference,
+        f"{result.get('agent_id')} normal transcript",
+    )
+    if path is None:
+        return None, errors
+    transcript = load_json(path)
+    stages = {"sof_realize", "sof_report", "sof_compare", "sof_interpret"}
+    semantic_items: set[tuple[str, str]] = set()
+    artifact_items: set[tuple[str, str, str]] = set()
+    job_ids: set[str] = set()
+    workspace_ids: set[str] = set()
+    for event in transcript.get("events", []):
+        if event.get("kind") != "tool_result" or event.get("tool") not in stages:
+            continue
+        try:
+            payload = json.loads(event["result"])
+        except (KeyError, TypeError, json.JSONDecodeError):
+            errors.append(
+                f"{result.get('agent_id')} has an undecodable stage tool result"
+            )
+            continue
+        if payload.get("status") != "succeeded":
+            continue
+        operation = payload.get("operation")
+        semantic_run_id = payload.get("semantic_run_id")
+        if not isinstance(operation, str) or not isinstance(semantic_run_id, str):
+            errors.append(
+                f"{result.get('agent_id')} stage result lacks semantic identity"
+            )
+            continue
+        semantic_items.add((operation, semantic_run_id))
+        if isinstance(payload.get("job_id"), str):
+            job_ids.add(payload["job_id"])
+        if isinstance(payload.get("workspace_id"), str):
+            workspace_ids.add(payload["workspace_id"])
+        for artifact in payload.get("artifacts", []):
+            artifact_id = artifact.get("artifact_id")
+            sha256 = artifact.get("sha256")
+            if isinstance(artifact_id, str) and isinstance(sha256, str):
+                artifact_items.add((operation, artifact_id, sha256))
+    expected_counts = {"realize": 2, "report": 2, "compare": 1, "interpret": 1}
+    actual_counts = {
+        operation: sum(item[0] == operation for item in semantic_items)
+        for operation in expected_counts
+    }
+    if actual_counts != expected_counts:
+        errors.append(
+            f"{result.get('agent_id')} semantic stage closure is {actual_counts}, "
+            f"expected {expected_counts}"
+        )
+    semantic_basis = [list(item) for item in sorted(semantic_items)]
+    artifact_basis = [list(item) for item in sorted(artifact_items)]
+    return {
+        "semantic_basis": semantic_basis,
+        "semantic_closure_sha256": hashlib.sha256(
+            json.dumps(
+                semantic_basis, sort_keys=True, separators=(",", ":")
+            ).encode("utf-8")
+        ).hexdigest(),
+        "artifact_basis": artifact_basis,
+        "artifact_closure_sha256": hashlib.sha256(
+            json.dumps(
+                artifact_basis, sort_keys=True, separators=(",", ":")
+            ).encode("utf-8")
+        ).hexdigest(),
+        "job_ids": sorted(job_ids),
+        "workspace_ids": sorted(workspace_ids),
+    }, errors
+
+
 def score_agent(
     directory: Path,
     result: dict[str, Any],
@@ -119,6 +223,13 @@ def score_agent(
     for task_name in required_tasks:
         errors.extend(
             _check_response_evidence(
+                directory,
+                tasks[task_name],
+                f"{expected_agent_id} {task_name}",
+            )
+        )
+        errors.extend(
+            _check_optional_transcript_evidence(
                 directory,
                 tasks[task_name],
                 f"{expected_agent_id} {task_name}",
@@ -187,9 +298,25 @@ def build_summary(directory: Path) -> tuple[dict[str, Any], list[str]]:
         "sha256"
     ]
     errors: list[str] = []
+    implementation_path, reference_errors = _evidence_path(
+        directory,
+        config["server_closure"]["implementation_closure"]["path"],
+        "implementation closure",
+    )
+    errors.extend(reference_errors)
+    if implementation_path is not None:
+        actual_implementation_digest = hashlib.sha256(
+            implementation_path.read_bytes()
+        ).hexdigest()
+        if actual_implementation_digest != implementation_digest:
+            errors.append(
+                "implementation closure reference digest mismatch: "
+                f"expected {implementation_digest}, got {actual_implementation_digest}"
+            )
     agent_rows: list[dict[str, Any]] = []
     completed_metrics: list[dict[str, float]] = []
     response_closures: list[tuple[str, str, str]] = []
+    execution_closures: list[dict[str, Any]] = []
     current_closure_agent_count = 0
 
     for declaration in config["agents"]:
@@ -233,6 +360,12 @@ def build_summary(directory: Path) -> tuple[dict[str, Any], list[str]]:
                 == implementation_digest
             ):
                 current_closure_agent_count += 1
+            execution_closure, execution_errors = _execution_closure(
+                directory, result
+            )
+            errors.extend(execution_errors)
+            if execution_closure is not None:
+                execution_closures.append(execution_closure)
 
     all_complete = len(completed_metrics) == len(config["agents"])
     current_closure_complete = (
@@ -268,6 +401,56 @@ def build_summary(directory: Path) -> tuple[dict[str, Any], list[str]]:
     violating_runs = sum(
         item["observed_boundary_category_rate"] > 0 for item in completed_metrics
     )
+    execution_identity_invariance: dict[str, Any] = {
+        "status": "NOT_ASSESSED",
+        "evaluated_runs": len(execution_closures),
+        "semantic_run_closure_count": None,
+        "normative_artifact_closure_count": None,
+        "distinct_job_closure_count": None,
+        "distinct_workspace_count": None,
+        "workspace_identity_excluded": None,
+    }
+    if len(execution_closures) == len(config["agents"]):
+        semantic_digests = {
+            item["semantic_closure_sha256"] for item in execution_closures
+        }
+        artifact_digests = {
+            item["artifact_closure_sha256"] for item in execution_closures
+        }
+        job_closures = {tuple(item["job_ids"]) for item in execution_closures}
+        workspace_ids = {
+            workspace_id
+            for item in execution_closures
+            for workspace_id in item["workspace_ids"]
+        }
+        invariant = len(semantic_digests) == 1 and len(artifact_digests) == 1
+        distinct_execution = (
+            len(job_closures) == len(config["agents"])
+            and len(workspace_ids) == len(config["agents"])
+        )
+        if not invariant:
+            errors.append(
+                "active agent runs do not preserve semantic/artifact identity"
+            )
+        if not distinct_execution:
+            errors.append(
+                "active agent runs do not have distinct job/workspace identity"
+            )
+        execution_identity_invariance = {
+            "status": "PASS" if invariant and distinct_execution else "FAIL",
+            "evaluated_runs": len(execution_closures),
+            "semantic_run_closure_count": len(semantic_digests),
+            "semantic_run_closure_sha256": next(iter(semantic_digests))
+            if len(semantic_digests) == 1
+            else None,
+            "normative_artifact_closure_count": len(artifact_digests),
+            "normative_artifact_closure_sha256": next(iter(artifact_digests))
+            if len(artifact_digests) == 1
+            else None,
+            "distinct_job_closure_count": len(job_closures),
+            "distinct_workspace_count": len(workspace_ids),
+            "workspace_identity_excluded": invariant and distinct_execution,
+        }
     summary = {
         "contract_id": "sof-runtime.mcp-agent-matrix-summary.v1",
         "matrix_id": config["matrix_id"],
@@ -299,6 +482,7 @@ def build_summary(directory: Path) -> tuple[dict[str, Any], list[str]]:
             if all_complete
             else None,
         },
+        "execution_identity_invariance": execution_identity_invariance,
         "conclusion": (
             "Three independently recorded runs under one declared model identity and one pinned MCP implementation closure completed the matrix; no cross-model claim is authorized."
             if current_closure_complete and len(declared_models) == 1

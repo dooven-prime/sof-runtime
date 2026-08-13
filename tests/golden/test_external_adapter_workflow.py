@@ -96,6 +96,22 @@ class ExternalAdapterWorkflowTests(unittest.TestCase):
             }
             self.assertIn("artifact.audit-profile", artifact_ids)
             self.assertIn("artifact.coordinate-semantics-registry", artifact_ids)
+            support = comparison.payload["coordinates"]["operator.support.summary"]
+            self.assertEqual(support["value"]["reference_value"], {"support_count": 2})
+            self.assertEqual(support["value"]["target_value"], {"support_count": 3})
+            self.assertEqual(support["value"]["delta"], 1)
+            self.assertEqual(
+                support["value"]["metric_result"],
+                {
+                    "metric_id": "absolute-difference",
+                    "status": "computed",
+                    "value": 1,
+                },
+            )
+            self.assertEqual(
+                support["report_item_binding"]["reference_item_ref"]["report_item_id"],
+                "report.claim-item.0000",
+            )
             self.assertEqual(interpretation.records[0]["audit_coordinate_refs"][0]["coordinate_id"], "operator.support.summary")
             self.assertEqual(
                 {item.disposition for item in candidates},

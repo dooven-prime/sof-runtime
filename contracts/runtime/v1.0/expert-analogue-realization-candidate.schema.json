@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/runtime/v1.0/expert-analogue-realization-candidate.schema.json",
+  "title": "SOF Expert Diagnostic Analogue Realization Candidate v1",
+  "description": "A canonical-compilable diagnostic analogue under the published analogue carrier. It contains declared black-box observables, not strict SOF objects or action semantics.",
+  "type": "object",
+  "required": [
+    "candidate_version",
+    "record_kind",
+    "source_id",
+    "model_identity",
+    "analogue_mapping",
+    "observable_descriptor",
+    "observable_values",
+    "coordinate_statistics",
+    "probe_protocol",
+    "raw_response_retention",
+    "claim",
+    "negative_boundary"
+  ],
+  "properties": {
+    "candidate_version": {"const": "1.0"},
+    "record_kind": {"const": "diagnostic_analogue"},
+    "source_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "model_identity": {
+      "type": "object",
+      "required": ["provider", "model_id", "configuration_id"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "model_id": {"type": "string", "minLength": 1},
+        "configuration_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "analogue_mapping": {"type": "string", "minLength": 1},
+    "observable_descriptor": {
+      "type": "object",
+      "required": ["format", "semantic", "behavior", "repair"],
+      "properties": {
+        "format": {"$ref": "#/$defs/observable_ids"},
+        "semantic": {"$ref": "#/$defs/observable_ids"},
+        "behavior": {"$ref": "#/$defs/observable_ids"},
+        "repair": {"$ref": "#/$defs/repair_observable_ids"}
+      },
+      "additionalProperties": false
+    },
+    "observable_values": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {"pattern": "^(format|semantic|behavior|repair_probe_result)\\.[a-z0-9._-]+$"},
+      "additionalProperties": {
+        "oneOf": [
+          {"type": "number", "minimum": 0, "maximum": 100},
+          {"type": "null"}
+        ]
+      }
+    },
+    "coordinate_statistics": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {"pattern": "^(format|semantic|behavior|repair_probe_result)\\.[a-z0-9._-]+$"},
+      "additionalProperties": {"$ref": "#/$defs/coordinate_statistic"}
+    },
+    "probe_protocol": {
+      "type": "object",
+      "required": ["tasks", "protocols", "scoring_version"],
+      "properties": {
+        "tasks": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "protocols": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "scoring_version": {"const": "1.0"}
+      },
+      "additionalProperties": false
+    },
+    "raw_response_retention": {"const": false},
+    "claim": {
+      "type": "object",
+      "required": ["statement", "scope", "negative_boundary"],
+      "properties": {
+        "statement": {"type": "string", "minLength": 1},
+        "scope": {"type": "string", "minLength": 1},
+        "negative_boundary": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "negative_boundary": {
+      "type": "array",
+      "minItems": 5,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "observable_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+      "uniqueItems": true
+    },
+    "repair_observable_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "pattern": "^repair_probe_result\\.[a-z0-9._-]+$"},
+      "uniqueItems": true
+    },
+    "coordinate_statistic": {
+      "type": "object",
+      "required": ["success_count", "applicable_count", "rate_percent"],
+      "properties": {
+        "success_count": {"type": "integer", "minimum": 0},
+        "applicable_count": {"type": "integer", "minimum": 0},
+        "rate_percent": {
+          "oneOf": [
+            {"type": "number", "minimum": 0, "maximum": 100},
+            {"type": "null"}
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/sources/ai-observable/v1.0/source.schema.json",
+  "title": "AI Observable Black-Box Source v1",
+  "type": "object",
+  "required": ["source_id", "mode", "provider", "model_id", "configuration_id"],
+  "properties": {
+    "source_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "mode": {"enum": ["fixture", "api"]},
+    "provider": {"type": "string", "minLength": 1},
+    "model_id": {"type": "string", "minLength": 1},
+    "configuration_id": {"type": "string", "minLength": 1},
+    "fixture_behavior": {"enum": ["reference", "format-fragile", "semantic-fragile"]},
+    "endpoint": {"const": "https://api.deepseek.com/chat/completions"},
+    "credential_env": {"const": "DeepSeek_Service_Key"},
+    "timeout_seconds": {"type": "number", "minimum": 1, "maximum": 120}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"mode": {"const": "fixture"}}, "required": ["mode"]},
+      "then": {"required": ["fixture_behavior"]}
+    },
+    {
+      "if": {"properties": {"mode": {"const": "api"}}, "required": ["mode"]},
+      "then": {
+        "required": ["endpoint", "credential_env"],
+        "properties": {"provider": {"const": "DeepSeek"}}
+      }
+    }
+  ],
+  "additionalProperties": false
+}

@@ -12,6 +12,9 @@ from sof_runtime.paths import RUNTIME_CONTRACT_ROOT
 
 
 CANONICAL_CANDIDATE_SCHEMA = RUNTIME_CONTRACT_ROOT / "expert-realization-candidate.schema.json"
+ANALOGUE_CANDIDATE_SCHEMA = (
+    RUNTIME_CONTRACT_ROOT / "expert-analogue-realization-candidate.schema.json"
+)
 EXTENSION_CANDIDATE_SCHEMA = RUNTIME_CONTRACT_ROOT / "expert-extension-realization-candidate.schema.json"
 
 
@@ -73,6 +76,43 @@ def validate_candidate(candidate: dict[str, Any]) -> str:
             label="Expert Extension Realization Candidate",
         )
         return "extension_only"
+    if candidate.get("record_kind") == "diagnostic_analogue":
+        validate_contract(
+            candidate,
+            ANALOGUE_CANDIDATE_SCHEMA,
+            label="Diagnostic Analogue Expert Realization Candidate",
+        )
+        values = candidate["observable_values"]
+        statistics = candidate["coordinate_statistics"]
+        if set(statistics) != set(values):
+            raise ContractError(
+                "diagnostic analogue coordinate statistics must exactly match observable value keys"
+            )
+        for coordinate_id, summary in statistics.items():
+            success_count = summary["success_count"]
+            applicable_count = summary["applicable_count"]
+            if success_count > applicable_count:
+                raise ContractError(
+                    f"diagnostic analogue success count exceeds applicable count for {coordinate_id}"
+                )
+            expected_rate = (
+                100.0 * success_count / applicable_count
+                if applicable_count
+                else None
+            )
+            if applicable_count == 0 and success_count != 0:
+                raise ContractError(
+                    f"diagnostic analogue empty denominator has successes for {coordinate_id}"
+                )
+            if summary["rate_percent"] != expected_rate:
+                raise ContractError(
+                    f"diagnostic analogue rate is inconsistent with counts for {coordinate_id}"
+                )
+            if values[coordinate_id] != expected_rate:
+                raise ContractError(
+                    f"diagnostic analogue observable value is inconsistent with counts for {coordinate_id}"
+                )
+        return "canonical_compilable"
     validate_contract(
         candidate,
         CANONICAL_CANDIDATE_SCHEMA,

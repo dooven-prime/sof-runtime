@@ -1,0 +1,10 @@
+{
+  "source_id": "ai-observable.deepseek.live.v1",
+  "mode": "api",
+  "provider": "DeepSeek",
+  "model_id": "deepseek-v4-flash",
+  "configuration_id": "temperature-0",
+  "endpoint": "https://api.deepseek.com/chat/completions",
+  "credential_env": "DeepSeek_Service_Key",
+  "timeout_seconds": 30
+}

@@ -30,7 +30,19 @@ SOFRS reports and an identity-aligned comparison. Hostile cases verify
 reference/target roles, regime and profile closure, all four declared alignment
 properties, guard-coordinate coupling, comparison-basis completeness,
 claim/result/certificate compatibility, artifact ID/role/digest closure, and
-the independent-oracle requirement for external-object claims.
+the independent-oracle requirement for external-object claims. Runtime
+evaluator tests additionally reject cross-module claim/finding binding,
+unknown or out-of-range pair endpoints, and evaluator result or implementation
+tampering after SOFAUDIT production. Coordinated tampering controls update the
+visible artifact digests and receipt closure but still fail the trusted
+implementation check or deterministic evaluator replay. A full
+producer-to-receipt permutation control verifies that integer pair endpoints
+follow each report's declared sector-label order.
+
+The AI observable golden test builds two `diagnostic_analogue` reports,
+compares their explicit format, semantic, behavior, and repair-probe
+coordinates, and rejects descriptor-key drift. Its repair probe is a bounded
+observable result, not action semantics.
 
 The SOFAction runtime slice consumes a Paper XIII receipt-bound fixture and
 independently replays Paper XIV Policy Predicate Language v1.0. Hostile cases
@@ -59,6 +71,13 @@ agents and three frozen task classes. Pending runs retain null rates; the
 matrix scorer distinguishes historical observations from acceptance runs under
 the current source-addressed service implementation closure. Violation scoring
 is categorical and does not compare response text.
+
+`evaluations/adapter-boundary-lab-v1/` exercises five finite adapter controls:
+exact nonnegative Markov support, signed route-sum cancellation, labelled
+multi-letter words, cutoff-unreached states, and threshold sensitivity. Its
+committed summary is digest-bound to the fixture manifest and runner. These
+records test adapter assumptions and non-promotion boundaries; they are not
+canonical SOFRS, SOFAUDIT, or SOFAction evidence.
 
 The Rust positive-word suite additionally checks exact `sof-cjson-v1` bytes,
 SHA-256 parity, NFC and numeric rejection, semantic-run identity, bundle and

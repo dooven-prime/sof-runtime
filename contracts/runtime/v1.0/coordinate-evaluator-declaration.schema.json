@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sof-runtime.local/contracts/runtime/v1.0/coordinate-evaluator-declaration.schema.json",
+  "title": "SOF Runtime Coordinate Evaluator Declaration v1",
+  "description": "Runtime execution metadata for one upstream-registered SOFAUDIT coordinate. It does not define canonical coordinate semantics.",
+  "type": "object",
+  "required": [
+    "evaluator_id",
+    "evaluator_version",
+    "implementation_id",
+    "implementation_digest",
+    "coordinate_id",
+    "coordinate_family",
+    "value_schema_id",
+    "source_selector",
+    "supported_alignment_kinds",
+    "supported_normalizations",
+    "supported_metrics",
+    "unavailable_state_policy",
+    "negative_boundary"
+  ],
+  "properties": {
+    "evaluator_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+    "evaluator_version": {"const": "1.0"},
+    "implementation_id": {
+      "enum": [
+        "sof-runtime.support-pairs.v1",
+        "sof-runtime.analogue-descriptor.v1"
+      ]
+    },
+    "implementation_digest": {
+      "type": "object",
+      "required": ["algorithm", "value"],
+      "properties": {
+        "algorithm": {"const": "sha256"},
+        "value": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "coordinate_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+    "coordinate_family": {"enum": ["operator", "word", "lie", "depth", "frozen_summary", "constraint", "response", "wall_record", "analogue"]},
+    "value_schema_id": {"type": "string", "minLength": 1},
+    "source_selector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["finding_id", "finding_kind", "claim_id", "carrier_kind", "accepted_pair_fields"],
+          "properties": {
+            "finding_id": {"type": "string", "minLength": 1},
+            "finding_kind": {"const": "boolean_support"},
+            "claim_id": {"type": "string", "minLength": 1},
+            "carrier_kind": {"type": "string", "minLength": 1},
+            "accepted_pair_fields": {
+              "type": "array",
+              "minItems": 1,
+              "items": {"enum": ["support_pairs", "pairs"]},
+              "uniqueItems": true
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["finding_id", "finding_kind", "claim_id", "carrier_kind", "descriptor_field", "required_descriptor_prefixes"],
+          "properties": {
+            "finding_id": {"type": "string", "minLength": 1},
+            "finding_kind": {"const": "status_only"},
+            "claim_id": {"type": "string", "minLength": 1},
+            "carrier_kind": {"const": "analogue"},
+            "descriptor_field": {"const": "observable_values"},
+            "required_descriptor_prefixes": {
+              "const": ["format.", "semantic.", "behavior.", "repair_probe_result."]
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "pair_encoding": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["kind", "accepted_forms", "index_base", "normalization"],
+          "properties": {
+            "kind": {"const": "sector_endpoint"},
+            "accepted_forms": {"const": ["label", "zero_based_index"]},
+            "index_base": {"const": 0},
+            "normalization": {"const": "report_sector_label"}
+          },
+          "additionalProperties": false
+        },
+        {"type": "null"}
+      ]
+    },
+    "supported_alignment_kinds": {
+      "type": "array",
+      "const": ["identity"]
+    },
+    "supported_normalizations": {
+      "type": "array",
+      "const": ["identity"]
+    },
+    "supported_metrics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"enum": ["absolute-difference", "discrete-mismatch", "coordinatewise-record"]},
+      "uniqueItems": true
+    },
+    "unavailable_state_policy": {
+      "type": "object",
+      "required": ["missing_finding", "missing_claim", "incompatible_payload"],
+      "properties": {
+        "missing_finding": {"const": "NOT_DECLARED"},
+        "missing_claim": {"const": "UNRESOLVED"},
+        "incompatible_payload": {"const": "UNRESOLVED"}
+      },
+      "additionalProperties": false
+    },
+    "negative_boundary": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"implementation_id": {"const": "sof-runtime.support-pairs.v1"}},
+        "required": ["implementation_id"]
+      },
+      "then": {
+        "required": ["pair_encoding"],
+        "properties": {
+          "pair_encoding": {"type": "object"},
+          "supported_metrics": {
+            "items": {"enum": ["absolute-difference", "discrete-mismatch"]}
+          }
+        }
+      },
+      "else": {
+        "required": ["pair_encoding"],
+        "properties": {
+          "pair_encoding": {"type": "null"},
+          "supported_metrics": {"const": ["coordinatewise-record"]}
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

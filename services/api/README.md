@@ -1,12 +1,12 @@
 # HTTP Service Reference Deployment
 
-Status: runnable `v0.3.1` reference deployment.
+Status: runnable `v0.4.0` reference deployment.
 
 Build from the repository root:
 
 ```text
-docker build -f services/api/Dockerfile -t sof-runtime:0.3.1 .
-docker run --rm -p 8080:8080 -v sof-runtime-data:/data sof-runtime:0.3.1
+docker build -f services/api/Dockerfile -t sof-runtime:0.4.0 .
+docker run --rm -p 8080:8080 -v sof-runtime-data:/data sof-runtime:0.4.0
 ```
 
 The container starts `sof serve` with `/data/service` as its confined service

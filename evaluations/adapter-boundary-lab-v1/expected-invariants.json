@@ -1,0 +1,54 @@
+{
+  "lab_id": "sof-runtime.adapter-boundary-lab",
+  "must_have_fixtures": [
+    "markov-positive",
+    "signed-cancellation",
+    "multi-letter-word",
+    "cutoff-unreached",
+    "threshold-sweep"
+  ],
+  "must_preserve": [
+    "strongest_claim_level",
+    "strongest_claim",
+    "known_nonclaims",
+    "checks",
+    "observations",
+    "input_closure"
+  ],
+  "must_not_claim": [
+    "canonical_sofrs",
+    "canonical_sofaudit",
+    "canonical_sofaction",
+    "adapter_scientific_adequacy",
+    "mixing_time",
+    "rank_collapse",
+    "lie_hall_depth",
+    "action_authorization",
+    "causal_effect"
+  ],
+  "fixture_specific": {
+    "markov-positive": [
+      "graph_first_hits_equal_matrix_power_first_hits",
+      "all_matrix_power_support_pairs_are_graph_reachable"
+    ],
+    "signed-cancellation": [
+      "two_union_graph_routes",
+      "route_contributions_cancel",
+      "matrix_square_entry_is_zero"
+    ],
+    "multi-letter-word": [
+      "union_graph_has_0_to_2_path",
+      "selected_word_AA_is_zero",
+      "control_word_AB_is_nonzero"
+    ],
+    "cutoff-unreached": [
+      "finite_depths_are_recorded",
+      "cutoff_unreached_is_explicit",
+      "unreached_is_not_infinity"
+    ],
+    "threshold-sweep": [
+      "strict_greater_than_is_used",
+      "sweep_changes_support_count"
+    ]
+  }
+}

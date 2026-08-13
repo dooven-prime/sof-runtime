@@ -1,0 +1,19 @@
+{
+  "fixture_id": "sof-runtime.mcp-agent-matrix-fixture.v1",
+  "files": [
+    {"source": "examples/external-adapter-finite-state/adapter.py", "destination": "case/adapter.py", "sha256": "f2b967456920e50914e0bd4d61c58758974122fdafda4776ebf55ae0a3327286"},
+    {"source": "examples/external-adapter-finite-state/reference/case.json", "destination": "case/reference/case.json", "sha256": "1c4537e6c877f09c1f57bd19a9443fc68f982b612e621339036615bddb40dd2e"},
+    {"source": "examples/external-adapter-finite-state/reference/source/input.json", "destination": "case/reference/source/input.json", "sha256": "7e5e443a5e64add19885ecb3d7c4a5e51fc1b78e259991d2f9f30f17ce8558eb"},
+    {"source": "examples/external-adapter-finite-state/target/case.json", "destination": "case/target/case.json", "sha256": "24a4acf21911d1110e4476df5adda7d869418380d54ebfad09d90b1a1628a476"},
+    {"source": "examples/external-adapter-finite-state/target/source/input.json", "destination": "case/target/source/input.json", "sha256": "dee4f6591c3b36eed993adb0bf1f56cdb361ed6837b992888c90b1e797420928"},
+    {"source": "examples/external-adapter-finite-state/comparison/alignment.json", "destination": "case/comparison/alignment.json", "sha256": "5b9e8e73d6df573d858855ad3527ebc1739599b7d6fdc478eaf13f285a436502"},
+    {"source": "profiles/comparison/external-adapter-identity-v2.0.json", "destination": "comparison-profile.json", "sha256": "bb84d2840a55b3278e509418ffd53a1b98a96fe5ee0c7304d0f5f109d52e9bd1"},
+    {"source": "examples/external-adapter-finite-state/action/context.json", "destination": "case/action/context.json", "sha256": "0e466dcb6b88dd4e24e832bf32db890ce2a1f82433ae27eb164907acd647f59d"},
+    {"source": "examples/external-adapter-finite-state/action/policy.json", "destination": "case/action/policy.json", "sha256": "525f71da29007a65f46f32c323bdfc931c35c4486abb5681095404f40d5d2891"},
+    {"source": "examples/external-adapter-finite-state/action/policy-basis.json", "destination": "case/action/policy-basis.json", "sha256": "d4d2e837fd974caccbdde47eccacfad0337d24d3fb9537aac058d76f549e87df"}
+  ],
+  "negative_boundary": [
+    "Workspace preparation is harness orchestration and does not enter SOF artifact identity.",
+    "The fixture manifest does not establish adapter adequacy, reference truth, defect, or action authority."
+  ]
+}

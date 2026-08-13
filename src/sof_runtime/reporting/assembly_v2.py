@@ -397,6 +397,18 @@ def assemble_report(
     ]
 
     compiler_output_ref = artifact_reference(compiler_output_path, repository_root=root)
+    alignment_readiness = presentation.get("alignment_readiness")
+    if alignment_readiness is None:
+        alignment_readiness = _alignment_metadata(
+            manifest,
+            ir,
+            report_id=presentation["report_id"],
+            system=presentation["system"],
+            assembly_profile_id=assembly_profile["assembly_profile_id"],
+            compiler_profile_id=compiler_profile["profile_id"],
+            source_artifacts=presentation["source_artifacts"],
+        )
+
     report = {
         "sofrs_version": "2.0",
         "report_id": presentation["report_id"],
@@ -431,15 +443,7 @@ def assemble_report(
             "assembly_profile_id": assembly_profile["assembly_profile_id"],
         },
         "item_bindings": bindings,
-        "alignment_readiness": _alignment_metadata(
-            manifest,
-            ir,
-            report_id=presentation["report_id"],
-            system=presentation["system"],
-            assembly_profile_id=assembly_profile["assembly_profile_id"],
-            compiler_profile_id=compiler_profile["profile_id"],
-            source_artifacts=presentation["source_artifacts"],
-        ),
+        "alignment_readiness": alignment_readiness,
         "source_mapping": deepcopy(presentation["source_mapping"]),
         "source_artifacts": deepcopy(presentation["source_artifacts"]),
         "modules": modules,

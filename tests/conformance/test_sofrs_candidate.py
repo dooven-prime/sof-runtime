@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+from typing import Callable
 import unittest
 
 from sof_runtime.compiler import compile_documents
@@ -129,12 +130,15 @@ class SofrsCandidateConformanceTests(unittest.TestCase):
         *,
         report_id: str = "strict-associative-conformance",
         system: str = "Strict associative compiler conformance fixture",
+        ir_transform: Callable[[dict], None] | None = None,
     ) -> tuple[Path, Path, dict]:
         manifest_path = (
             UPSTREAM_FIXTURES / "strict-associative-capabilities-v1.0.json"
         )
         evidence_path = UPSTREAM_FIXTURES / "strict-associative-evidence-v1.0.json"
         ir = load_json(UPSTREAM_FIXTURES / "strict-associative-ir-v1.0.json")
+        if ir_transform is not None:
+            ir_transform(ir)
         artifact_paths = {
             "artifact.manifest": manifest_path,
             "artifact.evidence": evidence_path,

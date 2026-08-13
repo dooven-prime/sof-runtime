@@ -162,6 +162,49 @@ class _ArtifactGraph:
                 raise ValueError(f"ambiguous receipts for {artifact_digest}")
         return sorted(matches, key=lambda item: str(item[0]))[0] if matches else None
 
+    def realization_receipt_for(
+        self, candidate_digest: str
+    ) -> tuple[Path, dict[str, Any]] | None:
+        """Find the realization receipt that closes over one candidate."""
+        matches: list[tuple[Path, dict[str, Any]]] = []
+        for path, payload in self.payloads.items():
+            if payload.get("workflow_version") is None:
+                continue
+            if payload.get("stage") != "realization":
+                continue
+            candidate = payload.get("realization_candidate")
+            if _digest_value(_artifact_ref(candidate).get("digest")) == candidate_digest:
+                matches.append((path, payload))
+        if len(matches) > 1:
+            distinct = {_sha256(path) for path, _ in matches}
+            if len(distinct) > 1:
+                raise ValueError(f"ambiguous realization receipts for {candidate_digest}")
+        return sorted(matches, key=lambda item: str(item[0]))[0] if matches else None
+
+    def realization_receipt_for_ref(
+        self, candidate_ref: Any
+    ) -> tuple[Path, dict[str, Any]] | None:
+        """Resolve a candidate and locate its source-addressed realization receipt."""
+        candidate_path, _ = self.resolve(candidate_ref)
+        candidate_digest = _sha256(candidate_path)
+        receipt = self.realization_receipt_for(candidate_digest)
+        if receipt is not None:
+            return receipt
+        for parent in (candidate_path.parent, *candidate_path.parents):
+            receipt_path = parent / "run-receipt.json"
+            if not receipt_path.is_file():
+                continue
+            try:
+                payload = load_json(receipt_path)
+            except (OSError, ValueError):
+                continue
+            if payload.get("stage") != "realization":
+                continue
+            receipt_candidate = payload.get("realization_candidate")
+            if _digest_value(_artifact_ref(receipt_candidate).get("digest")) == candidate_digest:
+                return receipt_path.resolve(), payload
+        return None
+
 
 def _validator_summary(receipt: dict[str, Any] | None) -> dict[str, Any] | None:
     if receipt is None:
@@ -219,6 +262,7 @@ def _realization_from_report(
     report: dict[str, Any],
     report_ref: dict[str, Any],
     receipt: dict[str, Any] | None,
+    realization_receipt: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     declaration: dict[str, Any] = {}
     candidate: dict[str, Any] = {}
@@ -232,13 +276,27 @@ def _realization_from_report(
         if "candidate_version" in payload and "candidate_kind" in payload:
             candidate = payload
     source_ref = report.get("provenance", {}).get("source_snapshot")
+    candidate_kind = candidate.get("candidate_kind")
+    eligibility = (
+        realization_receipt.get("eligibility")
+        if realization_receipt is not None
+        else candidate_kind
+    )
+    canonical_compilable = (
+        realization_receipt.get("canonical_compilable")
+        if realization_receipt is not None
+        else (candidate_kind == "canonical_compilable" if candidate_kind is not None else None)
+    )
     result = {
         "stage": "realization",
         "source": _ref_summary(source_ref),
-        "source_id": candidate.get("source_id"),
-        "eligibility": candidate.get("candidate_kind"),
-        "canonical_compilable": candidate.get("candidate_kind")
-        == "canonical_compilable",
+        "source_id": candidate.get("source_id") or (
+            realization_receipt.get("source", {}).get("source_id")
+            if realization_receipt is not None
+            else None
+        ),
+        "eligibility": eligibility,
+        "canonical_compilable": canonical_compilable,
         "adapter": {
             "id": report.get("source_mapping", {}).get("adapter_id"),
             "version": report.get("source_mapping", {}).get("adapter_version"),
@@ -251,7 +309,11 @@ def _realization_from_report(
             "unsupported": declaration.get("unsupported_capabilities", []),
             "sectorization_origin": declaration.get("sectorization_origin"),
         },
-        "known_nonclaims": candidate.get("negative_boundary", []),
+        "known_nonclaims": (
+            realization_receipt.get("negative_boundary", [])
+            if realization_receipt is not None
+            else candidate.get("negative_boundary", [])
+        ),
         "report": _report_explanation(report, report_ref, receipt),
         "claims": [
             {
@@ -464,10 +526,22 @@ def explain_run(run_directory: str | Path) -> dict[str, Any]:
             reports.append((report, ref, receipt))
 
     if reports:
-        realizations = [
-            _realization_from_report(graph, report, ref, receipt)
-            for report, ref, receipt in reports
-        ]
+        realizations = []
+        for report, ref, receipt in reports:
+            realization_receipt = None
+            for source_ref in report.get("source_artifacts", []):
+                try:
+                    receipt_node = graph.realization_receipt_for_ref(source_ref)
+                except (FileNotFoundError, ValueError):
+                    receipt_node = None
+                if receipt_node is not None:
+                    realization_receipt = receipt_node[1]
+                    break
+            realizations.append(
+                _realization_from_report(
+                    graph, report, ref, receipt, realization_receipt
+                )
+            )
     else:
         realizations = [
             _realization_from_receipt(graph, path, receipt)

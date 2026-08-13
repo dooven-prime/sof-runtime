@@ -64,6 +64,72 @@ def _capability(availability: str, description: str, configuration: dict[str, An
 
 
 def _build_manifest(candidate: dict[str, Any], declaration: dict[str, Any]) -> dict[str, Any]:
+    if candidate["record_kind"] == "diagnostic_analogue":
+        unavailable = {
+            capability: _capability(
+                "NOT_DECLARED",
+                "The black-box AI observable adapter does not declare this strict carrier.",
+            )
+            for capability in (
+                "sectorization",
+                "operator_carrier",
+                "operator_system",
+                "route_carrier",
+                "word_carrier",
+                "positive_associative_closure",
+                "observable_star_closure",
+                "sector_enriched_star_closure",
+                "lie_hall_carrier",
+                "deformation_chart",
+                "proxy_diagnostic",
+            )
+        }
+        unavailable["diagnostic_analogue"] = _capability(
+            "DECLARED",
+            "Provenance-bound black-box observable descriptors with a strict negative boundary.",
+            {"analogue_mapping_id": f"{candidate['source_id']}.analogue-mapping"},
+        )
+        return {
+            "manifest_version": "1.0",
+            "manifest_id": f"{declaration['adapter_id']}.{candidate['source_id']}.manifest",
+            "record_kind": "diagnostic_analogue",
+            "sof_semantics_version": "2.0",
+            "adapter": {
+                "id": declaration["adapter_id"],
+                "version": declaration["adapter_version"],
+                "domain": declaration["domain_id"],
+                "source_type": "black-box-ai-probe-results",
+            },
+            "space": {"dimension": None, "scalar_field": "declared_analogue"},
+            "capabilities": unavailable,
+            "semantic_convention_requirements": {
+                kind: "not_applicable"
+                for kind in (
+                    "operative_alphabet",
+                    "word_convention",
+                    "projector_letter_policy",
+                    "direction_convention",
+                    "depth_indexing",
+                    "hall_convention",
+                )
+            },
+            "run_policy_requirements": {
+                kind: ("optional" if kind == "sampling_grid" else "not_applicable")
+                for kind in (
+                    "threshold",
+                    "cutoff",
+                    "norm",
+                    "numerical_tolerance",
+                    "saturation_audit",
+                    "sampling_grid",
+                    "trajectory_parameterization",
+                )
+            },
+            "notes": [
+                "Probe tasks and protocols are descriptors, not orthogonal sectors or operative generators.",
+                "repair_probe_result records a bounded before/after probe observation only.",
+            ],
+        }
     labels = candidate["sectorization"]["labels"]
     alphabet = candidate["operative_alphabet"]["labels"]
     return {
@@ -123,6 +189,116 @@ def _build_ir(
     artifacts: dict[str, dict[str, Any]],
     rule_registry_path: Path,
 ) -> dict[str, Any]:
+    if candidate["record_kind"] == "diagnostic_analogue":
+        source_artifact_ids = [
+            "artifact.source",
+            "artifact.adapter",
+            "artifact.declaration",
+            "artifact.inspection",
+            "artifact.candidate",
+            "artifact.evidence",
+        ]
+        descriptor = {
+            "model_identity": deepcopy(candidate["model_identity"]),
+            "observable_descriptor": deepcopy(candidate["observable_descriptor"]),
+            "observable_values": deepcopy(candidate["observable_values"]),
+            "coordinate_statistics": deepcopy(candidate["coordinate_statistics"]),
+            "probe_protocol": deepcopy(candidate["probe_protocol"]),
+            "raw_response_retention": candidate["raw_response_retention"],
+            "analogue_mapping": candidate["analogue_mapping"],
+            "repair_semantics": (
+                "repair_probe_result is a declared before/after observable; it is not "
+                "a candidate action, recommendation, selection, authorization, "
+                "execution, outcome, or causal effect."
+            ),
+        }
+        return {
+            "ir_version": "1.0",
+            "record_id": f"{declaration['adapter_id']}.{candidate['source_id']}.run-001",
+            "record_kind": "diagnostic_analogue",
+            "manifest_ref": {
+                "manifest_id": manifest["manifest_id"],
+                "manifest_version": "1.0",
+                "artifact_id": "artifact.manifest",
+                "digest": artifacts["artifact.manifest"]["digest"],
+            },
+            "source": {
+                "adapter_id": declaration["adapter_id"],
+                "adapter_version": declaration["adapter_version"],
+                "source_id": candidate["source_id"],
+                "artifact_ids": source_artifact_ids,
+            },
+            "objects": [
+                {
+                    "id": "analogue.record",
+                    "kind": "diagnostic_analogue",
+                    "label": "Black-box AI observable descriptor",
+                    "carrier_id": "carrier.analogue",
+                    "provenance_artifact_ids": ["artifact.source", "artifact.candidate"],
+                    "data": descriptor,
+                    "data_schema_ref": "sof-runtime.ai-observable-descriptor.v1",
+                }
+            ],
+            "carriers": [
+                {
+                    "id": "carrier.analogue",
+                    "kind": "analogue",
+                    "capability_id": "diagnostic_analogue",
+                    "semantics": "Declared format, semantic, behavior, and repair-probe result descriptors at the API boundary.",
+                    "object_ids": ["analogue.record"],
+                    "semantic_convention_ids": [],
+                }
+            ],
+            "semantic_conventions": [],
+            "run_policies": [],
+            "artifacts": list(artifacts.values())
+            + [
+                _ir_artifact(
+                    "artifact.rule-registry",
+                    rule_registry_path,
+                    "proof-reference",
+                    "1.0",
+                )
+            ],
+            "certificates": [],
+            "findings": [
+                {
+                    "id": "finding.analogue",
+                    "kind": "status_only",
+                    "carrier_id": "carrier.analogue",
+                    "subject_object_ids": ["analogue.record"],
+                    "value": descriptor,
+                    "result_state": "OBSERVED",
+                    "semantic_convention_ids": [],
+                    "run_policy_ids": [],
+                    "certificate_ids": [],
+                    "artifact_ids": ["artifact.source", "artifact.candidate"],
+                }
+            ],
+            "claims": [
+                {
+                    "id": "claim.analogue",
+                    "statement": candidate["claim"]["statement"],
+                    "result_state": "OBSERVED",
+                    "claim_status": "Computational Observation",
+                    "capability_ids": ["diagnostic_analogue"],
+                    "carrier_ids": ["carrier.analogue"],
+                    "object_ids": ["analogue.record"],
+                    "finding_ids": ["finding.analogue"],
+                    "semantic_convention_ids": [],
+                    "run_policy_ids": [],
+                    "hypotheses": [
+                        "The exact model/configuration and probe protocol are declared",
+                        "The observable values are computed by the source-addressed adapter",
+                    ],
+                    "certificate_ids": [],
+                    "artifact_ids": ["artifact.source", "artifact.candidate"],
+                    "scope": candidate["claim"]["scope"],
+                    "negative_boundary": candidate["claim"]["negative_boundary"],
+                }
+            ],
+            "derivations": [],
+        }
     source_id = candidate["source_id"]
     labels = candidate["sectorization"]["labels"]
     alphabet = candidate["operative_alphabet"]["labels"]
@@ -164,8 +340,15 @@ def _build_ir(
     }
 
 
-def _external_basis(source_artifacts: list[dict[str, Any]]) -> dict[str, Any]:
-    entries = [("source_identity", "source-snapshot-pinned", "SATISFIED"), ("object_level", "object-level-recomputation", "NOT_ASSESSED"), ("structure_level", "realization-structure-validation", "SATISFIED"), ("semantic_adequacy", "domain-semantic-adequacy", "NOT_ASSESSED")]
+def _external_basis(
+    source_artifacts: list[dict[str, Any]], *, record_kind: str
+) -> dict[str, Any]:
+    structure_status = (
+        "NOT_APPLICABLE"
+        if record_kind == "diagnostic_analogue"
+        else "SATISFIED"
+    )
+    entries = [("source_identity", "source-snapshot-pinned", "SATISFIED"), ("object_level", "object-level-recomputation", "NOT_ASSESSED"), ("structure_level", "realization-structure-validation", structure_status), ("semantic_adequacy", "domain-semantic-adequacy", "NOT_ASSESSED")]
     packages = []
     constraints = []
     for index, (level, constraint_id, status) in enumerate(entries):
@@ -345,17 +528,58 @@ def build_external_report(
         run_dir / "compiler" / "sofrs-validation-receipt.schema.json",
     )
     source_artifact_refs = [_ref(path) for path in (source_path, adapter_path, declaration_path, inspection_path, candidate_path, evidence_path)]
+    is_analogue = candidate["record_kind"] == "diagnostic_analogue"
     presentation = {
         "report_id": f"{declaration['adapter_id']}.{candidate['source_id']}.sofreport",
-        "system": f"External adapter reference: {declaration['domain_id']}",
-        "strict_reconstruction": {"candidate_status": "not_applicable", "available_requirements": [], "missing_requirements": [], "evaluator_id": f"{declaration['adapter_id']}.source-validator", "evaluator_version": declaration["adapter_version"], "interpretation": "The external adapter supplied an explicit finite complex realization candidate."},
-        "source_mapping": {"status": "adapter-derived", "construction": "Runtime-owned Manifest/IR construction from an admitted ExpertAdapter RealizationCandidate.", "adapter_id": declaration["adapter_id"], "adapter_version": declaration["adapter_version"], "justification": "The adapter maps domain transition matrices to a declared sectorization and operative alphabet.", "limitations": ["The runtime does not infer omitted carriers or domain adequacy."]},
+        "system": (
+            f"Black-box AI observable report: {candidate['model_identity']['model_id']}"
+            if is_analogue
+            else f"External adapter reference: {declaration['domain_id']}"
+        ),
+        "strict_reconstruction": {"candidate_status": ("no" if is_analogue else "not_applicable"), "available_requirements": [], "missing_requirements": (["strict_finite_complex_realization_not_declared"] if is_analogue else []), "evaluator_id": f"{declaration['adapter_id']}.source-validator", "evaluator_version": declaration["adapter_version"], "interpretation": ("This diagnostic analogue intentionally does not declare a strict finite complex realization." if is_analogue else "The external adapter supplied an explicit finite complex realization candidate.")},
+        "source_mapping": {"status": "adapter-derived", "construction": "Runtime-owned Manifest/IR construction from an admitted ExpertAdapter RealizationCandidate.", "adapter_id": declaration["adapter_id"], "adapter_version": declaration["adapter_version"], "justification": (candidate["analogue_mapping"] if is_analogue else "The adapter maps domain transition matrices to a declared sectorization and operative alphabet."), "limitations": (["The mapping exposes API-level observables only and does not identify model internals."] if is_analogue else ["The runtime does not infer omitted carriers or domain adequacy."])},
         "source_artifacts": source_artifact_refs,
-        "failure_modes": ["This Level 1 workflow does not compare two reports or interpret a SOFAUDIT.", "Direct support is certified only under the adapter-declared source and threshold boundary."],
+        "failure_modes": (candidate["negative_boundary"] if is_analogue else ["This Level 1 workflow does not compare two reports or interpret a SOFAUDIT.", "Direct support is certified only under the adapter-declared source and threshold boundary."]),
         "provenance": {"kind": "native_generation", "producer": _ref(workflow_implementation_snapshot), "source_snapshot": _ref(source_path), "adapter": _ref(adapter_path), "compiler_profile_ref": _ref(compiler_profile_path), "compiler_output_ref": _ref(compiler_output_path), "assembly_profile_ref": _ref(assembly_profile_path)},
-        "external_basis_registry": _external_basis(source_artifact_refs),
-        "claim_classifications": {"claim.direct-support": {"claim_target": "representation_interface", "certificate_class": "protocol_conformance", "classification_source": "independent_validator", "external_basis_refs": ["basis.source.identity", "basis.structure.level"], "external_constraint_ids": ["source-snapshot-pinned", "realization-structure-validation"]}},
+        "external_basis_registry": _external_basis(
+            source_artifact_refs, record_kind=candidate["record_kind"]
+        ),
+        "claim_classifications": ({"claim.analogue": {"claim_target": "representation_interface", "certificate_class": None, "classification_source": "domain_adapter", "external_basis_refs": ["basis.source.identity"], "external_constraint_ids": ["source-snapshot-pinned"]}} if is_analogue else {"claim.direct-support": {"claim_target": "representation_interface", "certificate_class": "protocol_conformance", "classification_source": "independent_validator", "external_basis_refs": ["basis.source.identity", "basis.structure.level"], "external_constraint_ids": ["source-snapshot-pinned", "realization-structure-validation"]}}),
     }
+    if is_analogue:
+        presentation["alignment_readiness"] = {
+            "adapter": {
+                "id": declaration["adapter_id"],
+                "version": declaration["adapter_version"],
+            },
+            "compiler_profile_id": compiler_profile["profile_id"],
+            "assembly_profile_id": assembly_profile["assembly_profile_id"],
+            "sector_metadata": {
+                "status": "NOT_APPLICABLE",
+                "labels": [],
+                "provenance": None,
+                "ranks_or_dimensions": [],
+                "semantics": None,
+            },
+            "observable_metadata": {
+                "status": "PRESENT",
+                "labels": sorted(candidate["observable_values"]),
+                "provenance": declaration["adapter_id"],
+                "ranks_or_dimensions": [],
+                "semantics": "Declared API-level black-box probe coordinates.",
+            },
+            "carrier_kinds": ["analogue"],
+            "semantic_conventions": [
+                {"id": "semantic.analogue", "kind": "custom"}
+            ],
+            "run_policies": [{"id": "run.probe-protocol", "kind": "custom"}],
+            "comparison_keys": [
+                f"report:{presentation['report_id']}",
+                "record-kind:diagnostic_analogue",
+                "observable-frame:ai-observable-v1",
+            ],
+            "source_artifact_digests": deepcopy(source_artifact_refs),
+        }
     report = assemble_report(manifest_path, ir_path, compiler_profile_path, compiler_output_path, assembly_profile_path, assembly_implementation=_ref(assembly_implementation_snapshot), presentation=presentation, repository_root=PROJECT_ROOT, verify_artifacts=True)
     report_path = write_json(run_dir / "report" / "result.sofreport.json", report)
     validate_report(report_path, repository_root=PROJECT_ROOT)

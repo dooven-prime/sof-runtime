@@ -1,10 +1,10 @@
 {
   "contract_id": "sof-runtime.service-implementation-closure.v1",
-  "runtime_version": "0.3.1",
+  "runtime_version": "0.4.0",
   "files": [
     {
       "path": "pyproject.toml",
-      "sha256": "f07d17c476269f873d172b26b29e82c571da0d0557f0c31a92f2d3604ef2f1a9"
+      "sha256": "cfc73205650df6a4f8314b90fda77a8500ce5725bfc2ea8da9be4c87ed75e867"
     },
     {
       "path": "contracts/upstream.lock.json",
@@ -27,8 +27,68 @@
       "sha256": "f21a15b5f37289c96b58b5a13d6b75b133c1c4d7d7520fd0b6f2dbc0667a115c"
     },
     {
+      "path": "contracts/runtime/v1.0/artifact-ref.schema.json",
+      "sha256": "185d2793010bbd2a2c543e0d050166fd8ff8962374c1e41b76360c672d08a122"
+    },
+    {
+      "path": "contracts/runtime/v1.0/compiler-output.schema.json",
+      "sha256": "c7732128075b94eb10a1cf31445050451853d51d6bdc4c3480dbfb960cd0689e"
+    },
+    {
+      "path": "contracts/runtime/v1.0/coordinate-evaluation-result.schema.json",
+      "sha256": "a053d10f714dd59edebc1c3786ec113510d3fed9dd10acaca881d06d5c444efe"
+    },
+    {
+      "path": "contracts/runtime/v1.0/coordinate-evaluator-declaration.schema.json",
+      "sha256": "3d8798b1dcb9907663154bb3f12a87602f9d4122f123eb5c027506217ea6f6ab"
+    },
+    {
+      "path": "contracts/runtime/v1.0/coordinate-evaluator-registry.json",
+      "sha256": "45b60843ddb3cf0b819657ccc9b484b09e4318fdddbee55801bed12f2ae9b70e"
+    },
+    {
+      "path": "contracts/runtime/v1.0/coordinate-evaluator-registry.schema.json",
+      "sha256": "ed04dee1f6586b4e1b5414ce0588003ead06aec4e6bf43a1e6adea285f0a70bc"
+    },
+    {
+      "path": "contracts/runtime/v1.0/expert-adapter-declaration.schema.json",
+      "sha256": "975f887d8019ae210ffbf7441cd83d62a025b555a0d3ca04896debd6d3038741"
+    },
+    {
+      "path": "contracts/runtime/v1.0/expert-analogue-realization-candidate.schema.json",
+      "sha256": "b18bda31125e7ae290e4a7e4b7a94b6d7724c256e909459f5d753fe13429ee70"
+    },
+    {
+      "path": "contracts/runtime/v1.0/expert-extension-realization-candidate.schema.json",
+      "sha256": "af2c431430203b8d3e01be48e42ec39628cd2ad007d2dfc68c29c2ef2881a935"
+    },
+    {
+      "path": "contracts/runtime/v1.0/expert-realization-candidate.schema.json",
+      "sha256": "d3d9376c8c5a716a70c3738e5582dcf38061cd3d1db96d765b2ebfc4caaa4b8b"
+    },
+    {
+      "path": "contracts/runtime/v1.0/finding-envelope.schema.json",
+      "sha256": "3dd69c31eee399629b0b56734056dbca6c07d0c7ff9d7653da5a44a1221de76d"
+    },
+    {
+      "path": "contracts/runtime/v1.0/plugin-manifest.schema.json",
+      "sha256": "3837322327489080d177b47a825fcf7f2b4b5411caa8d822415adf49e4d3a651"
+    },
+    {
+      "path": "contracts/runtime/v1.0/promotion-package.schema.json",
+      "sha256": "8412d33f478b17f9c4601dd1521ea3028b054ad0a13c5b17d6b3c07d53e7d4b0"
+    },
+    {
+      "path": "contracts/runtime/v1.0/run-request.schema.json",
+      "sha256": "5b9e9a0709aee065d20baaa5f9c6496a55ee38f95fa73a5a1418a80893c2976f"
+    },
+    {
+      "path": "contracts/runtime/v1.0/run-response.schema.json",
+      "sha256": "7c9b8a943459ecb23651025b46b556e47fd9da52b8df2786a0ce143d29fc02ae"
+    },
+    {
       "path": "src/sof_runtime/__init__.py",
-      "sha256": "e28edb5da2711fc53413926405fdd3572af15a33beeeecde1dda46d4c625ca4b"
+      "sha256": "ac6f604c4fcb32943433f5dc9e989f6c7c1a653e871d073b0978f2de95b7fc3b"
     },
     {
       "path": "src/sof_runtime/action/__init__.py",
@@ -52,7 +112,7 @@
     },
     {
       "path": "src/sof_runtime/adapters/expert.py",
-      "sha256": "d805eda7bfab435ba6e9cb045c5fceb191fc4c1e6971f2ca6789b5d0447db234"
+      "sha256": "81da05ddb2197c0fcf1a382695edca4da6dbf809100bc62e1d83bf90acd6eb0a"
     },
     {
       "path": "src/sof_runtime/adapters/markov.py",
@@ -108,15 +168,19 @@
     },
     {
       "path": "src/sof_runtime/comparison/__init__.py",
-      "sha256": "f7df055f1d7007d525b721398b84b5d87a2bfe1bdea307b47488e56b3f332550"
+      "sha256": "29571a29fd74c1e4975374a55861e7446a5cc0c7ec15fab801b17a766c35c783"
+    },
+    {
+      "path": "src/sof_runtime/comparison/evaluators.py",
+      "sha256": "b39478ebd8bad57987fd592b8a1545a61f2830ae29c622f51075ce16293bc3b5"
     },
     {
       "path": "src/sof_runtime/comparison/producer_v2.py",
-      "sha256": "102a774a09c387e9db3198fc3eff97aafb806c7ff06b4fb0210c99e75c5e9a91"
+      "sha256": "939bc86d2e8a4e26832509632659118816bbf564cd9337844606f446229cbaaa"
     },
     {
       "path": "src/sof_runtime/comparison/validation_v2.py",
-      "sha256": "6664701a28865264bbe1c0ee5107e2bb3b95d7fd8054005d60b40a1a59609880"
+      "sha256": "e6829e1db21d2fd03789a341f7f0ca287fa6c0e3b37ef82cbdbf98936f8f2d61"
     },
     {
       "path": "src/sof_runtime/compiler/__init__.py",
@@ -140,7 +204,7 @@
     },
     {
       "path": "src/sof_runtime/explain.py",
-      "sha256": "fe5bc4dea45a19696595a25ed26758610582bc91ff0f912c3a0641e2edff8e99"
+      "sha256": "ac77de78ac13a18ec21900f942c3cebf275e58011f610b1b6a7055d8845d3317"
     },
     {
       "path": "src/sof_runtime/models/__init__.py",
@@ -148,7 +212,7 @@
     },
     {
       "path": "src/sof_runtime/paths.py",
-      "sha256": "d962c3a892f58f00783fa4acd5235a40068016c287b6098f5aa89aa4ede661c9"
+      "sha256": "0d1d24ea5402193a542b4b1a0051078cc6bd5b51da81502398698c5c495a3444"
     },
     {
       "path": "src/sof_runtime/plugins/__init__.py",
@@ -164,11 +228,11 @@
     },
     {
       "path": "src/sof_runtime/reporting/assembly_v2.py",
-      "sha256": "21137aced870455a6d65b7ec8910d72959002393d556489a2d6fbe01a72f3186"
+      "sha256": "e2e70e40689ce89e5b83989dcdbd7e57aa739035775bc221f757e7bd689c8f54"
     },
     {
       "path": "src/sof_runtime/reporting/validation_v2.py",
-      "sha256": "299c716b7ee398b4a5fa37928efba5d178bda071be1f8785810e536547fcd3ee"
+      "sha256": "523dd48067c479ea4f4ba1b59f05242c3d49eb7e1ed2ca577d80c3c624ff17fd"
     },
     {
       "path": "src/sof_runtime/run_identity.py",
@@ -192,7 +256,7 @@
     },
     {
       "path": "src/sof_runtime/service/application.py",
-      "sha256": "11c190f81b7be50c72687347d788ff2543ec9300f0da20d8476875257455ee9f"
+      "sha256": "7d5c0c0d4c5fdafe8272a8419410c8f0518211961d1e9eda5a2df1bcd193767a"
     },
     {
       "path": "src/sof_runtime/service/jobs.py",
@@ -244,12 +308,12 @@
     },
     {
       "path": "src/sof_runtime/workflow_external_adapter.py",
-      "sha256": "e4e68f1cccfbdcd91403ce273dd6dd1e30b219d3113b62790183201eee00641f"
+      "sha256": "9a701c3c7d1fef53816abc33756cf7a00926de5e71d2a831432617158a41190e"
     },
     {
       "path": "src/sof_runtime/workflow_positive_word.py",
       "sha256": "a71f82c72aaa28d814fbb0bd2bfb028ee25b21b714409fe66e5b8bf391ad73af"
     }
   ],
-  "closure_sha256": "c5bd38280bea060fbfdbeb5039891d4efbef5b67e4db6eb9ed8c31d629059acc"
+  "closure_sha256": "48ec23411a67e290fcb523b86169b0e021263e88997ca59e6fc3bc778ee43e53"
 }

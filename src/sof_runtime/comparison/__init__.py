@@ -4,10 +4,12 @@ from .validation_v2 import (
     validate_audit_validation_receipt,
 )
 from .producer_v2 import build_comparison
+from .evaluators import CoordinateEvaluatorRegistry
 
 __all__ = [
     "build_audit_validation_receipt",
     "validate_audit",
     "validate_audit_validation_receipt",
     "build_comparison",
+    "CoordinateEvaluatorRegistry",
 ]

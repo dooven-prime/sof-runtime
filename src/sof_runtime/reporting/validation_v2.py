@@ -102,6 +102,9 @@ def _presentation(report: dict[str, Any]) -> dict[str, Any]:
         "source_artifacts": deepcopy(report["source_artifacts"]),
         "failure_modes": deepcopy(report["failure_modes"]),
         "provenance": deepcopy(report["provenance"]),
+        # Alignment readiness is report-level declared metadata. Its source
+        # artifacts and schema are validated before faithful assembly replay.
+        "alignment_readiness": deepcopy(report["alignment_readiness"]),
         "external_basis_registry": deepcopy(report["external_basis_registry"]),
         "claim_classifications": {
             claim["claim_id"]: {

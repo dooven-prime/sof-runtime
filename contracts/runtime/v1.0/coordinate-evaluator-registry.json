@@ -1,0 +1,119 @@
+{
+  "registry_id": "sof-runtime.coordinate-evaluators.v1",
+  "registry_version": "1.0",
+  "evaluators": [
+    {
+      "evaluator_id": "sof-runtime.operator-support-summary.v1",
+      "evaluator_version": "1.0",
+      "implementation_id": "sof-runtime.support-pairs.v1",
+      "implementation_digest": {
+        "algorithm": "sha256",
+        "value": "b39478ebd8bad57987fd592b8a1545a61f2830ae29c622f51075ce16293bc3b5"
+      },
+      "coordinate_id": "operator.support.summary",
+      "coordinate_family": "operator",
+      "value_schema_id": "operator.support.v1",
+      "source_selector": {
+        "finding_id": "finding.direct-support",
+        "finding_kind": "boolean_support",
+        "claim_id": "claim.direct-support",
+        "carrier_kind": "operator",
+        "accepted_pair_fields": ["support_pairs", "pairs"]
+      },
+      "pair_encoding": {
+        "kind": "sector_endpoint",
+        "accepted_forms": ["label", "zero_based_index"],
+        "index_base": 0,
+        "normalization": "report_sector_label"
+      },
+      "supported_alignment_kinds": ["identity"],
+      "supported_normalizations": ["identity"],
+      "supported_metrics": ["absolute-difference", "discrete-mismatch"],
+      "unavailable_state_policy": {
+        "missing_finding": "NOT_DECLARED",
+        "missing_claim": "UNRESOLVED",
+        "incompatible_payload": "UNRESOLVED"
+      },
+      "negative_boundary": [
+        "This evaluator executes registered operator-support comparison mechanics; it does not establish adapter adequacy or object truth."
+      ]
+    },
+    {
+      "evaluator_id": "sof-runtime.word-length-two-support-summary.v1",
+      "evaluator_version": "1.0",
+      "implementation_id": "sof-runtime.support-pairs.v1",
+      "implementation_digest": {
+        "algorithm": "sha256",
+        "value": "b39478ebd8bad57987fd592b8a1545a61f2830ae29c622f51075ce16293bc3b5"
+      },
+      "coordinate_id": "word.support.length-2.summary",
+      "coordinate_family": "word",
+      "value_schema_id": "word.support.v1",
+      "source_selector": {
+        "finding_id": "finding.word-length-two",
+        "finding_kind": "boolean_support",
+        "claim_id": "claim.word-length-two",
+        "carrier_kind": "word",
+        "accepted_pair_fields": ["pairs"]
+      },
+      "pair_encoding": {
+        "kind": "sector_endpoint",
+        "accepted_forms": ["label", "zero_based_index"],
+        "index_base": 0,
+        "normalization": "report_sector_label"
+      },
+      "supported_alignment_kinds": ["identity"],
+      "supported_normalizations": ["identity"],
+      "supported_metrics": ["discrete-mismatch"],
+      "unavailable_state_policy": {
+        "missing_finding": "NOT_DECLARED",
+        "missing_claim": "UNRESOLVED",
+        "incompatible_payload": "UNRESOLVED"
+      },
+      "negative_boundary": [
+        "Length-two word support is not direct operator support, graph reachability, route support, or exact word depth."
+      ]
+    },
+    {
+      "evaluator_id": "sof-runtime.ai-observable-descriptor.v1",
+      "evaluator_version": "1.0",
+      "implementation_id": "sof-runtime.analogue-descriptor.v1",
+      "implementation_digest": {
+        "algorithm": "sha256",
+        "value": "b39478ebd8bad57987fd592b8a1545a61f2830ae29c622f51075ce16293bc3b5"
+      },
+      "coordinate_id": "ai.observable.descriptor",
+      "coordinate_family": "analogue",
+      "value_schema_id": "analogue.descriptor.v1",
+      "source_selector": {
+        "finding_id": "finding.analogue",
+        "finding_kind": "status_only",
+        "claim_id": "claim.analogue",
+        "carrier_kind": "analogue",
+        "descriptor_field": "observable_values",
+        "required_descriptor_prefixes": [
+          "format.",
+          "semantic.",
+          "behavior.",
+          "repair_probe_result."
+        ]
+      },
+      "pair_encoding": null,
+      "supported_alignment_kinds": ["identity"],
+      "supported_normalizations": ["identity"],
+      "supported_metrics": ["coordinatewise-record"],
+      "unavailable_state_policy": {
+        "missing_finding": "NOT_DECLARED",
+        "missing_claim": "UNRESOLVED",
+        "incompatible_payload": "UNRESOLVED"
+      },
+      "negative_boundary": [
+        "This evaluator compares declared black-box observable values only; it does not identify model internals.",
+        "repair_probe_result records a declared probe transition and is not a CandidateAction, recommendation, authorization, execution, outcome, or causal effect."
+      ]
+    }
+  ],
+  "negative_boundary": [
+    "This runtime registry maps exact upstream coordinate identifiers to closed implementations; it cannot create SOFAUDIT coordinate semantics or evidence."
+  ]
+}

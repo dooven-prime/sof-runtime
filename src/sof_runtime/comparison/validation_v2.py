@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import Counter
+import json
 from pathlib import Path
 from typing import Any
 
@@ -9,6 +10,14 @@ from sof_runtime.contracts import ContractError, load_json, validate_contract
 from sof_runtime.paths import COMPARISON_CONTRACT_ROOT, PROJECT_ROOT
 from sof_runtime.reporting.assembly_v2 import resolve_artifact_reference
 from sof_runtime.reporting.validation_v2 import validate_receipt, validate_report
+
+from . import evaluators as evaluator_module
+from .evaluators import (
+    EVALUATION_RESULT_SCHEMA,
+    EVALUATOR_REGISTRY,
+    EVALUATOR_REGISTRY_SCHEMA,
+    CoordinateEvaluatorRegistry,
+)
 
 
 AUDIT_SCHEMA = COMPARISON_CONTRACT_ROOT / "sofaudit.schema.json"
@@ -75,6 +84,18 @@ CLAIM_COMPATIBILITY = {
         "independent_validator",
     },
 }
+
+
+def _complete_json_bytes(value: Any) -> bytes:
+    return json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+        allow_nan=False,
+    ).encode("ascii")
+
+
 def _artifact_reference(artifact: dict[str, Any]) -> dict[str, Any]:
     return {"uri": artifact["uri"], "digest": artifact["digest"]}
 
@@ -100,6 +121,152 @@ def _report_items(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
             if item_id is not None:
                 items[item_id] = item
     return items
+
+
+def _validate_runtime_evaluator_closure(
+    audit: dict[str, Any],
+    artifact_map: dict[str, dict[str, Any]],
+    role_map: dict[str, dict[str, Any]],
+    resolved_artifacts: dict[str, Path],
+    reports: dict[str, dict[str, Any]],
+    alignment_specification: dict[str, Any],
+    comparison_specification: dict[str, Any],
+    profile: dict[str, Any],
+    regime: str,
+) -> None:
+    if audit["provenance"]["kind"] != "native" or audit["provenance"].get(
+        "generator_id"
+    ) != "sof-runtime.external-adapter-comparison":
+        return
+    registry_artifact = role_map.get("coordinate-evaluator-registry")
+    implementation_artifact = role_map.get("coordinate-evaluator-implementation")
+    if registry_artifact is None or implementation_artifact is None:
+        raise ContractError("runtime SOFAUDIT lacks evaluator execution closure")
+    registry = load_json(resolved_artifacts[registry_artifact["id"]])
+    validate_contract(
+        registry,
+        EVALUATOR_REGISTRY_SCHEMA,
+        label="coordinate evaluator registry snapshot",
+    )
+    trusted_registry = load_json(EVALUATOR_REGISTRY)
+    validate_contract(
+        trusted_registry,
+        EVALUATOR_REGISTRY_SCHEMA,
+        label="trusted coordinate evaluator registry",
+    )
+    if canonical_json_bytes(registry) != canonical_json_bytes(trusted_registry):
+        raise ContractError(
+            "coordinate evaluator registry snapshot differs from the trusted registry"
+        )
+    implementation_path = resolved_artifacts[implementation_artifact["id"]]
+    implementation_digest = sha256_file(implementation_path)
+    trusted_implementation_digest = sha256_file(
+        Path(evaluator_module.__file__).resolve()
+    )
+    if implementation_digest != trusted_implementation_digest:
+        raise ContractError(
+            "coordinate evaluator implementation differs from the trusted implementation"
+        )
+    declarations = {
+        item["coordinate_id"]: item for item in registry["evaluators"]
+    }
+    evaluator_registry = CoordinateEvaluatorRegistry(trusted_registry)
+    required_generation_ids = {
+        registry_artifact["id"],
+        implementation_artifact["id"],
+    }
+    for coordinate_id, coordinate in audit["coordinates"].items():
+        role = f"coordinate-evaluation-result-{coordinate_id}"
+        result_artifact = role_map.get(role)
+        if result_artifact is None:
+            raise ContractError(f"{coordinate_id} lacks an evaluation result artifact")
+        result = load_json(resolved_artifacts[result_artifact["id"]])
+        validate_contract(
+            result,
+            EVALUATION_RESULT_SCHEMA,
+            label=f"coordinate evaluation result {coordinate_id}",
+        )
+        declaration = declarations.get(coordinate_id)
+        if declaration is None:
+            raise ContractError(f"{coordinate_id} lacks an evaluator declaration")
+        if declaration["implementation_digest"] != {
+            "algorithm": "sha256",
+            "value": implementation_digest,
+        }:
+            raise ContractError(
+                f"{coordinate_id} implementation differs from its registry digest"
+            )
+        allowed_carriers = (
+            set(profile["carrier_requirements"]["strict"])
+            if regime == "strict_vs_strict"
+            else set(profile["carrier_requirements"]["analogue"])
+            if regime == "analogue_vs_analogue"
+            else set(profile["carrier_requirements"]["strict"])
+            | set(profile["carrier_requirements"]["analogue"])
+        )
+        if declaration["source_selector"]["carrier_kind"] not in allowed_carriers:
+            raise ContractError(
+                f"{coordinate_id} evaluator carrier is absent from the Audit Profile"
+            )
+        if any(
+            result[field] != declaration[field]
+            for field in (
+                "evaluator_id",
+                "evaluator_version",
+                "coordinate_id",
+                "coordinate_family",
+                "value_schema_id",
+            )
+        ):
+            raise ContractError(f"{coordinate_id} result differs from evaluator registry")
+        expected_projection = {
+            "comparison_state": result["comparison_state"],
+            "coordinate_family": result["coordinate_family"],
+            "value_schema_id": result["value_schema_id"],
+            "value": (
+                {
+                    "reference_value": result["reference_value"],
+                    "target_value": result["target_value"],
+                    "normalized_reference_value": result[
+                        "normalized_reference_value"
+                    ],
+                    "normalized_target_value": result["normalized_target_value"],
+                    "relation": result["relation"],
+                    "delta": result["delta"],
+                    "unit": result["unit"],
+                    "metric_result": result["metric_result"],
+                    "policy_refs": [],
+                    "oracle_ref": None,
+                }
+                if result["status"] == "computed"
+                else None
+            ),
+        }
+        if any(coordinate[field] != value for field, value in expected_projection.items()):
+            raise ContractError(f"{coordinate_id} differs from its evaluation result")
+        replay = evaluator_registry.evaluate(
+            coordinate_id,
+            reports["reference"],
+            reports["target"],
+            alignment_specification,
+            comparison_specification,
+        ).result
+        if _complete_json_bytes(replay) != _complete_json_bytes(result):
+            raise ContractError(
+                f"{coordinate_id} evaluation result differs from trusted replay"
+            )
+        required_coordinate_ids = {
+            registry_artifact["id"],
+            implementation_artifact["id"],
+            result_artifact["id"],
+        }
+        if required_coordinate_ids - set(coordinate["source_artifact_ids"]):
+            raise ContractError(f"{coordinate_id} lacks evaluator artifact references")
+        required_generation_ids.add(result_artifact["id"])
+    if required_generation_ids - set(audit["provenance"]["generation_artifact_ids"]):
+        raise ContractError("runtime SOFAUDIT provenance omits evaluator artifacts")
+    if required_generation_ids - set(audit["claim"]["source_artifact_ids"]):
+        raise ContractError("runtime SOFAUDIT claim omits evaluator artifacts")
 
 
 def _classification_error(item: dict[str, Any], label: str) -> str | None:
@@ -327,6 +494,16 @@ def _validate_semantics(
     }
     if profile != expected_profile:
         raise ContractError("embedded Audit Profile differs from its source artifact")
+    profile_comparison_specification = profile_document.get(
+        "comparison_specification"
+    )
+    if (
+        profile_comparison_specification is not None
+        and audit["comparison_specification"] != profile_comparison_specification
+    ):
+        raise ContractError(
+            "comparison specification differs from its profile artifact"
+        )
     registry = load_json(resolved_artifacts[registry_artifact_id])
     if registry.get("registry_id") != "sofaudit.coordinate-semantics.v1":
         raise ContractError("unsupported coordinate semantics registry")
@@ -348,14 +525,30 @@ def _validate_semantics(
         ("sector_alignment", "sector"),
         ("observable_alignment", "observable"),
     ):
-        alignment_ready[field] = _validate_alignment(
-            audit["alignment"][field],
-            name=field,
-            kind=kind,
-            reference_ids=_report_universe(reports["reference"], kind),
-            target_ids=_report_universe(reports["target"], kind),
-            artifact_ids=set(artifact_ids),
+        metadata_key = (
+            "sector_metadata" if kind == "sector" else "observable_metadata"
         )
+        reference_metadata = reports["reference"]["alignment_readiness"][metadata_key]
+        target_metadata = reports["target"]["alignment_readiness"][metadata_key]
+        jointly_not_applicable = (
+            reference_metadata["status"] == "NOT_APPLICABLE"
+            and target_metadata["status"] == "NOT_APPLICABLE"
+        )
+        if jointly_not_applicable:
+            if audit["alignment"][field] is not None:
+                raise ContractError(
+                    f"{field} must be null when both report universes are not applicable"
+                )
+            alignment_ready[field] = True
+        else:
+            alignment_ready[field] = _validate_alignment(
+                audit["alignment"][field],
+                name=field,
+                kind=kind,
+                reference_ids=_report_universe(reports["reference"], kind),
+                target_ids=_report_universe(reports["target"], kind),
+                artifact_ids=set(artifact_ids),
+            )
 
     guards = audit["inherited_compiler_guards"]
     checks = guards["condition_checks"]
@@ -577,6 +770,29 @@ def _validate_semantics(
     _validate_comparison_specification(
         audit["comparison_specification"], set(artifact_ids)
     )
+    alignment_artifact = role_map.get("alignment-input")
+    runtime_native = (
+        audit["provenance"]["kind"] == "native"
+        and audit["provenance"].get("generator_id")
+        == "sof-runtime.external-adapter-comparison"
+    )
+    if alignment_artifact is None and runtime_native:
+        raise ContractError("native SOFAUDIT lacks an alignment-input artifact")
+    if alignment_artifact is not None:
+        alignment_specification = load_json(
+            resolved_artifacts[alignment_artifact["id"]]
+        )
+        _validate_runtime_evaluator_closure(
+            audit,
+            artifact_map,
+            role_map,
+            resolved_artifacts,
+            reports,
+            alignment_specification,
+            audit["comparison_specification"],
+            profile,
+            regime,
+        )
 
 
 def validate_audit(

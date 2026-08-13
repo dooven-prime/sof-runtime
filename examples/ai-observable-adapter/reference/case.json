@@ -1,0 +1,7 @@
+{
+  "case_id": "ai-observable.fixture.reference.v1",
+  "source": "source/input.json",
+  "adapter": "../adapter.py",
+  "compiler_profile": "profiles/compiler/diagnostic-analogue-v1.0.json",
+  "assembly_profile": "profiles/assembly/diagnostic-analogue-v2.0.json"
+}
