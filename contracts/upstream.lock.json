@@ -10,6 +10,12 @@
     "release_content_commit": "c58633494257757e3316f31d8a7cfedc2e75af4e",
     "publication_doi": "10.5281/zenodo.21880943"
   },
+  "repository_snapshot": {
+    "release_tag": "rime-lite-v2.0",
+    "release_content_commit": "de572e942a4e0f9ac5edc4180e997bfd1f069e8a",
+    "source_snapshot_commit": "28711f67aee03b02786c8e9f451156576c0f65ef",
+    "publication_doi": "10.5281/zenodo.22004683"
+  },
   "entries": [
     {
       "role": "canonical_contract",

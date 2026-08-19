@@ -49,6 +49,20 @@ class UpstreamContractTests(unittest.TestCase):
             (PROJECT_ROOT / "contracts" / "upstream-candidate.lock.json").exists()
         )
 
+    def test_upstream_lock_records_rime_repository_snapshot(self) -> None:
+        lock = load_json(PROJECT_ROOT / "contracts" / "upstream.lock.json")
+        snapshot = lock["repository_snapshot"]
+        self.assertEqual(snapshot["release_tag"], "rime-lite-v2.0")
+        self.assertEqual(
+            snapshot["source_snapshot_commit"],
+            "28711f67aee03b02786c8e9f451156576c0f65ef",
+        )
+        self.assertEqual(
+            snapshot["release_content_commit"],
+            "de572e942a4e0f9ac5edc4180e997bfd1f069e8a",
+        )
+        self.assertEqual(snapshot["publication_doi"], "10.5281/zenodo.22004683")
+
     def test_upstream_input_fixtures_validate(self) -> None:
         pairs = (
             (

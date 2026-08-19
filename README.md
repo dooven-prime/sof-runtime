@@ -66,6 +66,15 @@ immutably under `contracts/reporting/v2.0/`, `contracts/comparison/v2.0/`, and
 `contracts/action/v2.0/`. Their upstream release-content commit and byte
 digests are pinned by `contracts/upstream.lock.json`.
 
+The broader RIME repository v2.0 snapshot is separately archived as an
+external upstream repository anchor:
+[`rime-lite-v2.0`](https://doi.org/10.5281/zenodo.22004683). Its source
+snapshot commit is `28711f67aee03b02786c8e9f451156576c0f65ef`, and its release
+metadata commit is `de572e942a4e0f9ac5edc4180e997bfd1f069e8a`. This repository
+snapshot DOI anchors the public manuscripts, contracts, figures, and accepted
+evidence as a whole; it does not replace the contract-specific lock or imply
+that the runtime itself is part of that DOI deposit.
+
 ## Runtime Shape
 
 Python is the reference control plane. JSON Schema, JSON/JSONL, artifact URIs,
@@ -776,3 +785,10 @@ The immutable public source identity for this release is the
 `CITATION.cff` records the software citation metadata. The runtime tag identifies
 an implementation; the owning RIME papers and their digest-locked contracts
 remain the normative definition sources.
+
+The upstream RIME v2.0 repository snapshot used as the runtime's public
+baseline is archived at
+[`10.5281/zenodo.22004683`](https://doi.org/10.5281/zenodo.22004683). The
+contract-specific Paper XIV v2 promotion remains separately pinned to
+`c58633494257757e3316f31d8a7cfedc2e75af4e` and DOI
+`10.5281/zenodo.21880943`.
