@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+from pathlib import Path
 import unittest
 
 from jsonschema import Draft202012Validator
@@ -19,7 +20,13 @@ class UpstreamContractTests(unittest.TestCase):
 
     def test_vendored_digests_match_lock(self) -> None:
         lock = load_json(PROJECT_ROOT / "contracts" / "upstream.lock.json")
-        for entry in lock["entries"]:
+        entries = [
+            entry
+            for imported_snapshot in lock["imports"]
+            for entry in imported_snapshot["entries"]
+        ]
+        self.assertEqual(len(entries), 25)
+        for entry in entries:
             path = PROJECT_ROOT / entry["local_path"]
             self.assertTrue(path.is_file(), entry["local_path"])
             self.assertEqual(
@@ -30,20 +37,23 @@ class UpstreamContractTests(unittest.TestCase):
     def test_published_sofaction_is_in_immutable_inventory(self) -> None:
         lock = load_json(PROJECT_ROOT / "contracts" / "upstream.lock.json")
         promotion = lock["latest_promotion"]
-        self.assertEqual(promotion["contract_family"], "SOFAction v2")
-        self.assertEqual(promotion["release_tag"], "paper14-v2.0")
-        self.assertEqual(promotion["publication_doi"], "10.5281/zenodo.21880943")
+        self.assertEqual(promotion["contract_family"], "SOFAction v2.1")
+        self.assertEqual(promotion["release_tag"], "paper14-v2.1")
+        self.assertEqual(promotion["publication_doi"], "10.5281/zenodo.22024158")
+        entries = [
+            entry
+            for imported_snapshot in lock["imports"]
+            for entry in imported_snapshot["entries"]
+        ]
         action_entries = [
             entry
-            for entry in lock["entries"]
+            for entry in entries
             if entry["role"] == "canonical_action_contract"
         ]
-        self.assertEqual(len(action_entries), 2)
-        self.assertTrue(
-            all(
-                entry["local_path"].startswith("contracts/action/v2.0/")
-                for entry in action_entries
-            )
+        self.assertEqual(len(action_entries), 4)
+        self.assertEqual(
+            {Path(entry["local_path"]).parent.name for entry in action_entries},
+            {"v2.0", "v2.1"},
         )
         self.assertFalse(
             (PROJECT_ROOT / "contracts" / "upstream-candidate.lock.json").exists()
@@ -51,17 +61,49 @@ class UpstreamContractTests(unittest.TestCase):
 
     def test_upstream_lock_records_rime_repository_snapshot(self) -> None:
         lock = load_json(PROJECT_ROOT / "contracts" / "upstream.lock.json")
-        snapshot = lock["repository_snapshot"]
-        self.assertEqual(snapshot["release_tag"], "rime-lite-v2.0")
+        snapshot = lock["snapshots"]["rime-lite-v2.1"]
+        self.assertEqual(snapshot["release_tag"], "rime-lite-v2.1")
         self.assertEqual(
-            snapshot["source_snapshot_commit"],
-            "28711f67aee03b02786c8e9f451156576c0f65ef",
+            snapshot["release_manifest_commit"],
+            "69b33d60ac729eeff45dfe42e79e68197cdd7f68",
         )
         self.assertEqual(
             snapshot["release_content_commit"],
-            "de572e942a4e0f9ac5edc4180e997bfd1f069e8a",
+            "005e2453d508ba5e12136bf9005050ac72185ae5",
         )
-        self.assertEqual(snapshot["publication_doi"], "10.5281/zenodo.22004683")
+        self.assertEqual(snapshot["publication_doi"], "10.5281/zenodo.22048358")
+
+    def test_v2_1_family_ownership_and_six_file_delta(self) -> None:
+        lock = load_json(PROJECT_ROOT / "contracts" / "upstream.lock.json")
+        self.assertEqual(
+            {
+                name: value["publication_doi"]
+                for name, value in lock["contract_families"].items()
+            },
+            {
+                "SOFRS v2.1": "10.5281/zenodo.22006816",
+                "SOFAUDIT v2.1": "10.5281/zenodo.22010220",
+                "SOFAction v2.1": "10.5281/zenodo.22024158",
+            },
+        )
+        imported = next(
+            item for item in lock["imports"] if item["snapshot"] == "rime-lite-v2.1"
+        )
+        self.assertEqual(len(imported["entries"]), 6)
+        self.assertEqual(
+            {
+                entry["local_path"]
+                for entry in imported["entries"]
+            },
+            {
+                "contracts/reporting/v2.1/sofrs.schema.json",
+                "contracts/reporting/v2.1/validation-receipt.schema.json",
+                "contracts/comparison/v2.1/sofaudit.schema.json",
+                "contracts/comparison/v2.1/validation-receipt.schema.json",
+                "contracts/action/v2.1/sofaction.schema.json",
+                "contracts/action/v2.1/validation-receipt.schema.json",
+            },
+        )
 
     def test_upstream_input_fixtures_validate(self) -> None:
         pairs = (

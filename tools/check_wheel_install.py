@@ -45,6 +45,14 @@ def main() -> None:
         service_root = workspace / "service"
         adopter_case = service_root / "adopter" / "case"
         shutil.copytree(ROOT / "examples" / "external-adapter-finite-state", adopter_case)
+        shutil.copytree(
+            ROOT / "examples" / "external-adapter-finite-state",
+            workspace / "examples" / "external-adapter-finite-state",
+        )
+        shutil.copytree(
+            ROOT / "tests" / "conformance" / "fixtures" / "sofaction",
+            workspace / "legacy-v2-fixture",
+        )
         shutil.copytree(ROOT / "profiles", workspace / "profiles")
         env = os.environ.copy()
         env["SOF_RUNTIME_WORKSPACE"] = str(workspace)
@@ -55,7 +63,9 @@ def main() -> None:
                 "from sof_runtime.action import validate_action; "
                 "from sof_runtime.comparison import validate_audit; "
                 "from sof_runtime.paths import (ACTION_CONTRACT_ROOT, "
-                "COMPARISON_CONTRACT_ROOT, REPORTING_CONTRACT_ROOT, "
+                "ACTION_V2_1_CONTRACT_ROOT, COMPARISON_CONTRACT_ROOT, "
+                "COMPARISON_V2_1_CONTRACT_ROOT, REPORTING_CONTRACT_ROOT, "
+                "REPORTING_V2_1_CONTRACT_ROOT, "
                 "SERVICE_CONTRACT_ROOT); "
                 "required=('sofrs.schema.json','assembly-profile.schema.json',"
                 "'validation-receipt.schema.json'); "
@@ -66,10 +76,50 @@ def main() -> None:
                 "'coordinate-semantics-registry.json')); "
                 "assert all((ACTION_CONTRACT_ROOT / name).is_file() for name in "
                 "('sofaction.schema.json','validation-receipt.schema.json')); "
+                "assert all((REPORTING_V2_1_CONTRACT_ROOT / name).is_file() "
+                "for name in ('sofrs.schema.json','validation-receipt.schema.json')); "
+                "assert all((COMPARISON_V2_1_CONTRACT_ROOT / name).is_file() "
+                "for name in ('sofaudit.schema.json','validation-receipt.schema.json')); "
+                "assert all((ACTION_V2_1_CONTRACT_ROOT / name).is_file() for name in "
+                "('sofaction.schema.json','validation-receipt.schema.json')); "
                 "assert all((SERVICE_CONTRACT_ROOT / name).is_file() for name in "
                 "('service-request.schema.json','service-response.schema.json',"
                 "'service-error.schema.json','job.schema.json')); "
                 "assert callable(validate_audit) and callable(validate_action)"
+            ),
+            env=env,
+        )
+        run(
+            str(python),
+            "-c",
+            (
+                "from pathlib import Path; "
+                "from sof_runtime.action import validate_action; "
+                f"root=Path(r'{workspace / 'legacy-v2-fixture'}'); "
+                "action=validate_action(root/'gridworld_f4_native.sofaction',repository_root=root); "
+                "assert action['sofaction_version']=='2.0'"
+            ),
+            env=env,
+        )
+        run(
+            str(python),
+            "-c",
+            (
+                "from pathlib import Path; "
+                "from sof_runtime.api import RuntimeAPI; "
+                "from sof_runtime.contracts import load_json; "
+                f"case=Path(r'{workspace / 'examples' / 'external-adapter-finite-state'}'); "
+                f"profiles=Path(r'{workspace / 'profiles'}'); "
+                f"out=Path(r'{workspace / 'native-v2_1'}'); "
+                "result=RuntimeAPI().full_pipeline("
+                "case/'reference',case/'target',"
+                "alignment=case/'comparison'/'alignment.json',"
+                "comparison_profile=profiles/'comparison'/'external-adapter-identity-v2.0.json',"
+                "action_context=case/'action'/'context.json',"
+                "policy_profile=case/'action'/'policy.json',run_dir=out); "
+                "assert all(item.payload['sofrs_version']=='2.1' for item in result['reports']); "
+                "assert result['comparison'].payload['sofaudit_version']=='2.1'; "
+                "assert load_json(result['interpretation'].artifact_path)['sofaction_version']=='2.1'"
             ),
             env=env,
         )
@@ -133,8 +183,9 @@ def main() -> None:
         )
     print(
         "PASS: installed wheel carries compiler, runtime, reporting, comparison, "
-        "action, and service contracts, exposes downstream validators, completes a "
-        "validated run, and serves an HTTP realization from the installed wheel"
+        "action, and service contracts, validates a frozen v2.0 action, completes "
+        "a native v2.1 Level 1A-3 chain, and serves an HTTP realization from the "
+        "installed wheel"
     )
 
 

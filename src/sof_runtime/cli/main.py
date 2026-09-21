@@ -13,8 +13,8 @@ from sof_runtime.adapters.markov import (
     normalize_source as normalize_markov_source,
 )
 from sof_runtime.compiler import compile_documents
-from sof_runtime.comparison import validate_audit
-from sof_runtime.action import validate_action
+from sof_runtime.comparison import migrate_audit, validate_audit
+from sof_runtime.action import migrate_action, validate_action
 from sof_runtime.api import Comparison, Report, RuntimeAPI
 from sof_runtime.contracts import load_json
 from sof_runtime.contracts.validation import write_json
@@ -24,6 +24,7 @@ from sof_runtime.paths import PROJECT_ROOT
 from sof_runtime.reporting import (
     assemble_report,
     build_validation_receipt,
+    migrate_report,
     validate_receipt,
     validate_report,
 )
@@ -383,6 +384,53 @@ def command_validate_sofrs(args: argparse.Namespace) -> None:
         "report_id": report["report_id"],
     }
     if args.receipt:
+        if report["sofrs_version"] == "2.1":
+            from sof_runtime import non_intervention
+            from sof_runtime.reporting import validation_v2_1
+
+            snapshots = {}
+            for name, source, artifact_id, role in (
+                (
+                    "validator_implementation_path",
+                    Path(validation_v2_1.__file__).resolve(),
+                    "artifact.sofrs-validator-implementation",
+                    "validator_implementation",
+                ),
+                (
+                    "report_contract_path",
+                    validation_v2_1.REPORT_SCHEMA,
+                    "artifact.sofrs-report-contract",
+                    "report_contract",
+                ),
+                (
+                    "receipt_contract_path",
+                    validation_v2_1.RECEIPT_SCHEMA,
+                    "artifact.sofrs-validation-receipt-contract",
+                    "validation_receipt_contract",
+                ),
+                (
+                    "boundary_helper_path",
+                    Path(non_intervention.__file__).resolve(),
+                    "artifact.sofrs-boundary-helper",
+                    "boundary_helper",
+                ),
+            ):
+                reference = _snapshot_reference(
+                    source,
+                    output_directory=args.receipt.parent,
+                    artifact_id=artifact_id,
+                    role=role,
+                )
+                snapshots[name] = PROJECT_ROOT / reference["uri"]
+            receipt = build_validation_receipt(
+                args.report,
+                repository_root=PROJECT_ROOT,
+                **snapshots,
+            )
+            write_json(args.receipt, receipt)
+            result["receipt"] = str(args.receipt)
+            _print(result)
+            return
         validator = _snapshot_reference(
             Path(validation_implementation.__file__).resolve(),
             output_directory=args.receipt.parent,
@@ -418,8 +466,39 @@ def command_validate_sofaudit(args: argparse.Namespace) -> None:
 
 
 def command_validate_sofaction(args: argparse.Namespace) -> None:
-    action = validate_action(args.action, repository_root=args.repository_root)
+    action = validate_action(
+        args.action, repository_root=args.repository_root or PROJECT_ROOT
+    )
     _print({"status": "PASS", "action_record_id": action["action_record_id"]})
+
+
+def command_migrate_sofrs(args: argparse.Namespace) -> None:
+    result = migrate_report(args.report, args.receipt, args.out_dir)
+    _print({"status": "PASS", **result})
+
+
+def command_migrate_sofaudit(args: argparse.Namespace) -> None:
+    result = migrate_audit(
+        args.audit,
+        args.receipt,
+        args.reference_report,
+        args.reference_receipt,
+        args.target_report,
+        args.target_receipt,
+        args.out_dir,
+    )
+    _print({"status": "PASS", **result})
+
+
+def command_migrate_sofaction(args: argparse.Namespace) -> None:
+    result = migrate_action(
+        args.action,
+        args.receipt,
+        args.audit,
+        args.audit_receipt,
+        args.out_dir,
+    )
+    _print({"status": "PASS", **result})
 
 
 def command_inspect(args: argparse.Namespace) -> None:
@@ -617,6 +696,39 @@ def build_parser() -> argparse.ArgumentParser:
     validate_sofaction.add_argument("action", type=Path)
     validate_sofaction.add_argument("--repository-root", type=Path)
     validate_sofaction.set_defaults(func=command_validate_sofaction)
+
+    migrate_sofrs = subparsers.add_parser(
+        "migrate-sofrs",
+        help="explicitly migrate a validated SOFRS v2.0 closure to v2.1",
+    )
+    migrate_sofrs.add_argument("report", type=Path)
+    migrate_sofrs.add_argument("receipt", type=Path)
+    migrate_sofrs.add_argument("--out-dir", type=Path, required=True)
+    migrate_sofrs.set_defaults(func=command_migrate_sofrs)
+
+    migrate_sofaudit = subparsers.add_parser(
+        "migrate-sofaudit",
+        help="explicitly migrate a validated SOFAUDIT v2.0 closure to v2.1",
+    )
+    migrate_sofaudit.add_argument("audit", type=Path)
+    migrate_sofaudit.add_argument("receipt", type=Path)
+    migrate_sofaudit.add_argument("reference_report", type=Path)
+    migrate_sofaudit.add_argument("reference_receipt", type=Path)
+    migrate_sofaudit.add_argument("target_report", type=Path)
+    migrate_sofaudit.add_argument("target_receipt", type=Path)
+    migrate_sofaudit.add_argument("--out-dir", type=Path, required=True)
+    migrate_sofaudit.set_defaults(func=command_migrate_sofaudit)
+
+    migrate_sofaction = subparsers.add_parser(
+        "migrate-sofaction",
+        help="explicitly migrate a validated SOFAction v2.0 closure to v2.1",
+    )
+    migrate_sofaction.add_argument("action", type=Path)
+    migrate_sofaction.add_argument("receipt", type=Path)
+    migrate_sofaction.add_argument("audit", type=Path)
+    migrate_sofaction.add_argument("audit_receipt", type=Path)
+    migrate_sofaction.add_argument("--out-dir", type=Path, required=True)
+    migrate_sofaction.set_defaults(func=command_migrate_sofaction)
 
     inspect = subparsers.add_parser("inspect")
     inspect.add_argument("compiler_output", type=Path)

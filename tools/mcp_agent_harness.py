@@ -18,6 +18,7 @@ from http.client import RemoteDisconnected
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 import time
@@ -74,6 +75,8 @@ class OpenAICompatibleProvider:
     base_url: str
     api_key_env: str
     model_version: str | None = None
+    thinking: str | None = None
+    reasoning_effort: str | None = None
     timeout_seconds: float = 180.0
 
     def complete(self, messages: list[dict[str, Any]], tools: list[dict[str, Any]]) -> dict[str, Any]:
@@ -90,6 +93,10 @@ class OpenAICompatibleProvider:
             "tool_choice": "auto",
             "temperature": 0,
         }
+        if self.thinking is not None:
+            payload["thinking"] = {"type": self.thinking}
+        if self.reasoning_effort is not None:
+            payload["reasoning_effort"] = self.reasoning_effort
         for attempt in range(3):
             request = Request(
                 endpoint,
@@ -147,14 +154,48 @@ def _provider(args: argparse.Namespace) -> OpenAICompatibleProvider:
         args.provider,
         (args.provider, args.api_key_env, args.base_url),
     )
+    thinking = args.thinking
+    reasoning_effort = args.reasoning_effort
+    if args.provider == "deepseek":
+        thinking = thinking or "enabled"
+        reasoning_effort = reasoning_effort or "high"
     return OpenAICompatibleProvider(
         provider=provider,
         model=args.model,
         base_url=args.base_url or base_url,
         api_key_env=args.api_key_env or env_name,
         model_version=args.model_version,
+        thinking=thinking,
+        reasoning_effort=reasoning_effort,
         timeout_seconds=args.provider_timeout,
     )
+
+
+def _load_env_file(path: Path) -> list[str]:
+    """Load a local dotenv file without printing or overwriting credentials."""
+
+    if not path.is_file():
+        raise ValueError(f"environment file does not exist: {path}")
+    loaded: list[str] = []
+    for line_number, raw_line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[7:].lstrip()
+        if "=" not in line:
+            raise ValueError(f"invalid environment entry at {path}:{line_number}")
+        name, value = line.split("=", 1)
+        name = name.strip()
+        if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name) is None:
+            raise ValueError(f"invalid environment name at {path}:{line_number}")
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+            value = value[1:-1]
+        if name not in os.environ:
+            os.environ[name] = value
+            loaded.append(name)
+    return loaded
 
 
 @contextmanager
@@ -411,7 +452,7 @@ class MCPAgent:
             assistant_message = {
                 key: value
                 for key, value in message.items()
-                if key in {"role", "content", "tool_calls"}
+                if key in {"role", "content", "reasoning_content", "tool_calls"}
             }
             assistant_message["role"] = "assistant"
             messages.append(assistant_message)
@@ -539,6 +580,8 @@ async def _run(args: argparse.Namespace) -> dict[str, Any]:
             "model_version_status": "reported" if provider.model_version else "not_exposed",
             "harness": "sof-runtime provider-native MCP agent harness v1",
             "run_timestamp": datetime.now(timezone.utc).isoformat(),
+            "thinking": provider.thinking,
+            "reasoning_effort": provider.reasoning_effort,
         },
         "server_closure": {
             "service_request_sha256": config["server_closure"]["service_request_contract"]["sha256"],
@@ -630,6 +673,21 @@ def main() -> int:
     parser.add_argument("--provider", default="deepseek", help="deepseek, openai, or a custom provider name")
     parser.add_argument("--model", required=True)
     parser.add_argument("--model-version")
+    parser.add_argument(
+        "--thinking",
+        choices=("enabled", "disabled"),
+        help="provider thinking mode; DeepSeek defaults to enabled",
+    )
+    parser.add_argument(
+        "--reasoning-effort",
+        choices=("low", "high", "max"),
+        help="provider reasoning effort; DeepSeek defaults to high",
+    )
+    parser.add_argument(
+        "--env-file",
+        type=Path,
+        help="load missing environment variables from a local dotenv file",
+    )
     parser.add_argument("--base-url", help="OpenAI-compatible API base URL")
     parser.add_argument("--api-key-env", help="environment variable containing the provider key")
     parser.add_argument("--provider-timeout", type=float, default=180.0)
@@ -643,6 +701,8 @@ def main() -> int:
     parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
     try:
+        if args.env_file is not None:
+            _load_env_file(args.env_file.resolve())
         if args.spawn_server:
             with _spawn_local_server(args):
                 asyncio.run(_run(args))

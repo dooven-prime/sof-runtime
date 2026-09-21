@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 from sof_runtime.comparison import (
-    build_comparison,
+    build_comparison_v2 as build_comparison,
     validate_audit,
     validate_audit_validation_receipt,
 )

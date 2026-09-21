@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from argparse import Namespace
 from pathlib import Path
 import socket
@@ -12,6 +13,7 @@ from unittest import mock
 from tools.mcp_agent_harness import (
     MCPAgent,
     OpenAICompatibleProvider,
+    _load_env_file,
     _normal_milestones,
     _prepare_workspace,
     _spawn_local_server,
@@ -20,6 +22,23 @@ from sof_runtime.paths import PROJECT_ROOT
 
 
 class MCPAgentHarnessTests(unittest.TestCase):
+    def test_env_file_loads_missing_secret_without_overwriting_environment(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / ".env"
+            path.write_text(
+                "# local only\nTEST_NEW_KEY='new-value'\nTEST_EXISTING_KEY=file-value\n",
+                encoding="utf-8",
+            )
+            with mock.patch.dict(
+                "os.environ",
+                {"TEST_EXISTING_KEY": "process-value"},
+                clear=False,
+            ):
+                loaded = _load_env_file(path)
+                self.assertEqual(loaded, ["TEST_NEW_KEY"])
+                self.assertEqual(os.environ["TEST_NEW_KEY"], "new-value")
+                self.assertEqual(os.environ["TEST_EXISTING_KEY"], "process-value")
+
     def test_fixture_manifest_prepares_source_addressed_workspace(self) -> None:
         matrix = PROJECT_ROOT / "evaluations" / "mcp-agent-matrix-v1"
         with tempfile.TemporaryDirectory(dir=PROJECT_ROOT / "runs") as directory:
@@ -209,8 +228,10 @@ class MCPAgentHarnessTests(unittest.TestCase):
             provider="deepseek",
             base_url="https://example.invalid/v1",
             api_key_env=None,
-            model="deepseek-chat",
+            model="deepseek-flash",
             model_version=None,
+            thinking=None,
+            reasoning_effort=None,
             provider_timeout=10.0,
         )
         with self.assertRaisesRegex(SystemExit, "pinned endpoint"):

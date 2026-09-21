@@ -5,13 +5,14 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from sof_runtime.action import build_interpretation
-from sof_runtime.comparison import build_comparison
+from sof_runtime.action import build_interpretation, migrate_action
+from sof_runtime.comparison import build_comparison, migrate_audit
 from sof_runtime.contracts import load_json
 from sof_runtime.workflow_external_adapter import (
     build_external_report,
     run_external_realization,
 )
+from sof_runtime.reporting import migrate_report as migrate_report_artifact
 
 from .models import CandidateAction, Comparison, Interpretation, Realization, Report
 
@@ -83,6 +84,21 @@ class RuntimeAPI:
         realization = self.realize(case_directory, run_directory)
         return realization, self.report(realization)
 
+    def migrate_report(
+        self, source: Report, output_directory: str | Path
+    ) -> Report:
+        """Explicitly migrate one validated SOFRS v2.0 closure to v2.1."""
+        result = migrate_report_artifact(
+            source.artifact_path,
+            source.validation_receipt_path,
+            output_directory,
+        )
+        return Report(
+            report_id=result["report_id"],
+            artifact_path=Path(result["report"]),
+            validation_receipt_path=Path(result["validation_receipt"]),
+        )
+
     def compare(
         self,
         reference: Report,
@@ -136,6 +152,62 @@ class RuntimeAPI:
                 validation_receipt_path=Path(result["receipt"]),
             )
             for item in action_payload["candidate_action_set"]["actions"]
+        )
+        return interpretation, candidates
+
+    def migrate_comparison(
+        self,
+        source: Comparison,
+        reference: Report,
+        target: Report,
+        output_directory: str | Path,
+    ) -> Comparison:
+        """Explicitly migrate a v2.0 audit using migrated v2.1 reports."""
+        result = migrate_audit(
+            source.artifact_path,
+            source.validation_receipt_path,
+            reference.artifact_path,
+            reference.validation_receipt_path,
+            target.artifact_path,
+            target.validation_receipt_path,
+            output_directory,
+        )
+        return Comparison(
+            audit_id=result["audit_id"],
+            artifact_path=Path(result["audit"]),
+            validation_receipt_path=Path(result["receipt"]),
+        )
+
+    def migrate_interpretation(
+        self,
+        source: Interpretation,
+        comparison: Comparison,
+        output_directory: str | Path,
+    ) -> tuple[Interpretation, tuple[CandidateAction, ...]]:
+        """Explicitly migrate a v2.0 action using a migrated v2.1 audit."""
+        result = migrate_action(
+            source.artifact_path,
+            source.validation_receipt_path,
+            comparison.artifact_path,
+            comparison.validation_receipt_path,
+            output_directory,
+        )
+        action_path = Path(result["action"])
+        receipt_path = Path(result["receipt"])
+        payload = load_json(action_path)
+        interpretation = Interpretation(
+            action_record_id=result["action_record_id"],
+            artifact_path=action_path,
+            validation_receipt_path=receipt_path,
+        )
+        candidates = tuple(
+            CandidateAction(
+                action_id=item["action_id"],
+                disposition=item["disposition"],
+                artifact_path=action_path,
+                validation_receipt_path=receipt_path,
+            )
+            for item in payload["candidate_action_set"]["actions"]
         )
         return interpretation, candidates
 

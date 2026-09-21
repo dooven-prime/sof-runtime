@@ -1,14 +1,14 @@
 {
   "contract_id": "sof-runtime.service-implementation-closure.v1",
-  "runtime_version": "0.4.0",
+  "runtime_version": "0.5.0",
   "files": [
     {
       "path": "pyproject.toml",
-      "sha256": "cfc73205650df6a4f8314b90fda77a8500ce5725bfc2ea8da9be4c87ed75e867"
+      "sha256": "3073b3d3cbcc61da3a4093d3cf90efe5ee510fbdd4f1b2155247829ac234613e"
     },
     {
       "path": "contracts/upstream.lock.json",
-      "sha256": "0494f24b8a3758d84a472309e4ea6781996302804db733da274b26b932412b71"
+      "sha256": "ae6e739386ae34517c2911585c78c9211477d0dda6d22eec891c053f5c08bdb2"
     },
     {
       "path": "contracts/service/v1.0/job.schema.json",
@@ -88,19 +88,31 @@
     },
     {
       "path": "src/sof_runtime/__init__.py",
-      "sha256": "ac6f604c4fcb32943433f5dc9e989f6c7c1a653e871d073b0978f2de95b7fc3b"
+      "sha256": "b276855b8b014a6ed1063f994f7581befee7f9cf549db390a94c8a5f465d7064"
     },
     {
       "path": "src/sof_runtime/action/__init__.py",
-      "sha256": "0f19e10b63739fea6d6d1bb15123fdf55cebd99857d2dfc4e19b4bb9b9a641c6"
+      "sha256": "45222cb3d665be4c27131cc63e8560d425a2143b05d9714ba101c07e54f7ffb2"
+    },
+    {
+      "path": "src/sof_runtime/action/migrator_v2_1.py",
+      "sha256": "4bcb6fbb97a3435720405fb560daea16f612c171457b80a590b5e54a719d01bf"
     },
     {
       "path": "src/sof_runtime/action/producer_v2.py",
       "sha256": "e14969b768b8d61ded6e226e65fcb8204d706d9f4fbea6b19b988be34631378c"
     },
     {
+      "path": "src/sof_runtime/action/producer_v2_1.py",
+      "sha256": "11f7ef3e2d87e72a28c560bae26ca3771ff9d0dd1f574f1f2ea850f396bdc72c"
+    },
+    {
       "path": "src/sof_runtime/action/validation_v2.py",
       "sha256": "f64aaf1769054de504fac8c8beefbc2b0e174e2c96cf9f421ec5f68072ec57fe"
+    },
+    {
+      "path": "src/sof_runtime/action/validation_v2_1.py",
+      "sha256": "afc3e99e34cde609f79806934e78ef2088a055917c3708e24820ded8a8f7746f"
     },
     {
       "path": "src/sof_runtime/adapters/__init__.py",
@@ -128,7 +140,7 @@
     },
     {
       "path": "src/sof_runtime/api/runtime.py",
-      "sha256": "0acf01e72f77b8368ffa516f97aaebd28a36484f4ee727d2e1f15e0f111b2416"
+      "sha256": "e17e72a021b5657eb946a03c7573c8f3aea294cd66fc66ea2b611b2e7d7ef6fd"
     },
     {
       "path": "src/sof_runtime/artifacts/__init__.py",
@@ -160,7 +172,7 @@
     },
     {
       "path": "src/sof_runtime/cli/main.py",
-      "sha256": "62eafeeb0ee86cbc54cedf82b282296ff74f3b906f7bbe4eb1a647f160509cc2"
+      "sha256": "f53e7ad58ba8be91ca475b5929c55adef52e833e1e49510d0a12a23aca24ab5b"
     },
     {
       "path": "src/sof_runtime/cli/scaffold.py",
@@ -168,19 +180,31 @@
     },
     {
       "path": "src/sof_runtime/comparison/__init__.py",
-      "sha256": "29571a29fd74c1e4975374a55861e7446a5cc0c7ec15fab801b17a766c35c783"
+      "sha256": "9dbb98849bf29c2d93c294080a691456c7cfa962aa6b9c90bcf2cd0307bc5cf0"
     },
     {
       "path": "src/sof_runtime/comparison/evaluators.py",
       "sha256": "b39478ebd8bad57987fd592b8a1545a61f2830ae29c622f51075ce16293bc3b5"
     },
     {
+      "path": "src/sof_runtime/comparison/migrator_v2_1.py",
+      "sha256": "05ec8da0fc0e2ea3960d01a1e40d6732556feccebcff07fa7241bbdda7bbbd9f"
+    },
+    {
       "path": "src/sof_runtime/comparison/producer_v2.py",
       "sha256": "939bc86d2e8a4e26832509632659118816bbf564cd9337844606f446229cbaaa"
     },
     {
+      "path": "src/sof_runtime/comparison/producer_v2_1.py",
+      "sha256": "6f1e0d34776250d340b02e243912586738738a5c0ee2980630813c43e955436c"
+    },
+    {
       "path": "src/sof_runtime/comparison/validation_v2.py",
       "sha256": "e6829e1db21d2fd03789a341f7f0ca287fa6c0e3b37ef82cbdbf98936f8f2d61"
+    },
+    {
+      "path": "src/sof_runtime/comparison/validation_v2_1.py",
+      "sha256": "c6a2ff8e2f4fea69988550162f65beb6db29b6fa077190b411e6a06a575b1dd6"
     },
     {
       "path": "src/sof_runtime/compiler/__init__.py",
@@ -211,8 +235,12 @@
       "sha256": "37ca0ba9dbf0d58fc92ea52a3597747946df40caa2df8adf9109c2d9eb99074f"
     },
     {
+      "path": "src/sof_runtime/non_intervention.py",
+      "sha256": "869dcb0b45b2222eb630abeb4396326f90e43b9548989e0c63fb3c38660351dc"
+    },
+    {
       "path": "src/sof_runtime/paths.py",
-      "sha256": "0d1d24ea5402193a542b4b1a0051078cc6bd5b51da81502398698c5c495a3444"
+      "sha256": "6a4c08590bfdc3c059cf3cda3d461af6e4e4c10415e68a59b01fc9835efb6c4f"
     },
     {
       "path": "src/sof_runtime/plugins/__init__.py",
@@ -224,15 +252,27 @@
     },
     {
       "path": "src/sof_runtime/reporting/__init__.py",
-      "sha256": "9378336ec46e289cba9eb628bc3da0c5f23da5cdb0f2d62390696730afd7cb33"
+      "sha256": "d49251499855b7ebd1c4897bd598d8f4349dd9b3b05570e3bac08f9c0780ccfa"
     },
     {
       "path": "src/sof_runtime/reporting/assembly_v2.py",
       "sha256": "e2e70e40689ce89e5b83989dcdbd7e57aa739035775bc221f757e7bd689c8f54"
     },
     {
+      "path": "src/sof_runtime/reporting/assembly_v2_1.py",
+      "sha256": "a67afeda43960da011f2e03b3233e5f9eb148c6ae1c4b0d54b847a4a108697f7"
+    },
+    {
+      "path": "src/sof_runtime/reporting/migrator_v2_1.py",
+      "sha256": "e75ec4bccd557b1aabbb151a13ac45e4c77feeff5d00e1cbb2a61d6ee2ef3536"
+    },
+    {
       "path": "src/sof_runtime/reporting/validation_v2.py",
       "sha256": "523dd48067c479ea4f4ba1b59f05242c3d49eb7e1ed2ca577d80c3c624ff17fd"
+    },
+    {
+      "path": "src/sof_runtime/reporting/validation_v2_1.py",
+      "sha256": "5b167a70e85c804547194964f9b061ad4fb56cf9e902439bb0339a8328cdda44"
     },
     {
       "path": "src/sof_runtime/run_identity.py",
@@ -308,12 +348,12 @@
     },
     {
       "path": "src/sof_runtime/workflow_external_adapter.py",
-      "sha256": "9a701c3c7d1fef53816abc33756cf7a00926de5e71d2a831432617158a41190e"
+      "sha256": "0375939931df380558a9082e4e115f9e6c70a9e1269a6ec2ac74386e1cc85522"
     },
     {
       "path": "src/sof_runtime/workflow_positive_word.py",
       "sha256": "a71f82c72aaa28d814fbb0bd2bfb028ee25b21b714409fe66e5b8bf391ad73af"
     }
   ],
-  "closure_sha256": "48ec23411a67e290fcb523b86169b0e021263e88997ca59e6fc3bc778ee43e53"
+  "closure_sha256": "e28268f199dff38b7b5d4a41d7b855b0f564425c418638f39c498d9eb00f1448"
 }

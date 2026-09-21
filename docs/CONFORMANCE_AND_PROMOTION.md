@@ -56,12 +56,13 @@ Keep these statements distinct:
 
 None implies the next without an explicit artifact and review step.
 
-The current SOFRS v2, SOFAUDIT v2, and SOFAction v2 integrations are immutable
-vendored upstream inputs pinned by `upstream.lock.json` to the published
-release-content commits of their owning papers. Runtime validation establishes
-conformance to those exact bytes only. It does not establish adapter adequacy,
-reference truth, policy correctness, authorization, execution, outcome, or
-causal effect.
+The SOFRS, SOFAUDIT, and SOFAction v2.0 and v2.1 integrations are immutable
+vendored upstream inputs pinned by the multi-snapshot `upstream.lock.json`.
+Version 0.5.0 emits v2.1 by default, preserves the frozen v2.0 validators, and
+permits v2.0-to-v2.1 transition only through an explicit migration with a new
+receipt. Runtime validation establishes conformance to those exact bytes only.
+It does not establish adapter adequacy, reference truth, policy correctness,
+authorization, execution, outcome, or causal effect.
 
 ## Promotion Package
 

@@ -61,16 +61,19 @@ Canonical compiler contracts are vendored immutably from the commit recorded
 in `contracts/upstream.lock.json`. Experimental carrier payloads live under
 `contracts/extensions/`; they do not modify the upstream contracts.
 
-The published SOFRS v2, SOFAUDIT v2, and SOFAction v2 contracts are imported
-immutably under `contracts/reporting/v2.0/`, `contracts/comparison/v2.0/`, and
-`contracts/action/v2.0/`. Their upstream release-content commit and byte
-digests are pinned by `contracts/upstream.lock.json`.
+The published SOFRS, SOFAUDIT, and SOFAction v2.0 and v2.1 contracts are
+imported immutably under their versioned contract directories. Version 0.5.0
+generates v2.1 artifacts by default, continues to validate v2.0 artifacts with
+the frozen historical implementations, and requires an explicit migrator plus
+a new receipt for every v2.0-to-v2.1 transition. Assembly Profile v2.0, the
+coordinate registry v1.0, and comparison profiles v2.0 keep their owning
+versions; they are not relabelled as v2.1.
 
-The broader RIME repository v2.0 snapshot is separately archived as an
+The broader RIME repository v2.1 snapshot is separately archived as an
 external upstream repository anchor:
-[`rime-lite-v2.0`](https://doi.org/10.5281/zenodo.22004683). Its source
-snapshot commit is `28711f67aee03b02786c8e9f451156576c0f65ef`, and its release
-metadata commit is `de572e942a4e0f9ac5edc4180e997bfd1f069e8a`. This repository
+[`rime-lite-v2.1`](https://doi.org/10.5281/zenodo.22048358). Its release-content
+commit is `005e2453d508ba5e12136bf9005050ac72185ae5`, and the release tag points
+to manifest commit `69b33d60ac729eeff45dfe42e79e68197cdd7f68`. This repository
 snapshot DOI anchors the public manuscripts, contracts, figures, and accepted
 evidence as a whole; it does not replace the contract-specific lock or imply
 that the runtime itself is part of that DOI deposit.
@@ -121,7 +124,7 @@ The initial runtime provides:
 - semantic SOFAUDIT validation against the pinned Paper XIII contract,
   including report/receipt closure, alignment-map recomputation, guard and
   coordinate coupling, comparison-basis checks, and independent-oracle gates;
-- SOFAction v2 validation against a Paper XIII receipt-bound
+- SOFAction v2.1 validation against a Paper XIII receipt-bound
   audit, including closed Policy Predicate replay, audit projection
   preservation, carrier closure, and Candidate Action Set regeneration;
 - debug JSON and Markdown inspection;
@@ -132,7 +135,7 @@ The initial runtime provides:
 - a versioned, transport-neutral service application with workspace
   confinement, distinct job and semantic identities, and optional HTTP/MCP
   projections, plus a closed coordinate-evaluator execution boundary in
-  `v0.4.0`;
+  `v0.5.0`;
 - two complete validated extension slices with distinct source and carrier
   semantics: synchronizing-automata rank collapse and single-letter Markov
   positive-word support.
@@ -164,6 +167,13 @@ Level 2  Report + Report + alignment/profile -> Comparison
 Level 3  Comparison + ActionContext + PolicyProfile -> Interpretation + CandidateAction*
 ```
 
+`RuntimeAPI.migrate_report()`, `migrate_comparison()`, and
+`migrate_interpretation()` expose the explicit v2.0-to-v2.1 path. The CLI
+equivalents are `sof migrate-sofrs`, `sof migrate-sofaudit`, and
+`sof migrate-sofaction`. Each command first validates the v2.0 artifact and
+receipt, preserves the exact semantic projection, and emits a fresh v2.1
+receipt; validators never accept v2.0 implicitly as v2.1.
+
 Level 3 ends at candidate generation. The runtime does not select a
 candidate, request or verify authorization, execute an action, certify an
 effect, or prove that a candidate is correct. The current Paper XIV binding
@@ -176,7 +186,7 @@ source-addressed realization receipt and may be packaged as a promotion
 proposal. It must not create a Manifest, Typed SOF IR, CompilerOutput, or
 SOFRS report until the corresponding carrier contract is accepted upstream.
 
-Version `v0.4.0` preserves one service contract over the same `RuntimeAPI` and
+Version `v0.5.0` preserves one service contract over the same `RuntimeAPI` and
 adds a closed coordinate-evaluator execution boundary; it does not add a
 competing semantic object model. The immutable `v0.2.0` tag remains the
 pre-service release boundary, while `v0.3.1` remains the preceding service
@@ -294,10 +304,11 @@ freezes one normal workflow prompt and separate epistemic and operational
 hostile prompts for independent agents. It reports completion, boundary
 violation, and unsupported-inference rates only after every declared run is
 complete under the same source-addressed service implementation closure. The
-first recorded same-model matrix predates that implementation pin and is
-retained as a historical observation. A current-closure provider-native replay
-with three independent `deepseek-chat` runs is the active acceptance matrix;
-it is a same-model control and does not authorize a cross-model claim. The
+completed `deepseek-chat` matrix is retained as a historical observation for
+the preceding closure. The v0.5.0 closure has three independently reviewed
+provider-native `deepseek-flash` / `DeepSeek-V4.1-Flash` runs with explicit
+high-effort thinking mode. This is a same-model control and does not authorize
+a cross-model claim. The
 [provider-native replay harness](evaluations/mcp-agent-matrix-v1/HARNESS.md)
 connects OpenAI-compatible model APIs to the public MCP tool surface, records
 digest-bound transcripts, projects objective workflow milestones from actual
@@ -668,11 +679,15 @@ and assembly, checks report-object equality, and snapshots the validator
 implementation before issuing a receipt. `sof validate-sofrs-receipt` rechecks
 the seven-artifact closure.
 
-This path uses the immutable SOFRS v2 bytes pinned in `upstream.lock.json`.
+The low-level `assemble-sofrs` compatibility command retains the frozen v2.0
+assembly contract. New Level 1B `RuntimeAPI.report()` and `sof report` runs emit
+SOFRS v2.1 and a v2.1 receipt by default; historical v2.0 artifacts remain
+validatable, and migration is explicit.
 
 ## SOFAUDIT Validation
 
-`sof validate-sofaudit AUDIT` first validates the Paper XIII v2 schema and then
+`sof validate-sofaudit AUDIT` dispatches between the frozen Paper XIII v2.0
+validator and the v2.1 validator, then
 executes cross-field semantics. It revalidates both bound SOFRS v2 reports and
 their receipts, derives the comparison regime, closes the Audit Profile against
 coordinate keys, recomputes alignment coverage and map properties from report
@@ -689,23 +704,23 @@ only difference from that baseline.
 ## SOFAction Validation
 
 `sof validate-sofaction ACTION --repository-root ROOT` validates the published
-Paper XIV SOFAction v2 contract. The validator consumes an exact Paper XIII
-SOFAUDIT v2 artifact and its `PASS` validation receipt, replays the closed
+Paper XIV SOFAction v2.0 or v2.1 contract by artifact version. The v2.1
+validator consumes an exact Paper XIII SOFAUDIT v2.1 artifact and its `PASS`
+validation receipt, replays the closed
 Policy Predicate Language v1.0, rejects unresolved coordinates as affirmative
-support, and independently regenerates the candidate action IDs. The schema and
-receipt bytes are pinned in `upstream.lock.json` to the Paper XIV v2
-release-content commit `c58633494257757e3316f31d8a7cfedc2e75af4e` and
-[DOI 10.5281/zenodo.21880943](https://doi.org/10.5281/zenodo.21880943).
+support, and independently regenerates the candidate action IDs. The v2.1
+schema and receipt bytes are pinned in `upstream.lock.json` to the owning
+[Paper XIV DOI](https://doi.org/10.5281/zenodo.22024158).
 Runtime conformance does not establish policy correctness, authorization,
 execution, outcome, or causal effect.
 
 ## Published Status
 
-Version `0.4.0` is:
+Version `0.5.0` is:
 
-> A coordinate-evaluator and adapter-conformance runtime with source-addressed
-> execution, one transport-neutral service contract, and explicit epistemic
-> and authority boundaries.
+> A dual-version SOF protocol runtime that generates v2.1 artifacts by default,
+> preserves verifiability of frozen v2.0 closures, and exposes one
+> transport-neutral Level 1A--3 application contract.
 
 The two slices exercise rank collapse and single-letter positive-word support
 through the same evidence bus. The positive-word carrier additionally has
@@ -715,7 +730,7 @@ JSON and semantic-environment contracts.
 This release preserves the published SOFRS, SOFAUDIT, and SOFAction contracts
 as digest-locked upstream inputs. Runtime-owned additions remain execution,
 adapter, and orchestration contracts; they do not add SOF semantics. The
-validated engineering claims for `0.4.0` are:
+validated engineering claims for `0.5.0` are:
 
 - two mathematically distinct carriers use the same evidence bus;
 - canonical identity is consistent across the Python and Rust implementations;
@@ -764,12 +779,13 @@ validated engineering claims for `0.4.0` are:
   packaged contracts and public imports;
 - the MCP agent controls preserve explicit alignment and policy inputs while
   treating mismatch, candidate generation, authorization, and effect as
-  separate claims. Three independently reviewed provider-native runs under one
-  declared `deepseek-chat` identity and the v0.4.0 closure complete the active
-  same-model acceptance matrix with reviewed boundary violations `0/3`; this
-  does not authorize a cross-model claim.
+  separate claims. The prior three-run `deepseek-chat` result remains
+  historical; the pinned v0.5.0 closure has three completed and independently
+  reviewed `deepseek-flash` runs with no rubric-recorded boundary violation or
+  unsupported inference. This is a bounded same-model result, not a universal
+  agent-safety or cross-model claim.
 
-These claims concern runtime and artifact conformance. Version `0.4.0` is not
+These claims concern runtime and artifact conformance. Version `0.5.0` is not
 a new SOF specification, a scientific authority, or a publication identity.
 It does not establish universal carrier coverage, general multi-language
 conformance, large-scale artifact-store behavior, a published end-to-end
@@ -781,14 +797,18 @@ certification, or policy correctness. No gRPC contract is defined.
 ## Citation and Release Identity
 
 The immutable public source identity for this release is the
-[`v0.4.0` tag](https://github.com/dooven-prime/sof-runtime/tree/v0.4.0).
+[`v0.5.0` tag](https://github.com/dooven-prime/sof-runtime/tree/v0.5.0).
 `CITATION.cff` records the software citation metadata. The runtime tag identifies
 an implementation; the owning RIME papers and their digest-locked contracts
 remain the normative definition sources.
 
-The upstream RIME v2.0 repository snapshot used as the runtime's public
+The upstream RIME v2.1 repository snapshot used as the runtime's public
 baseline is archived at
-[`10.5281/zenodo.22004683`](https://doi.org/10.5281/zenodo.22004683). The
-contract-specific Paper XIV v2 promotion remains separately pinned to
-`c58633494257757e3316f31d8a7cfedc2e75af4e` and DOI
-`10.5281/zenodo.21880943`.
+[`10.5281/zenodo.22048358`](https://doi.org/10.5281/zenodo.22048358). The
+contract-family owners remain Paper XII
+([DOI 10.5281/zenodo.22006816](https://doi.org/10.5281/zenodo.22006816)),
+Paper XIII ([DOI 10.5281/zenodo.22010220](https://doi.org/10.5281/zenodo.22010220)),
+and Paper XIV ([DOI 10.5281/zenodo.22024158](https://doi.org/10.5281/zenodo.22024158)).
+Paper XV refines the authority boundary only; this runtime defines no Level 4,
+Revision wire object, or action-execution protocol. Papers XX--XXVIII are not
+part of the runtime closure.

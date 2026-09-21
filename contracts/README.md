@@ -48,10 +48,18 @@ projection, and verifies candidate-set faithfulness. Passing that validator
 does not establish policy correctness, authorization, execution, outcome, or
 causal effect.
 
+`contracts/action/v2.1/` vendors only the Paper XIV v2.1 SOFAction and receipt
+schemas. New runtime candidate artifacts use v2.1; v2.0 remains independently
+validatable and can enter v2.1 only through the explicit runtime migrator.
+
 `contracts/reporting/v2.0/` is the immutable SOFRS v2 report envelope, Assembly
 Profile, and validation-receipt snapshot imported from the release-content
 commit in `upstream.lock.json`. A passing reporting test establishes assembly
 conformance to those bytes; it does not establish adapter adequacy.
+
+`contracts/reporting/v2.1/` vendors only the SOFRS v2.1 report and receipt
+schemas. Assembly Profile v2.0 remains the owning profile version. Native v2.1
+generation and explicit v2.0 migration bind distinct provenance and receipts.
 
 `contracts/comparison/v2.0/` similarly vendors the published SOFAUDIT v2
 schema, receipt, coordinate registry, and official profiles. JSON Schema
@@ -74,8 +82,13 @@ not infer descriptor alignment or interpret `repair_probe_result` as an action
 or effect. Passing that validator does not establish that a declared reference
 is true or that an alignment is scientifically preferred.
 
+`contracts/comparison/v2.1/` vendors only the SOFAUDIT v2.1 audit and receipt
+schemas. It reuses the v1.0 coordinate registry and v2.0 comparison profiles
+without relabelling them. Native v2.1 audits bind their generation inputs;
+migrated audits require validated v2.0 audit/report closures and new receipts.
+
 The coordinate-evaluator registry and implementation modules under
-`contracts/runtime/v1.0/` are immutable v0.4 validation inputs. Adding or
+`contracts/runtime/v1.0/` are immutable validation inputs. Adding or
 replacing an evaluator requires a registry/module v2 rather than editing v1,
 so historical v1 audits remain verifiable against their original trusted
 execution closure.

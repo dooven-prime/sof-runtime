@@ -15,9 +15,9 @@
     "expected_mcp_tool_count": 9,
     "implementation_closure": {
       "path": "service-closure.current.json",
-      "sha256": "4766a212544d09da6d4210018e69c83f6d3d26b72f501edbcbc5b263a9866bcb"
+      "sha256": "08ef91deeb5c44cc467f32f86054e4f6d39f7eb930f77be57fc73c4ffa8f5fa2"
     },
-    "workspace_id_pattern": "mcp-matrix-deepseek-{agent}-20260813"
+    "workspace_id_pattern": "mcp-matrix-deepseek-flash-{agent}-20260921"
   },
   "fixture": {
     "reference_case": "case/reference",
@@ -43,19 +43,24 @@
   ],
   "agents": [
     {
-      "agent_id": "deepseek-a",
-      "result": "runs/deepseek-a.json"
+      "agent_id": "deepseek-flash-a",
+      "result": "runs/v0.5.0-deepseek-flash/deepseek-flash-a.json"
     },
     {
-      "agent_id": "deepseek-b",
-      "result": "runs/deepseek-b.json"
+      "agent_id": "deepseek-flash-b",
+      "result": "runs/v0.5.0-deepseek-flash/deepseek-flash-b.json"
     },
     {
-      "agent_id": "deepseek-c",
-      "result": "runs/deepseek-c.json"
+      "agent_id": "deepseek-flash-c",
+      "result": "runs/v0.5.0-deepseek-flash/deepseek-flash-c.json"
     }
   ],
-  "historical_same_model_control": {
+  "prior_deepseek_chat_control": {
+    "results": ["runs/deepseek-a.json", "runs/deepseek-b.json", "runs/deepseek-c.json"],
+    "matrix_member": false,
+    "reason": "These deepseek-chat runs use the preceding implementation closure and remain historical observations."
+  },
+  "prior_gpt_control": {
     "results": ["runs/agent-a.json", "runs/agent-b.json", "runs/agent-c.json"],
     "matrix_member": false,
     "reason": "These runs predate the implementation-closure pin and remain historical observations."

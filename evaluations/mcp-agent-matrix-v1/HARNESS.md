@@ -25,18 +25,32 @@ annotation; the harness never infers them from keywords or model self-report.
 
 ## Run
 
-Start the existing MCP service, then run one provider/model identity:
+Start the existing MCP service, then run one provider/model identity. The
+pinned DeepSeek OpenAI-compatible endpoint is `https://api.deepseek.com`.
+Current provider model IDs are `deepseek-flash` and `deepseek-v4-pro`; this
+matrix uses `deepseek-flash`.
 
 ```powershell
-$env:DeepSeek_Service_Key = "..."
 python tools/mcp_agent_harness.py `
-  --agent-id deepseek-a `
+  --agent-id deepseek-flash-a `
   --provider deepseek `
-  --model deepseek-chat `
+  --model deepseek-flash `
+  --model-version DeepSeek-V4.1-Flash `
+  --thinking enabled `
+  --reasoning-effort high `
+  --env-file .env `
   --mcp-url http://127.0.0.1:8082/mcp `
   --workspace-root runs/mcp-matrix-service `
   --spawn-server
 ```
+
+`--env-file` loads only variables that are absent from the process environment,
+does not print credential values, and never overwrites an explicitly exported
+variable. The repository `.env` file is ignored by Git.
+
+DeepSeek thinking mode is enabled explicitly for a reproducible run. The
+harness returns each assistant message's `reasoning_content` on subsequent
+tool-calling requests as required by the provider API.
 
 `--spawn-server` is recommended for acceptance replay. It starts the service
 from the current local source closure, waits for readiness, runs the matrix,
@@ -71,7 +85,7 @@ Annotate the generated result under the frozen rubric:
 
 ```powershell
 python tools/review_mcp_agent_run.py `
-  evaluations/mcp-agent-matrix-v1/runs/deepseek-a.json `
+  evaluations/mcp-agent-matrix-v1/runs/v0.5.0-deepseek-flash/deepseek-flash-a.json `
   --reviewer reviewer-id `
   --write
 ```

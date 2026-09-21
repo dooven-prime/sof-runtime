@@ -214,6 +214,38 @@ class ServiceTransportTests(unittest.TestCase):
             )
             cli_response = json.loads(completed.stdout)
 
+            cli_report_request = write_json(
+                workspace / "cli-report-request.json",
+                {
+                    "contract_id": "sof-runtime.service-request.v1",
+                    "request_id": "cli-report-1",
+                    "workspace_id": "transport-fixture",
+                    "operation": "report",
+                    "input": {
+                        "realization_run_directory": "cli",
+                        "out_directory": "cli",
+                    },
+                },
+            )
+            cli_report_response = json.loads(
+                subprocess.run(
+                    [
+                        sys.executable,
+                        "-m",
+                        "sof_runtime.cli.main",
+                        "service",
+                        "execute",
+                        str(cli_report_request),
+                        "--workspace-root",
+                        str(root),
+                    ],
+                    cwd=PROJECT_ROOT,
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                ).stdout
+            )
+
             client = TestClient(create_app(service))
             http_result = client.post(
                 "/v1/realizations",
@@ -221,8 +253,23 @@ class ServiceTransportTests(unittest.TestCase):
             )
             self.assertEqual(http_result.status_code, 200)
             http_response = http_result.json()
+            http_report_result = client.post(
+                "/v1/reports",
+                json={
+                    "contract_id": "sof-runtime.service-request.v1",
+                    "request_id": "http-report-1",
+                    "workspace_id": "transport-fixture",
+                    "operation": "report",
+                    "input": {
+                        "realization_run_directory": "http",
+                        "out_directory": "http",
+                    },
+                },
+            )
+            self.assertEqual(http_report_result.status_code, 200)
+            http_report_response = http_report_result.json()
 
-            async def call_mcp() -> dict:
+            async def call_mcp() -> tuple[dict, dict]:
                 server = create_server(service)
                 result = await server.call_tool(
                     "sof_realize",
@@ -235,9 +282,20 @@ class ServiceTransportTests(unittest.TestCase):
                 )
                 self.assertFalse(result.is_error)
                 assert result.structured_content is not None
-                return result.structured_content
+                report_result = await server.call_tool(
+                    "sof_report",
+                    {
+                        "workspace_id": "transport-fixture",
+                        "realization_run_directory": "mcp",
+                        "out_directory": "mcp",
+                        "request_id": "mcp-report-1",
+                    },
+                )
+                self.assertFalse(report_result.is_error)
+                assert report_result.structured_content is not None
+                return result.structured_content, report_result.structured_content
 
-            mcp_response = asyncio.run(call_mcp())
+            mcp_response, mcp_report_response = asyncio.run(call_mcp())
             responses = [direct_response, cli_response, http_response, mcp_response]
 
             self.assertEqual(len({item["job_id"] for item in responses}), 4)
@@ -267,6 +325,37 @@ class ServiceTransportTests(unittest.TestCase):
                 candidate_text = candidate_path.read_text(encoding="utf-8")
                 self.assertNotIn(item["job_id"], candidate_text)
                 self.assertNotIn("transport-fixture", candidate_text)
+
+            direct_report = RuntimeAPI().report(
+                direct_runtime, workspace / "runtime-api"
+            )
+            service_report_response = service.report(
+                "transport-fixture",
+                "service-api",
+                "service-api",
+                request_id="direct-report-1",
+            )
+            report_responses = [
+                service_report_response,
+                cli_report_response,
+                http_report_response,
+                mcp_report_response,
+            ]
+            self.assertEqual(
+                len({item["semantic_run_id"] for item in report_responses}), 1
+            )
+            self.assertEqual(
+                {item["result"]["report_id"] for item in report_responses},
+                {direct_report.report_id},
+            )
+            for path in (
+                direct_report.artifact_path,
+                workspace / "service-api" / "report" / "result.sofreport.json",
+                workspace / "cli" / "report" / "result.sofreport.json",
+                workspace / "http" / "report" / "result.sofreport.json",
+                workspace / "mcp" / "report" / "result.sofreport.json",
+            ):
+                self.assertEqual(load_json(path)["sofrs_version"], "2.1")
 
     def test_workspace_escape_is_rejected_before_runtime_execution(self) -> None:
         with tempfile.TemporaryDirectory(dir=PROJECT_ROOT / "runs") as directory:
@@ -378,6 +467,15 @@ class ServiceTransportTests(unittest.TestCase):
                     }
                 )
                 action = load_json(workspace / "run" / "action" / "result.sofaction.json")
+                self.assertEqual(
+                    load_json(workspace / "run" / "reference" / "report" / "result.sofreport.json")["sofrs_version"],
+                    "2.1",
+                )
+                self.assertEqual(
+                    load_json(workspace / "run" / "comparison" / "result.sofaudit.json")["sofaudit_version"],
+                    "2.1",
+                )
+                self.assertEqual(action["sofaction_version"], "2.1")
                 source_audit = action["source_audit"]
                 retrieved = service.get_artifact(
                     workspace_id,

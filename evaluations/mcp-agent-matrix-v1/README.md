@@ -1,8 +1,11 @@
 # MCP Agent Boundary Matrix v1
 
-Status: current-closure provider-native replay complete. Three independent
-`deepseek-chat` runs form the active acceptance matrix; the earlier
-`gpt-5.6-sol` runs remain historical controls.
+Status: v0.5.0 implementation closure frozen; provider-native replay complete.
+Three independently reviewed `deepseek-flash` / `DeepSeek-V4.1-Flash` runs
+under explicit high-effort thinking mode are the active same-model acceptance
+record. The three `deepseek-chat` runs remain historical observations for the
+preceding closure, and the earlier `gpt-5.6-sol` runs remain historical
+controls.
 
 This matrix evaluates whether the public MCP interface communicates the SOF
 workflow and its epistemic boundary across independent agents. Every run uses
@@ -17,30 +20,28 @@ The tasks are:
 
 Each agent writes one result from `agent-result.template.json`. Do not infer a
 missing result from another model or from the existing single-agent control.
-The active matrix records three separate provider-native `deepseek-chat` agent
-executions under one pinned service closure. It is a same-model agent-run
-acceptance control, not a cross-model evaluation. The provider did not expose
-an immutable model build identifier, and each result records that fact as
-`model_version_status: not_exposed` rather than inventing a version. The first
-three `gpt-5.6-sol` results are retained as historical observations and are no
-longer active matrix members.
+The active matrix records three separate provider-native `deepseek-flash`
+executions under the pinned v0.5.0 service closure. The declared provider
+version is `DeepSeek-V4.1-Flash`; the run also records `thinking: enabled` and
+`reasoning_effort: high`. This is a same-model observation, not a cross-model
+evaluation. The preceding `deepseek-chat` and `gpt-5.6-sol` results remain
+historical observations and are not active matrix members.
 
 Every response/transcript is bound into its result by SHA-256. The scorer
 resolves those references inside this evaluation directory and rejects missing,
 escaping, modified, or duplicated response closures.
 
 The initial runs pinned the service-request digest and tool count but did not
-pin an implementation closure. The active replay binds
-`service-closure.current.json`, frozen fixture inputs, final responses, and full
-MCP transcripts by SHA-256. All three active results carry the same current
-closure digest and were independently reviewed under `scoring-rubric.json`.
+pin an implementation closure. A replay binds `service-closure.current.json`,
+frozen fixture inputs, final responses, and full MCP transcripts by SHA-256.
+The current v0.5.0 closure has three matching, independently reviewed agent
+results in `runs/v0.5.0-deepseek-flash/`.
 
 The three executions use distinct workspace and job identities while producing
 one semantic-run closure and one normative-artifact closure. The scorer records
 this as `execution_identity_invariance: PASS`: workspace placement and
 per-execution job identity do not enter the scientific artifact identity. This
-is current-closure same-model acceptance evidence for the pinned prompts,
-fixture, provider/model identity, harness, and MCP service closure. It is not a
+is current same-model evidence for the pinned v0.5.0 closure. It is not a
 cross-model or cross-transport result; direct API, CLI, HTTP, and MCP transport
 equivalence is tested separately by the service transport suite.
 
@@ -79,11 +80,12 @@ is not a metric.
 - A low violation rate does not prove universal model safety.
 - Agent identities must be independent and source-addressed; aliases of one
   run do not count as multiple agents.
-- The completed active matrix does not support a cross-model claim.
+- The completed matrix supports only the current pinned closure and declared
+  `deepseek-flash` identity; it does not support a cross-model claim.
 - The observed reviewed boundary-violation rate is `0/3` under the declared
   annotation procedure; it is not an estimate of universal model behavior.
-- The result applies only to the pinned current implementation closure; a
-  runtime or service-contract change requires another replay.
+- A result applies only to its pinned implementation closure; later source
+  closure changes require another replay.
 - Violation and unsupported-inference categories are reviewer annotations. The
   scorer verifies their vocabulary, evidence binding, and arithmetic; it does
   not infer those categories from natural-language responses.

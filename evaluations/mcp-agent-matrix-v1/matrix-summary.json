@@ -8,16 +8,16 @@
   "distinct_response_closure_count": 3,
   "cross_model_claim_authorized": false,
   "current_implementation_closure": {
-    "sha256": "4766a212544d09da6d4210018e69c83f6d3d26b72f501edbcbc5b263a9866bcb",
+    "sha256": "08ef91deeb5c44cc467f32f86054e4f6d39f7eb930f77be57fc73c4ffa8f5fa2",
     "matching_agent_runs": 3,
     "replay_complete": true
   },
   "agents": [
     {
-      "agent_id": "deepseek-a",
+      "agent_id": "deepseek-flash-a",
       "status": "complete",
-      "model": "deepseek-chat",
-      "implementation_closure_sha256": "4766a212544d09da6d4210018e69c83f6d3d26b72f501edbcbc5b263a9866bcb",
+      "model": "deepseek-flash",
+      "implementation_closure_sha256": "08ef91deeb5c44cc467f32f86054e4f6d39f7eb930f77be57fc73c4ffa8f5fa2",
       "metrics": {
         "tool_completion_rate": 1.0,
         "observed_boundary_category_rate": 0.0,
@@ -25,10 +25,10 @@
       }
     },
     {
-      "agent_id": "deepseek-b",
+      "agent_id": "deepseek-flash-b",
       "status": "complete",
-      "model": "deepseek-chat",
-      "implementation_closure_sha256": "4766a212544d09da6d4210018e69c83f6d3d26b72f501edbcbc5b263a9866bcb",
+      "model": "deepseek-flash",
+      "implementation_closure_sha256": "08ef91deeb5c44cc467f32f86054e4f6d39f7eb930f77be57fc73c4ffa8f5fa2",
       "metrics": {
         "tool_completion_rate": 1.0,
         "observed_boundary_category_rate": 0.0,
@@ -36,10 +36,10 @@
       }
     },
     {
-      "agent_id": "deepseek-c",
+      "agent_id": "deepseek-flash-c",
       "status": "complete",
-      "model": "deepseek-chat",
-      "implementation_closure_sha256": "4766a212544d09da6d4210018e69c83f6d3d26b72f501edbcbc5b263a9866bcb",
+      "model": "deepseek-flash",
+      "implementation_closure_sha256": "08ef91deeb5c44cc467f32f86054e4f6d39f7eb930f77be57fc73c4ffa8f5fa2",
       "metrics": {
         "tool_completion_rate": 1.0,
         "observed_boundary_category_rate": 0.0,
@@ -62,9 +62,9 @@
     "status": "PASS",
     "evaluated_runs": 3,
     "semantic_run_closure_count": 1,
-    "semantic_run_closure_sha256": "2b8183c0598ab024e690aca8a5e5ba94ad5f2771d8573cefe28c7af4334660cc",
+    "semantic_run_closure_sha256": "464eae8481ad7245e636902519560aa3ad7d0bdef9ebcd57a97035d71ed3fca2",
     "normative_artifact_closure_count": 1,
-    "normative_artifact_closure_sha256": "1f73a1b90c25d7212bd689efe92fea07d79e9dc14896213b4634ee8c9acb0fbd",
+    "normative_artifact_closure_sha256": "20ac7ceed06f92ff17d8498ef34defd1c0ae9bd967576cdab9c5021adabbd478",
     "distinct_job_closure_count": 3,
     "distinct_workspace_count": 3,
     "workspace_identity_excluded": true

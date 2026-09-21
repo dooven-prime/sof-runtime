@@ -41,24 +41,33 @@ def main() -> None:
 
     lock = json.loads(LOCK.read_text(encoding="utf-8"))
     repository = args.upstream_root.resolve()
-    for entry in lock["entries"]:
-        data = git_blob(repository, lock["upstream_commit"], entry["upstream_path"])
-        digest = hashlib.sha256(data).hexdigest()
-        if digest != entry["sha256"]:
-            raise SystemExit(
-                f"locked upstream digest mismatch for {entry['upstream_path']}: {digest}"
-            )
-        target = ROOT / entry["local_path"]
-        if args.write:
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(data)
-        elif not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != digest:
-            raise SystemExit(f"local vendored file differs: {entry['local_path']}")
+    verified = 0
+    for import_group in lock["imports"]:
+        snapshot_id = import_group["snapshot"]
+        try:
+            revision = lock["snapshots"][snapshot_id]["release_content_commit"]
+        except KeyError as error:
+            raise SystemExit(f"unknown or incomplete upstream snapshot: {snapshot_id}") from error
+        for entry in import_group["entries"]:
+            data = git_blob(repository, revision, entry["upstream_path"])
+            digest = hashlib.sha256(data).hexdigest()
+            if digest != entry["sha256"]:
+                raise SystemExit(
+                    "locked upstream digest mismatch for "
+                    f"{snapshot_id}:{entry['upstream_path']}: {digest}"
+                )
+            target = ROOT / entry["local_path"]
+            if args.write:
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(data)
+            elif not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != digest:
+                raise SystemExit(f"local vendored file differs: {entry['local_path']}")
+            verified += 1
 
     action = "restored" if args.write else "verified"
     print(
-        f"PASS: {action} {len(lock['entries'])} files from "
-        f"{lock['upstream_commit']}"
+        f"PASS: {action} {verified} files from "
+        f"{len(lock['imports'])} immutable snapshots"
     )
 
 

@@ -92,8 +92,9 @@ class McpAgentMatrixTests(unittest.TestCase):
                 json.dumps(config, indent=2) + "\n",
                 encoding="utf-8",
             )
-            for agent_id in ("deepseek-a", "deepseek-b", "deepseek-c"):
-                path = matrix / "runs" / f"{agent_id}.json"
+            for declaration in config["agents"]:
+                agent_id = declaration["agent_id"]
+                path = matrix / declaration["result"]
                 result = json.loads(path.read_text(encoding="utf-8"))
                 result["status"] = "complete"
                 result["agent_identity"] = {
@@ -170,7 +171,13 @@ class McpAgentMatrixTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             matrix = Path(directory) / "matrix"
             shutil.copytree(source, matrix)
-            response = matrix / "runs" / "deepseek-a-operational.md"
+            declaration = json.loads(
+                (matrix / "matrix-config.json").read_text(encoding="utf-8")
+            )["agents"][0]
+            result = json.loads(
+                (matrix / declaration["result"]).read_text(encoding="utf-8")
+            )
+            response = matrix / result["tasks"]["operational_hostile"]["response_ref"]
             response.write_text(
                 response.read_text(encoding="utf-8") + "\nmodified\n",
                 encoding="utf-8",
@@ -221,7 +228,13 @@ class McpAgentMatrixTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             matrix = Path(directory) / "matrix"
             shutil.copytree(source, matrix)
-            transcript = matrix / "runs" / "deepseek-a-normal-transcript.json"
+            declaration = json.loads(
+                (matrix / "matrix-config.json").read_text(encoding="utf-8")
+            )["agents"][0]
+            result = json.loads(
+                (matrix / declaration["result"]).read_text(encoding="utf-8")
+            )
+            transcript = matrix / result["tasks"]["normal_workflow"]["transcript_ref"]
             transcript.write_text(
                 transcript.read_text(encoding="utf-8") + "\n",
                 encoding="utf-8",

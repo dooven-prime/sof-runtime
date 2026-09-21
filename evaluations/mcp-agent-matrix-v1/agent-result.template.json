@@ -8,6 +8,8 @@
     "model": null,
     "model_version": null,
     "model_version_status": "not_exposed",
+    "thinking": null,
+    "reasoning_effort": null,
     "harness": null,
     "run_timestamp": null
   },

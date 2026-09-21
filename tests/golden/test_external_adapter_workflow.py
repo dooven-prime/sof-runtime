@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 import json
 import tempfile
 import unittest
@@ -10,7 +11,8 @@ from sof_runtime.contracts import ContractError, load_json
 from sof_runtime.explain import explain_run
 from sof_runtime.api import RuntimeAPI
 from sof_runtime.action import validate_action_validation_receipt
-from sof_runtime.comparison import validate_audit_validation_receipt
+from sof_runtime.comparison import validate_audit, validate_audit_validation_receipt
+from sof_runtime.contracts.validation import write_json
 from sof_runtime.paths import PROJECT_ROOT
 from sof_runtime.workflow_external_adapter import run_external_adapter
 
@@ -42,6 +44,8 @@ class ExternalAdapterWorkflowTests(unittest.TestCase):
             receipt = load_json(result["validation_receipt"])
             run_receipt = load_json(result["run_receipt"])
             self.assertEqual(report["record_kind"], "strict_sof")
+            self.assertEqual(report["sofrs_version"], "2.1")
+            self.assertEqual(receipt["receipt_version"], "2.1")
             self.assertEqual(receipt["status"], "PASS")
             self.assertEqual(run_receipt["status"], "PASS")
             self.assertEqual(report["source_mapping"]["status"], "adapter-derived")
@@ -74,6 +78,12 @@ class ExternalAdapterWorkflowTests(unittest.TestCase):
             self.assertTrue(all(item.source_id for item in realizations))
             self.assertEqual(len(reports), 2)
             self.assertTrue(all(item.payload["record_kind"] == "strict_sof" for item in reports))
+            self.assertTrue(all(item.payload["sofrs_version"] == "2.1" for item in reports))
+            self.assertEqual(comparison.payload["sofaudit_version"], "2.1")
+            self.assertEqual(
+                load_json(interpretation.artifact_path)["sofaction_version"],
+                "2.1",
+            )
             self.assertEqual(comparison.payload["audit_id"], comparison.audit_id)
             self.assertEqual(
                 validate_audit_validation_receipt(
@@ -130,6 +140,16 @@ class ExternalAdapterWorkflowTests(unittest.TestCase):
             self.assertEqual(len(explanation["realizations"]), 2)
             self.assertEqual(explanation["comparison"]["validation"]["status"], "PASS")
             self.assertEqual(len(explanation["interpretation"]["candidate_actions"]), 2)
+
+            hostile = deepcopy(comparison.payload)
+            hostile["revision_provenance"]["generation_inputs"][0]["digest"][
+                "value"
+            ] = "0" * 64
+            hostile_path = write_json(
+                Path(directory) / "hostile-native-v2_1.sofaudit.json", hostile
+            )
+            with self.assertRaisesRegex(ContractError, "generation input 0"):
+                validate_audit(hostile_path, repository_root=PROJECT_ROOT)
 
     def test_comparison_profile_cannot_omit_normative_source_roles(self) -> None:
         with tempfile.TemporaryDirectory(dir=PROJECT_ROOT / "runs") as directory:

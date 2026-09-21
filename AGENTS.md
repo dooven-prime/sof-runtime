@@ -16,6 +16,13 @@ or overwrite domain-specific scientific conclusions.
 - Treat `contracts/reporting/v2.0/`, `contracts/comparison/v2.0/`, and
   `contracts/action/v2.0/` as immutable upstream material and verify them
   against `contracts/upstream.lock.json`.
+- Treat `contracts/reporting/v2.1/`, `contracts/comparison/v2.1/`, and
+  `contracts/action/v2.1/` as immutable upstream material and verify them
+  against the corresponding snapshot in `contracts/upstream.lock.json`.
+- Freeze the v2.0 runtime implementations `assembly_v2.py`,
+  `reporting/validation_v2.py`, `comparison/producer_v2.py`,
+  `comparison/validation_v2.py`, `action/producer_v2.py`, and
+  `action/validation_v2.py`; historical receipts bind their byte digests.
 - Put runtime-only protocols under `contracts/runtime/`.
 - Put transport-neutral orchestration contracts under `contracts/service/`.
 - Put domain payloads under versioned `contracts/sources/` or

@@ -16,15 +16,14 @@ from sof_runtime.compiler import compile_documents
 from sof_runtime.contracts import ContractError, load_json, validate_contract
 from sof_runtime.contracts.validation import write_json
 from sof_runtime.paths import COMPILER_CONTRACT_ROOT, PROJECT_ROOT, RUNTIME_CONTRACT_ROOT
-from sof_runtime.reporting import (
-    artifact_reference,
-    assemble_report,
+from sof_runtime.reporting.assembly_v2_1 import artifact_reference, assemble_report
+from sof_runtime.reporting.assembly_v2 import resolve_artifact_reference
+from sof_runtime.reporting.validation_v2_1 import (
+    RECEIPT_SCHEMA,
+    REPORT_SCHEMA,
     build_validation_receipt,
     validate_receipt,
-    validate_report,
 )
-from sof_runtime.reporting.assembly_v2 import resolve_artifact_reference
-from sof_runtime.reporting.validation_v2 import RECEIPT_SCHEMA
 
 
 WORKFLOW_VERSION = "1.0"
@@ -509,7 +508,7 @@ def build_external_report(
     compiler_output = compile_documents(manifest, ir, compiler_profile, repository_root=PROJECT_ROOT, verify_artifacts=True)
     compiler_output_path = write_json(run_dir / "compiler" / "compiler-output.json", compiler_output)
     assembly_profile = load_json(assembly_profile_path)
-    assembly_implementation_path = Path(__import__("sof_runtime.reporting.assembly_v2", fromlist=["__file__"]).__file__).resolve()
+    assembly_implementation_path = Path(__import__("sof_runtime.reporting.assembly_v2_1", fromlist=["__file__"]).__file__).resolve()
     workflow_implementation_path = Path(__file__).resolve()
     assembly_implementation_snapshot = _snapshot(
         assembly_implementation_path,
@@ -520,12 +519,20 @@ def build_external_report(
         run_dir / "compiler" / "workflow-implementation.py",
     )
     validator_implementation_snapshot = _snapshot(
-        Path(__import__("sof_runtime.reporting.validation_v2", fromlist=["__file__"]).__file__).resolve(),
+        Path(__import__("sof_runtime.reporting.validation_v2_1", fromlist=["__file__"]).__file__).resolve(),
         run_dir / "compiler" / "report-validator.py",
+    )
+    report_contract_snapshot = _snapshot(
+        REPORT_SCHEMA,
+        run_dir / "compiler" / "sofrs.schema.json",
     )
     receipt_contract_snapshot = _snapshot(
         RECEIPT_SCHEMA,
         run_dir / "compiler" / "sofrs-validation-receipt.schema.json",
+    )
+    boundary_helper_snapshot = _snapshot(
+        Path(__import__("sof_runtime.non_intervention", fromlist=["__file__"]).__file__).resolve(),
+        run_dir / "compiler" / "non-intervention.py",
     )
     source_artifact_refs = [_ref(path) for path in (source_path, adapter_path, declaration_path, inspection_path, candidate_path, evidence_path)]
     is_analogue = candidate["record_kind"] == "diagnostic_analogue"
@@ -580,14 +587,43 @@ def build_external_report(
             ],
             "source_artifact_digests": deepcopy(source_artifact_refs),
         }
-    report = assemble_report(manifest_path, ir_path, compiler_profile_path, compiler_output_path, assembly_profile_path, assembly_implementation=_ref(assembly_implementation_snapshot), presentation=presentation, repository_root=PROJECT_ROOT, verify_artifacts=True)
+    generation_inputs = [
+        _ref(path)
+        for path in (
+            manifest_path,
+            ir_path,
+            compiler_profile_path,
+            compiler_output_path,
+            assembly_profile_path,
+            source_path,
+            adapter_path,
+            declaration_path,
+            inspection_path,
+            candidate_path,
+            evidence_path,
+        )
+    ]
+    report = assemble_report(
+        manifest_path,
+        ir_path,
+        compiler_profile_path,
+        compiler_output_path,
+        assembly_profile_path,
+        assembly_implementation=_ref(assembly_implementation_snapshot),
+        generation_implementation=_ref(assembly_implementation_snapshot),
+        generation_inputs=generation_inputs,
+        presentation=presentation,
+        repository_root=PROJECT_ROOT,
+        verify_artifacts=True,
+    )
     report_path = write_json(run_dir / "report" / "result.sofreport.json", report)
-    validate_report(report_path, repository_root=PROJECT_ROOT)
     receipt = build_validation_receipt(
         report_path,
         repository_root=PROJECT_ROOT,
         validator_implementation_path=validator_implementation_snapshot,
-        receipt_contract=_ref(receipt_contract_snapshot),
+        report_contract_path=report_contract_snapshot,
+        receipt_contract_path=receipt_contract_snapshot,
+        boundary_helper_path=boundary_helper_snapshot,
     )
     receipt_path = write_json(run_dir / "report" / "validation-receipt.json", receipt)
     validate_receipt(receipt_path, repository_root=PROJECT_ROOT)
