@@ -1,0 +1,29 @@
+{
+  "language": "ECC_SYN_V1",
+  "environment": {"defect": [0, 2, 0], "seed": [0, 1, 2]},
+  "selected": [0, 1, 2],
+  "program": {
+    "q": {
+      "kind": "pair",
+      "left": {"kind": "query", "name": "CurrentPartition"},
+      "right": {"kind": "query", "name": "SelectedBlock"}
+    },
+    "reports": [
+      {
+        "label": "origin_port0",
+        "expr": {
+          "kind": "snd",
+          "value": {
+            "kind": "fst",
+            "value": {
+              "kind": "field",
+              "value": {"kind": "query", "name": "OriginSnapshot"},
+              "name": "parents"
+            }
+          }
+        }
+      }
+    ],
+    "commands": []
+  }
+}
