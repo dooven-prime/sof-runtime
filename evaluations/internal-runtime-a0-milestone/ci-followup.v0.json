@@ -1,0 +1,345 @@
+{
+  "changed_files": [
+    {
+      "length": 6758,
+      "path": "docs/internal/ENGINEERING_MILESTONE_REVIEW.md",
+      "sha256": "a4216ef8a20877292c2b3966aeaaa4752a37c82976ae741f977be347bdf58d23"
+    },
+    {
+      "length": 2264,
+      "path": "tests/cross_language/test_engineering_ci.py",
+      "sha256": "034cb0f8a584f2f393101154185179be823a70d364fa0a01bf9119f40f281871"
+    },
+    {
+      "length": 8204,
+      "path": "tools/run_engineering_ci.py",
+      "sha256": "4f34483a6336078f2af309b0728ac68eb184702b376d081c9f62d99f73501980"
+    }
+  ],
+  "corrected_hosted_execution": "NOT_EXECUTED_AT_INDEX_CREATION",
+  "correction": "create normal fixtures below a canonical per-job output directory and restore tempfile selection after the menu; continue to reject aliases",
+  "date": "2026-10-25",
+  "initial_checkpoint": "23dd79f77fff7b3fc3ea7a9ba0d32e208c517cf6",
+  "initial_hosted_run": {
+    "cause": "runner default temporary directory contains RUNNER~1 alias; correct PATH_ALIAS refusals prevented normal fixtures reaching intended controls",
+    "conclusion": "FAILURE",
+    "failed_windows": [
+      {
+        "length": 644,
+        "path_local": "runs/milestone-ci/github-pr/ntfs-failed/ci-result.json",
+        "result": {
+          "error": "selected CI tests incomplete/failed: ntfs",
+          "not_executed": [
+            "full-carrier benchmarks and source-bound archived Solana captures",
+            "historical 43/27-case full acceptance closures and executable digests",
+            "remaining prototype/kernel/controller suites outside this selected CI profile"
+          ],
+          "platform": "win32",
+          "profile": "a0-ntfs",
+          "release_or_tag_created": false,
+          "schema": "sof-runtime.internal-engineering-ci.v0",
+          "sof_guard": {
+            "files": 304,
+            "historical_tests_reexecuted_by_this_check": false,
+            "status": "MATCHED_PROTECTED_BYTES"
+          },
+          "status": "FAILED_OR_UNRESOLVED"
+        },
+        "sha256": "360691740d1318ab463e31affd5807357ec0535d86ea2e8295100f97de0ed10f"
+      },
+      {
+        "length": 1731,
+        "path_local": "runs/milestone-ci/github-pr/ntfs-failed/ntfs.json",
+        "result": {
+          "errors": [
+            "tests.cross_language.test_a0_inventory_shadow.A0Tests.test_actual_kills_never_admit_partial_observations",
+            "tests.cross_language.test_a0_inventory_shadow.A0Tests.test_mutation_and_replacement_are_detected_in_the_same_window (kind='content')",
+            "tests.cross_language.test_a0_inventory_shadow.A0Tests.test_mutation_and_replacement_are_detected_in_the_same_window (kind='replacement')",
+            "tests.cross_language.test_a0_inventory_shadow.A0Tests.test_mutation_and_replacement_are_detected_in_the_same_window (kind='extra-file')",
+            "tests.cross_language.test_a0_inventory_shadow.A0Tests.test_mutation_and_replacement_are_detected_in_the_same_window (kind='named-stream')"
+          ],
+          "failures": [
+            "tests.cross_language.test_a0_inventory_shadow.A0Tests.test_actual_junction_reparse_roots_and_entries (kind='root')",
+            "tests.cross_language.test_a0_inventory_shadow.A0Tests.test_actual_junction_reparse_roots_and_entries (kind='entry')",
+            "tests.cross_language.test_a0_inventory_shadow.A0Tests.test_actual_named_stream_and_hardlink (kind='file-ads')",
+            "tests.cross_language.test_a0_inventory_shadow.A0Tests.test_actual_named_stream_and_hardlink (kind='root-ads')",
+            "tests.cross_language.test_a0_inventory_shadow.A0Tests.test_actual_named_stream_and_hardlink (kind='hardlink')",
+            "tests.cross_language.test_a0_inventory_shadow.A0Tests.test_normal_exact_manifest_and_opaque_bytes",
+            "tests.cross_language.test_a0_inventory_shadow.A0Tests.test_original_producer_identity_and_semantic_boundary",
+            "tests.cross_language.test_a0_inventory_shadow.A0Tests.test_success_is_not_a_future_snapshot_credential"
+          ],
+          "skipped": [],
+          "status": "FAILED",
+          "tests_run": 23
+        },
+        "sha256": "99d0bb7192eddc09f45d37e05c363590e688715558d492c910fd9a41764bf4c3"
+      }
+    ],
+    "successful_selected_jobs": [
+      {
+        "length": 17046,
+        "path_local": "runs/milestone-ci/github-pr/sof-3.11/ci-result.json",
+        "result": {
+          "legacy_cross_language": {
+            "errors": [],
+            "failures": [],
+            "skipped": [],
+            "status": "PASS_SELECTED_CHECKS",
+            "tests_run": 9
+          },
+          "not_executed": [
+            "full-carrier benchmarks and source-bound archived Solana captures",
+            "historical 43/27-case full acceptance closures and executable digests",
+            "remaining prototype/kernel/controller suites outside this selected CI profile",
+            "A0 NTFS controls: separate Windows job",
+            "A0 portable Rust controls: separate portable job"
+          ],
+          "platform": "linux",
+          "profile": "sof",
+          "release_or_tag_created": false,
+          "schema": "sof-runtime.internal-engineering-ci.v0",
+          "sof_guard": {
+            "files": 304,
+            "historical_tests_reexecuted_by_this_check": false,
+            "status": "MATCHED_PROTECTED_BYTES"
+          },
+          "sof_guard_after": {
+            "files": 304,
+            "historical_tests_reexecuted_by_this_check": false,
+            "status": "MATCHED_PROTECTED_BYTES"
+          },
+          "status": "PASS_SELECTED_CHECKS",
+          "tests": {
+            "count": 131,
+            "errors": [],
+            "failures": [],
+            "skipped": [],
+            "successful": true
+          }
+        },
+        "sha256": "ae44516ee7a431d9f3c37ebdb2af792069eb56af809f1eff2a6c48d6e5702fff"
+      },
+      {
+        "length": 17046,
+        "path_local": "runs/milestone-ci/github-pr/sof-3.13/ci-result.json",
+        "result": {
+          "legacy_cross_language": {
+            "errors": [],
+            "failures": [],
+            "skipped": [],
+            "status": "PASS_SELECTED_CHECKS",
+            "tests_run": 9
+          },
+          "not_executed": [
+            "full-carrier benchmarks and source-bound archived Solana captures",
+            "historical 43/27-case full acceptance closures and executable digests",
+            "remaining prototype/kernel/controller suites outside this selected CI profile",
+            "A0 NTFS controls: separate Windows job",
+            "A0 portable Rust controls: separate portable job"
+          ],
+          "platform": "linux",
+          "profile": "sof",
+          "release_or_tag_created": false,
+          "schema": "sof-runtime.internal-engineering-ci.v0",
+          "sof_guard": {
+            "files": 304,
+            "historical_tests_reexecuted_by_this_check": false,
+            "status": "MATCHED_PROTECTED_BYTES"
+          },
+          "sof_guard_after": {
+            "files": 304,
+            "historical_tests_reexecuted_by_this_check": false,
+            "status": "MATCHED_PROTECTED_BYTES"
+          },
+          "status": "PASS_SELECTED_CHECKS",
+          "tests": {
+            "count": 131,
+            "errors": [],
+            "failures": [],
+            "skipped": [],
+            "successful": true
+          }
+        },
+        "sha256": "ae44516ee7a431d9f3c37ebdb2af792069eb56af809f1eff2a6c48d6e5702fff"
+      },
+      {
+        "length": 1074,
+        "path_local": "runs/milestone-ci/github-pr/portable/ci-result.json",
+        "result": {
+          "not_executed": [
+            "full-carrier benchmarks and source-bound archived Solana captures",
+            "historical 43/27-case full acceptance closures and executable digests",
+            "remaining prototype/kernel/controller suites outside this selected CI profile",
+            "tests.cross_language.test_a0_inventory_shadow",
+            "tests.cross_language.test_a0_malecns_cache_shadow"
+          ],
+          "ntfs": "NOT_EXECUTED_PLATFORM",
+          "platform": "linux",
+          "profile": "a0-portable",
+          "release_or_tag_created": false,
+          "review_tests": {
+            "errors": [],
+            "failures": [],
+            "skipped": [],
+            "status": "PASS_SELECTED_CHECKS",
+            "tests_run": 7
+          },
+          "schema": "sof-runtime.internal-engineering-ci.v0",
+          "sof_guard": {
+            "files": 304,
+            "historical_tests_reexecuted_by_this_check": false,
+            "status": "MATCHED_PROTECTED_BYTES"
+          },
+          "sof_guard_after": {
+            "files": 304,
+            "historical_tests_reexecuted_by_this_check": false,
+            "status": "MATCHED_PROTECTED_BYTES"
+          },
+          "status": "PASS_SELECTED_CHECKS",
+          "unsupported_backend_refusal": "PASS_REFUSAL_ONLY_NOT_NTFS_VALIDATION"
+        },
+        "sha256": "b974b5490df3f2cc96242874bbdcb7431254cd6d9c033f5e0c24b03be4769746"
+      }
+    ],
+    "url": "https://github.com/dooven-prime/sof-runtime/actions/runs/40125638056"
+  },
+  "local_corrected_selected_checks": [
+    {
+      "length": 1016,
+      "path_local": "runs/milestone-ci/a0-ntfs-canonical-fixtures/ci-result.json",
+      "result": {
+        "not_executed": [
+          "full-carrier benchmarks and source-bound archived Solana captures",
+          "historical 43/27-case full acceptance closures and executable digests",
+          "remaining prototype/kernel/controller suites outside this selected CI profile",
+          "Windows process-counter attribution: retained local evidence, not this NTFS test menu"
+        ],
+        "ntfs": "EXECUTED_LOCAL_NTFS_FIXTURES",
+        "ntfs_tests": {
+          "errors": [],
+          "failures": [],
+          "skipped": [],
+          "status": "PASS_SELECTED_CHECKS",
+          "tests_run": 23
+        },
+        "platform": "win32",
+        "profile": "a0-ntfs",
+        "release_or_tag_created": false,
+        "schema": "sof-runtime.internal-engineering-ci.v0",
+        "sof_guard": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "sof_guard_after": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "status": "PASS_SELECTED_CHECKS"
+      },
+      "sha256": "c4fcc1a20d630fd13ec3351b826f7461846165aaa921c3a963a4d1968bfdbf36"
+    },
+    {
+      "length": 883,
+      "path_local": "runs/milestone-ci/a0-ntfs-canonical-fixtures/optimized/ci-result.json",
+      "result": {
+        "not_executed": [
+          "full-carrier benchmarks and source-bound archived Solana captures",
+          "historical 43/27-case full acceptance closures and executable digests",
+          "remaining prototype/kernel/controller suites outside this selected CI profile"
+        ],
+        "ntfs_tests": {
+          "errors": [],
+          "failures": [],
+          "skipped": [],
+          "status": "PASS_SELECTED_CHECKS",
+          "tests_run": 23
+        },
+        "platform": "win32",
+        "profile": "_ntfs-tests",
+        "release_or_tag_created": false,
+        "schema": "sof-runtime.internal-engineering-ci.v0",
+        "sof_guard": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "sof_guard_after": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "status": "PASS_SELECTED_CHECKS"
+      },
+      "sha256": "12e74e5443654e3847cd73ed6388f44e05fe2d2366c454404fbef1ff8a4552cf"
+    },
+    {
+      "length": 1031,
+      "path_local": "runs/milestone-ci/a0-portable-canonical-fixtures/ci-result.json",
+      "result": {
+        "not_executed": [
+          "full-carrier benchmarks and source-bound archived Solana captures",
+          "historical 43/27-case full acceptance closures and executable digests",
+          "remaining prototype/kernel/controller suites outside this selected CI profile",
+          "tests.cross_language.test_a0_inventory_shadow",
+          "tests.cross_language.test_a0_malecns_cache_shadow"
+        ],
+        "ntfs": "NOT_EXECUTED_PROFILE",
+        "platform": "win32",
+        "profile": "a0-portable",
+        "release_or_tag_created": false,
+        "review_tests": {
+          "errors": [],
+          "failures": [],
+          "skipped": [],
+          "status": "PASS_SELECTED_CHECKS",
+          "tests_run": 8
+        },
+        "schema": "sof-runtime.internal-engineering-ci.v0",
+        "sof_guard": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "sof_guard_after": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "status": "PASS_SELECTED_CHECKS"
+      },
+      "sha256": "9330ead5f46e7199a87e885baf0acebf6860a6e49e7d41a4a2e10a82a615f748"
+    }
+  ],
+  "old_evidence_reissued": false,
+  "preserved_initial_indexes": [
+    {
+      "length": 48348,
+      "path": "evaluations/internal-runtime-a0-milestone/commit-scope.json",
+      "sha256": "877ca44cda5d78e6ba492f7561391e3f916e1579344197e99ebfa6b7dc3a7cd4"
+    },
+    {
+      "length": 7088,
+      "path": "evaluations/internal-runtime-a0-milestone/evidence-index.json",
+      "sha256": "014bfff59895c2079d1e2ad96fddcbd980bd9fa5b5feaaab137289feab6b09c4"
+    },
+    {
+      "length": 26650,
+      "path": "evaluations/internal-runtime-a0-milestone/local-checks.json",
+      "sha256": "b9d7ec90822bb915a47cebeffab0e6f80bbe8b759189d4f2d3b88613e54cf0a4"
+    },
+    {
+      "length": 55193,
+      "path": "evaluations/internal-runtime-a0-milestone/sof-compatibility-baseline.json",
+      "sha256": "700b6497e7f81c925388f2e6ca5d6a405ca4444bb3fd655dd198492b3ba2ecd4"
+    }
+  ],
+  "release_or_tag_created": false,
+  "schema": "sof-runtime.internal-milestone-ci-followup.v0",
+  "scope": "CI fixture environment and its regression test only; A0 core, adapters, assertion menus, protected SOF files and historical receipt bytes unchanged",
+  "self_exclusion": {
+    "path": "evaluations/internal-runtime-a0-milestone/ci-followup.v0.json",
+    "reason": "Git binds complete tree; no own-digest cycle"
+  }
+}

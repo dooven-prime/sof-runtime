@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import json
 import os
 from pathlib import Path
@@ -44,6 +45,24 @@ def test_suite(names, out, label):
     (out/(label+".json")).write_text(json.dumps(record, indent=2)+"\n")
     if record["status"] != "PASS_SELECTED_CHECKS": raise RuntimeError("selected CI tests incomplete/failed: "+label)
     return record
+
+
+@contextmanager
+def fixture_temp_root(out):
+    # Hosted Windows TEMP may contain RUNNER~1. That is correctly rejected by
+    # A0; normal fixtures must start under an explicitly canonical job path.
+    previous = tempfile.tempdir
+    with tempfile.TemporaryDirectory(prefix="ntfs-fixtures-", dir=out.resolve()) as directory:
+        tempfile.tempdir = str(Path(directory).resolve())
+        try:
+            yield Path(tempfile.tempdir)
+        finally:
+            tempfile.tempdir = previous
+
+
+def ntfs_suite(out):
+    with fixture_temp_root(out):
+        return test_suite(NTFS_MODULES, out, "ntfs")
 
 
 def guard():
@@ -101,13 +120,13 @@ def run(profile, out):
             # their locked dependency caches before invoking the existing tests.
             for name in ("a0-mechanical-core", "a0-inventory-inspector", "solana-publication-recovery"):
                 command(out, name+"-fetch", ["cargo", "fetch", "--locked", "--manifest-path", str(ROOT/"plugins/rust"/name/"Cargo.toml")])
-            report["ntfs_tests"] = test_suite(NTFS_MODULES, out, "ntfs")
+            report["ntfs_tests"] = ntfs_suite(out)
             command(out, "ntfs-optimized", [sys.executable, "-B", "-O", "tools/run_engineering_ci.py", "_ntfs-tests", "--out", str(out/"optimized")])
             report["ntfs"] = "EXECUTED_LOCAL_NTFS_FIXTURES"
             report["not_executed"] += ["Windows process-counter attribution: retained local evidence, not this NTFS test menu"]
         elif profile == "_ntfs-tests":
             if os.name != "nt": raise RuntimeError("NTFS optimized subprocess requires Windows")
-            report["ntfs_tests"] = test_suite(NTFS_MODULES, out, "ntfs")
+            report["ntfs_tests"] = ntfs_suite(out)
         else: raise ValueError("unknown CI profile")
         report["sof_guard_after"] = guard()
         report["status"] = "PASS_SELECTED_CHECKS"

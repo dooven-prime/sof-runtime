@@ -1,7 +1,8 @@
 import unittest
 from pathlib import Path
+import tempfile
 from unittest.mock import patch
-from tools.run_engineering_ci import outcome, guard
+from tools.run_engineering_ci import outcome, guard, fixture_temp_root
 
 
 class ReportingTests(unittest.TestCase):
@@ -27,6 +28,20 @@ class ReportingTests(unittest.TestCase):
                 self.assertEqual(builder.main(), 0)
                 self.assertEqual(run.call_count, expected)
                 self.assertIn(str(builder.MANIFEST), run.call_args_list[0].args[0])
+
+
+    def test_fixture_temp_root_is_scoped_and_restored_even_on_failure(self):
+        with tempfile.TemporaryDirectory() as parent:
+            previous = tempfile.tempdir
+            with self.assertRaisesRegex(RuntimeError, "test interruption"):
+                with fixture_temp_root(Path(parent)) as root:
+                    self.assertEqual(root.parent, Path(parent).resolve())
+                    self.assertEqual(Path(tempfile.gettempdir()), root)
+                    with tempfile.TemporaryDirectory() as fixture:
+                        self.assertEqual(Path(fixture).parent, root)
+                    raise RuntimeError("test interruption")
+            self.assertEqual(tempfile.tempdir, previous)
+            self.assertFalse(root.exists())
 
 
 if __name__ == "__main__": unittest.main()

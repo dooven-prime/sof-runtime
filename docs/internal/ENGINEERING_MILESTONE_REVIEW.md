@@ -45,7 +45,7 @@ process execution and publication/retry semantics remain outside the shared core
 The [evidence index](../../evaluations/internal-runtime-a0-milestone/evidence-index.json)
 lists retained records and their scope. The
 [commit scope](../../evaluations/internal-runtime-a0-milestone/commit-scope.json)
-lists proposed paths; it excludes itself from its digest inventory to avoid
+lists the initial checkpoint's proposed paths; it excludes itself from its digest inventory to avoid
 self-reference. Git binds the complete committed tree. Neither is a release
 manifest, external attestation or a full raw-data archive.
 
@@ -55,6 +55,14 @@ checkout remains clean at the shared base commit. All 303 common protected Git
 blobs agree; two main-checkout profile working files have pre-existing CRLF/LF
 differences from those blobs. Their bytes are recorded, not normalized in place.
 The additional protected path is the tiny synthetic MaleCNS fixture.
+
+The [CI follow-up index](../../evaluations/internal-runtime-a0-milestone/ci-followup.v0.json)
+records the later harness-only correction. Initial indexes and failed hosted
+evidence remain historical, rather than being overwritten to claim a pass.
+The first Windows hosted run correctly refused the runner's default `RUNNER~1`
+temporary path alias. CI now creates normal fixtures under a canonical job
+output directory; explicit alias-rejection controls and production code remain
+unchanged. The ordinary and optimized menus use this same scoped fixture policy.
 
 ## CI Gates
 
