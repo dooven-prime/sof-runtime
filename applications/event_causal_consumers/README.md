@@ -86,6 +86,18 @@ environments; they do not exhaust all syntax trees or prove the implementation
 correct. No new defect census was added. The optional differential test reads
 only the pinned XXXIX inputs described below, not current checkout sources.
 
+An initial Rust enumerator was built as a technical-feasibility prototype for
+the fixed singleton-seed, `d(1)=0`, selected-`{0,1}` control family. It lives
+under the runtime's
+[`event-causal-q2-enumerator` crate](../../plugins/rust/event-causal-q2-enumerator/).
+It is an application-specific prototype, not a `sof-runtime`
+RunRequest plugin, canonical SOF carrier, or alternate Q2 decision backend.
+Cross-language tests compare its exact log-state and Gamma counts with the
+Python producer for
+`n=3..6`; current Python decision and rejection-replay paths are unchanged.
+This feasibility check is not a controlled performance benchmark or a paper
+result.
+
 Admission is relative to the supplied reports and command menu. On the same
 three-point domain, the same q=(P,F) passes the packet-only consumer but fails
 the origin-parent report. A single q preserving every read in the entire

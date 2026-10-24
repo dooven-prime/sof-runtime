@@ -1,0 +1,101 @@
+{
+  "before_sha256": "505ab5271b31f5037f1eb29fc8485b8f0068d8fc7cc796d49e207860d6c7daf0",
+  "boundary": {
+    "application_pass_issued_by_core": false,
+    "b_or_c_extracted": false,
+    "immutable_snapshot_credential": false,
+    "independent_execution_attestation": false,
+    "production_paths_migrated": false,
+    "public_api": false,
+    "public_replay_package": false
+  },
+  "client_date": "2026-10-25",
+  "comparisons": {
+    "malecns": {
+      "byte_identical_matching_observations": 8,
+      "cases": 27,
+      "failure_classes_and_codes_equal": true,
+      "paired_observations": 35,
+      "timing_pid_file_ids_not_compared": true
+    },
+    "solana": {
+      "byte_identical_matching_observations": 11,
+      "cases": 43,
+      "failure_classes_and_codes_equal": true,
+      "paired_observations": 54,
+      "timing_pid_file_ids_not_compared": true
+    }
+  },
+  "core_boundary": {
+    "files": {
+      "src/codec.rs": "73c7a585de3b76bea820d6dd183bf32c6c1adc8c364dbcf47bac96891b14a11e",
+      "src/identity.rs": "75d0440fffdd35006a2f4cb752f1a51d620bd8d166cc7cabb65857eb0901388e",
+      "src/inventory.rs": "75cca115d36e9041a7737576e94133f58a8daf7cb6ccec6f88b50a7d2d1cd024",
+      "src/inventory/windows.rs": "d53b787bcf4ef268bf62ecd95b4bf17b96bb2cdcbc43df455d991e29ff7aa0fd",
+      "src/lib.rs": "845edfe9781cd1a86f66e79455abcdc1e0694686f2a4b095feaefed4a4efe0de"
+    },
+    "independent_python_reference_retained": true,
+    "no_domain_policy_or_writer_lexical_control": true,
+    "top_level_modules": [
+      "identity",
+      "codec",
+      "inventory"
+    ]
+  },
+  "evidence_objects": 2144,
+  "observer_executable_sha256": "f7e2154160a521732243b1f1790ce93e5adda2562fbd4b5b4724de4c10c9eb0e",
+  "prior_observer_sha256": "b895128695ffdcf50a3f1820e40086c306fad11835d5a6f8aa7eb49d616220c8",
+  "prior_receipts_preserved": {
+    "runs\\a0-malecns-cache-shadow\\acceptance-v0-final\\acceptance.v0.json": "dd64b4159d94a83f58672e87980a530012e27184dd5511d57e772945d8455393",
+    "runs\\a0-malecns-cache-shadow\\acceptance-v0-final\\solana-regression\\acceptance.v0.json": "f5557df1f7acf4c1dbef8a29b8a2ee5adf31ba5f20b6edadbbccb71997eca585"
+  },
+  "retained_environmental_attempts": [
+    {
+      "bound_files": 4,
+      "root_local": "E:\\Documents\\worktrees\\sof-runtime-rs\\sof-runtime\\runs\\shared-a0-extraction-v0\\before"
+    },
+    {
+      "bound_files": 4,
+      "root_local": "E:\\Documents\\worktrees\\sof-runtime-rs\\sof-runtime\\runs\\shared-a0-extraction-v0\\before-sourcebound"
+    }
+  ],
+  "review_bytes": 428246,
+  "review_sha256": "4c1315b7515c1b65680da8975025da9378e80f112111d31fca7914e994407cbc",
+  "run_local": "runs/shared-a0-extraction-v0/acceptance-final",
+  "saved_verification": {
+    "compatibility_tests_reexecuted": false,
+    "independent_execution_attestation": false,
+    "optimized": "VERIFIED_LOCAL_SAVED_SHARED_A0_EXTRACTION",
+    "ordinary": "VERIFIED_LOCAL_SAVED_SHARED_A0_EXTRACTION",
+    "rust_reexecuted": false
+  },
+  "schema": "sof-runtime.shared-a0-extraction-summary.v0",
+  "sof_compatibility": {
+    "installed_wheel_checked": true,
+    "protected_bytes_equal": true,
+    "protected_files": 304,
+    "skipped": [],
+    "test_outcomes_equal": true,
+    "tests": 131
+  },
+  "sources": {
+    "applications/shared_a0_extraction_review/__init__.py": "dec2be97871e9ee6bbb1880194f024a72180f27b1d39855c2004a163c16d884f",
+    "applications/shared_a0_extraction_review/review.py": "165faf4b26fd0edba8526b5d8a61134cd1c15c4ff8897f2238523d8c7c7d36cd",
+    "applications/shared_a0_extraction_review/sof_gate.py": "b37f572a74771c5c9b86a75e2940b350f0e6a012042e7d02599fc7180e7a7489",
+    "docs/internal/SHARED_A0_EXTRACTION_REVIEW_V0.md": "34f05838eaccecbf49dd7a83ce3e3cc51d8ff0b3c8e5840b0fafbd6bd2f62fb2",
+    "docs/internal/SOF_COMPATIBILITY_GUARD_V0.md": "96e548c58d670ecee988dc0f5f9f3efac009f2764017092ff8a552215152a22f",
+    "plugins/rust/a0-inventory-inspector/Cargo.lock": "79a416890a9d485bc494355f3331a4d3d858735c0e05884361993241060bbd7a",
+    "plugins/rust/a0-inventory-inspector/Cargo.toml": "b627485f643be4f9592af891040acdcdc85c8f0aaeea980ba30086ac2acc31a3",
+    "plugins/rust/a0-inventory-inspector/src/lib.rs": "1a9f331bf7be1a8b88d91f01c4b925763181d08402993bf2659894d99a9769b0",
+    "plugins/rust/a0-inventory-inspector/src/main.rs": "84011ed1b0dc76b8923ef15d0b2688f9dcab95af4c9af6abbac25ba9b0bb165f",
+    "plugins/rust/a0-mechanical-core/Cargo.lock": "092c542b6d19363820e4903a90ceeca91018a5f38a72babba546e1cedd511413",
+    "plugins/rust/a0-mechanical-core/Cargo.toml": "883fe41de5aae80d5bc3a9222db5e40ca4dcc6c378c86f7ea7e5d41e3a58525c",
+    "plugins/rust/a0-mechanical-core/src/codec.rs": "73c7a585de3b76bea820d6dd183bf32c6c1adc8c364dbcf47bac96891b14a11e",
+    "plugins/rust/a0-mechanical-core/src/identity.rs": "75d0440fffdd35006a2f4cb752f1a51d620bd8d166cc7cabb65857eb0901388e",
+    "plugins/rust/a0-mechanical-core/src/inventory.rs": "75cca115d36e9041a7737576e94133f58a8daf7cb6ccec6f88b50a7d2d1cd024",
+    "plugins/rust/a0-mechanical-core/src/inventory/windows.rs": "d53b787bcf4ef268bf62ecd95b4bf17b96bb2cdcbc43df455d991e29ff7aa0fd",
+    "plugins/rust/a0-mechanical-core/src/lib.rs": "845edfe9781cd1a86f66e79455abcdc1e0694686f2a4b095feaefed4a4efe0de",
+    "tests/cross_language/test_shared_a0_extraction_review.py": "a3383d4a8395a0c00aa39ff84b3c12fdfd89d2b78f099b615e5be7d2a738f32f"
+  },
+  "status": "PASS_LOCAL_SHARED_A0_EXTRACTION_EXPERIMENT"
+}

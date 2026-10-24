@@ -1,13 +1,25 @@
 # AGENTS.md - sof-runtime
 
-This repository implements versioned SOF contracts. Canonical mathematical
-definitions, theorems, ownership boundaries, and publication identities remain
-in `dooven-prime/rime-lite`.
+This repository currently implements versioned SOF contracts and workflows.
+Its planned direction is a Rust-based, replayable Solana data processing
+runtime focused on throughput, latency, reliability, replay, and plugin
+distribution. The planned runtime is not an existing production capability;
+the current service and execution implementation remains primarily Python.
+Canonical SOF mathematical definitions, theorems, ownership boundaries, and
+publication identities remain in `dooven-prime/rime-lite`.
 
 The runtime may be adopted as an artifact and diagnostic protocol without an
 application accepting every SOF theorem. Control the shared language,
 conformance conditions, provenance, and artifact identity; do not centralize
 or overwrite domain-specific scientific conclusions.
+
+The Solana runtime direction is documented in
+`docs/SOLANA_RUNTIME_ROADMAP.md`. Treat roadmap items as proposals until there
+is an implemented contract, executable path, reproducible test, and measured
+acceptance result. Do not describe the repository as a production Solana
+runtime or imply that a feasibility prototype establishes throughput,
+reliability, or replay guarantees. Keep new chain-data semantics separate
+from the SOF contracts and upstream research boundary.
 
 ## Authority Boundary
 

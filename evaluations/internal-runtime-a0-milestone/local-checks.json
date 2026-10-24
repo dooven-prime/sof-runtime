@@ -1,0 +1,402 @@
+{
+  "cargo_locked_metadata": [
+    {
+      "length": 5034,
+      "path": "plugins/rust/a0-inventory-inspector/Cargo.lock",
+      "sha256": "79a416890a9d485bc494355f3331a4d3d858735c0e05884361993241060bbd7a"
+    },
+    {
+      "length": 4895,
+      "path": "plugins/rust/a0-mechanical-core/Cargo.lock",
+      "sha256": "092c542b6d19363820e4903a90ceeca91018a5f38a72babba546e1cedd511413"
+    },
+    {
+      "length": 4893,
+      "path": "plugins/rust/cache-cost-probe/Cargo.lock",
+      "sha256": "69309c02d5c9a2c652491c337efa11490e176d768b782fb305e71e39306af312"
+    },
+    {
+      "length": 170,
+      "path": "plugins/rust/event-causal-q2-enumerator/Cargo.lock",
+      "sha256": "68adbc344721f1b18cd4af390ce06a6f93d8624012f475b4c65f72bdd7314780"
+    },
+    {
+      "length": 4899,
+      "path": "plugins/rust/malecns-profile-census/Cargo.lock",
+      "sha256": "f824e21d09209742cb1787d68e0b36bcc43f3bad7355bf5e0f0b2d12853c22e8"
+    },
+    {
+      "length": 7475,
+      "path": "plugins/rust/malecns-spmv/Cargo.lock",
+      "sha256": "1b41ffcfedf80bf2c9cd30282ce16c13ceebc555ef89196c238ea9174ae7dca6"
+    },
+    {
+      "length": 5185,
+      "path": "plugins/rust/packet-validation-fusion/Cargo.lock",
+      "sha256": "ce6684758611a543017a3d6012c809de9e5ba9bb2eb8e574ffa370528758ea87"
+    },
+    {
+      "length": 5576,
+      "path": "plugins/rust/positive-word-support/Cargo.lock",
+      "sha256": "c68d63732e8d04dac222e07e414ccf76868890ccc37121c59de494308436d4cb"
+    },
+    {
+      "length": 4897,
+      "path": "plugins/rust/prepared-input-cache/Cargo.lock",
+      "sha256": "767b171eace9c999120c67aa5f23a02f7d5b1faa9e17f902f5ca1d468728c7cc"
+    },
+    {
+      "length": 5798,
+      "path": "plugins/rust/q2-fiber-worker/Cargo.lock",
+      "sha256": "afa6e06500af6887176ec37e2f80f5ffa1e79f2ad2deddcd0d41288a68893698"
+    },
+    {
+      "length": 6234,
+      "path": "plugins/rust/solana-incremental-replay/Cargo.lock",
+      "sha256": "bbd698923e8a9119f1994ef108ed18369ec919d549ee765f87347d22546e4910"
+    },
+    {
+      "length": 6230,
+      "path": "plugins/rust/solana-offchain-slice/Cargo.lock",
+      "sha256": "c8a8d59a9d1f822e4c7cfa4ca16b545b0c98a5de8d200eb185e9ba4f228c1b09"
+    },
+    {
+      "length": 6232,
+      "path": "plugins/rust/solana-prefix-integrity/Cargo.lock",
+      "sha256": "80ccd8847f535dc72534b0376b577d612c185846ecd0a0493eaaa289adf52eb8"
+    },
+    {
+      "length": 6236,
+      "path": "plugins/rust/solana-publication-recovery/Cargo.lock",
+      "sha256": "c6e2b200c5eb2c876c580cfa211d4cf85539dfef5b8d415017913e55211ca772"
+    },
+    {
+      "length": 6234,
+      "path": "plugins/rust/solana-source-advancement/Cargo.lock",
+      "sha256": "5db6b59060509229d275a0e3e4d3bbfa0f95e4411185c2b25261049336078d87"
+    }
+  ],
+  "checks": [
+    {
+      "length": 17217,
+      "path_local": "runs/milestone-ci/sof-final/ci-result.json",
+      "result": {
+        "legacy_cross_language": {
+          "errors": [],
+          "failures": [],
+          "skipped": [],
+          "status": "PASS_SELECTED_CHECKS",
+          "tests_run": 9
+        },
+        "not_executed": [
+          "full-carrier benchmarks and source-bound archived Solana captures",
+          "historical 43/27-case full acceptance closures and executable digests",
+          "remaining prototype/kernel/controller suites outside this selected CI profile",
+          "A0 NTFS controls: separate Windows job",
+          "A0 portable Rust controls: separate portable job"
+        ],
+        "platform": "win32",
+        "profile": "sof",
+        "release_or_tag_created": false,
+        "schema": "sof-runtime.internal-engineering-ci.v0",
+        "sof_guard": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "sof_guard_after": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "status": "PASS_SELECTED_CHECKS",
+        "tests": {
+          "count": 131,
+          "errors": [],
+          "failures": [],
+          "skipped": [],
+          "successful": true,
+          "tests": [
+            "tests.conformance.test_canonical_json.CanonicalJsonTests.test_binary_float_is_rejected",
+            "tests.conformance.test_canonical_json.CanonicalJsonTests.test_integer_range_is_fixed",
+            "tests.conformance.test_canonical_json.CanonicalJsonTests.test_key_order_whitespace_unicode_and_no_newline_are_fixed",
+            "tests.conformance.test_canonical_json.CanonicalJsonTests.test_non_nfc_string_is_rejected",
+            "tests.conformance.test_canonical_json.CanonicalJsonTests.test_parser_rejects_duplicate_keys_and_nonstandard_numbers",
+            "tests.conformance.test_compiler_fixture.CompilerConformanceTests.test_reference_compiler_reproduces_upstream_fixture",
+            "tests.conformance.test_protocol_v2_1.ProtocolV21Tests.test_explicit_migration_chain_has_new_receipts",
+            "tests.conformance.test_protocol_v2_1.ProtocolV21Tests.test_migration_is_an_exact_boundary_projection",
+            "tests.conformance.test_protocol_v2_1.ProtocolV21Tests.test_v2_1_boundaries_and_receipt_closure_are_hostile",
+            "tests.conformance.test_sofaction_runtime.SofactionRuntimeTests.test_action_set_deletion_is_rejected",
+            "tests.conformance.test_sofaction_runtime.SofactionRuntimeTests.test_arbitrary_predicate_is_rejected_by_schema",
+            "tests.conformance.test_sofaction_runtime.SofactionRuntimeTests.test_native_fixture_replays_and_validates",
+            "tests.conformance.test_sofaction_runtime.SofactionRuntimeTests.test_projection_rewrite_is_rejected",
+            "tests.conformance.test_sofaudit_candidate.SofauditCandidateConformanceTests.test_alignment_properties_are_recomputed",
+            "tests.conformance.test_sofaudit_candidate.SofauditCandidateConformanceTests.test_artifact_digest_is_recomputed",
+            "tests.conformance.test_sofaudit_candidate.SofauditCandidateConformanceTests.test_artifact_ids_and_roles_are_unique",
+            "tests.conformance.test_sofaudit_candidate.SofauditCandidateConformanceTests.test_basis_complete_is_recomputed",
+            "tests.conformance.test_sofaudit_candidate.SofauditCandidateConformanceTests.test_claim_certificate_compatibility_is_closed",
+            "tests.conformance.test_sofaudit_candidate.SofauditCandidateConformanceTests.test_cli_validates_sofaudit",
+            "tests.conformance.test_sofaudit_candidate.SofauditCandidateConformanceTests.test_external_object_claim_requires_independent_oracle",
+            "tests.conformance.test_sofaudit_candidate.SofauditCandidateConformanceTests.test_guard_state_controls_coordinates",
+            "tests.conformance.test_sofaudit_candidate.SofauditCandidateConformanceTests.test_native_comparison_validates_semantically",
+            "tests.conformance.test_sofaudit_candidate.SofauditCandidateConformanceTests.test_profile_coordinate_closure_is_enforced",
+            "tests.conformance.test_sofaudit_candidate.SofauditCandidateConformanceTests.test_regime_is_recomputed",
+            "tests.conformance.test_sofaudit_candidate.SofauditCandidateConformanceTests.test_rejected_guard_cannot_emit_affirmative_audit",
+            "tests.conformance.test_sofaudit_candidate.SofauditCandidateConformanceTests.test_role_and_regime_are_recomputed",
+            "tests.conformance.test_sofrs_candidate.SofrsCandidateConformanceTests.test_claim_classification_source_is_constrained",
+            "tests.conformance.test_sofrs_candidate.SofrsCandidateConformanceTests.test_cli_assembles_reports_and_snapshots_receipt_dependencies",
+            "tests.conformance.test_sofrs_candidate.SofrsCandidateConformanceTests.test_compiler_output_assembles_and_receipts_faithfully",
+            "tests.conformance.test_sofrs_candidate.SofrsCandidateConformanceTests.test_degradation_cannot_be_retyped_as_failure_mode",
+            "tests.conformance.test_sofrs_candidate.SofrsCandidateConformanceTests.test_duplicate_item_binding_is_rejected",
+            "tests.conformance.test_sofrs_candidate.SofrsCandidateConformanceTests.test_external_basis_complete_cannot_be_self_declared",
+            "tests.conformance.test_sofrs_candidate.SofrsCandidateConformanceTests.test_receipt_cannot_borrow_the_reference_validator_identity",
+            "tests.conformance.test_sofrs_candidate.SofrsCandidateConformanceTests.test_report_claim_drift_is_rejected",
+            "tests.conformance.test_sofrs_candidate.SofrsCandidateConformanceTests.test_tampered_compiler_output_is_rejected",
+            "tests.conformance.test_upstream_contracts.UpstreamContractTests.test_all_json_schemas_are_well_formed",
+            "tests.conformance.test_upstream_contracts.UpstreamContractTests.test_local_plugin_manifests_validate_and_bind_contracts",
+            "tests.conformance.test_upstream_contracts.UpstreamContractTests.test_published_sofaction_is_in_immutable_inventory",
+            "tests.conformance.test_upstream_contracts.UpstreamContractTests.test_upstream_input_fixtures_validate",
+            "tests.conformance.test_upstream_contracts.UpstreamContractTests.test_upstream_lock_records_rime_repository_snapshot",
+            "tests.conformance.test_upstream_contracts.UpstreamContractTests.test_v2_1_family_ownership_and_six_file_delta",
+            "tests.conformance.test_upstream_contracts.UpstreamContractTests.test_vendored_digests_match_lock",
+            "tests.golden.test_adapter_boundary_lab.AdapterBoundaryLabTests.test_all_boundary_fixtures_pass",
+            "tests.golden.test_adapter_boundary_lab.AdapterBoundaryLabTests.test_boundary_specific_observations",
+            "tests.golden.test_adapter_boundary_lab.AdapterBoundaryLabTests.test_committed_summary_matches_recomputation",
+            "tests.golden.test_adapter_boundary_lab.AdapterBoundaryLabTests.test_each_fixture_declares_claim_and_nonclaims",
+            "tests.golden.test_ai_observable_adapter.AIObservableAdapterTests.test_descriptor_identity_does_not_infer_missing_keys",
+            "tests.golden.test_ai_observable_adapter.AIObservableAdapterTests.test_fixture_reports_and_comparison_preserve_analogue_boundary",
+            "tests.golden.test_ai_observable_adapter.AIObservableAdapterTests.test_live_case_requires_declared_credential_without_retaining_it",
+            "tests.golden.test_ai_observable_adapter.AIObservableAdapterTests.test_live_client_disables_redirects",
+            "tests.golden.test_ai_observable_adapter.AIObservableAdapterTests.test_semantic_score_requires_normalized_exact_answer",
+            "tests.golden.test_ai_observable_adapter.AIObservableAdapterTests.test_source_contract_and_adapter_reject_arbitrary_https_endpoint",
+            "tests.golden.test_automata_vertical_slice.AutomataVerticalSliceTests.test_cerny4_source_to_validated_extension_artifacts",
+            "tests.golden.test_comparison_engine.ComparisonEngineTests.test_coordinated_implementation_tampering_fails_trusted_digest",
+            "tests.golden.test_comparison_engine.ComparisonEngineTests.test_coordinated_result_and_projection_tampering_fails_replay",
+            "tests.golden.test_comparison_engine.ComparisonEngineTests.test_evaluator_execution_artifacts_are_digest_bound",
+            "tests.golden.test_comparison_engine.ComparisonEngineTests.test_missing_word_coordinate_remains_not_declared",
+            "tests.golden.test_comparison_engine.ComparisonEngineTests.test_profile_drives_operator_and_word_coordinate_evaluators",
+            "tests.golden.test_comparison_engine.ComparisonEngineTests.test_profile_must_allow_each_evaluator_carrier",
+            "tests.golden.test_comparison_engine.ComparisonEngineTests.test_sector_permutation_survives_producer_audit_and_receipt",
+            "tests.golden.test_external_adapter_workflow.ExternalAdapterWorkflowTests.test_comparison_profile_cannot_omit_normative_source_roles",
+            "tests.golden.test_external_adapter_workflow.ExternalAdapterWorkflowTests.test_external_expert_source_reaches_valid_sofrs",
+            "tests.golden.test_external_adapter_workflow.ExternalAdapterWorkflowTests.test_level_one_stops_for_extension_only_realization",
+            "tests.golden.test_external_adapter_workflow.ExternalAdapterWorkflowTests.test_runtime_api_exposes_level_one_to_three_object_chain",
+            "tests.golden.test_external_adopter_black_box.ExternalAdopterBlackBoxTests.test_installed_wheel_accepts_independent_public_facade_adapter",
+            "tests.golden.test_markov_vertical_slice.MarkovVerticalSliceTests.test_cycle4_source_to_validated_extension_artifacts",
+            "tests.golden.test_mcp_agent_evaluation.McpAgentEvaluationTests.test_recorded_black_box_summary_is_structurally_consistent",
+            "tests.golden.test_mcp_agent_matrix.McpAgentMatrixTests.test_active_matrix_records_workspace_invariance",
+            "tests.golden.test_mcp_agent_matrix.McpAgentMatrixTests.test_complete_synthetic_matrix_computes_macro_rates",
+            "tests.golden.test_mcp_agent_matrix.McpAgentMatrixTests.test_current_service_implementation_closure_is_pinned",
+            "tests.golden.test_mcp_agent_matrix.McpAgentMatrixTests.test_harness_transcript_is_digest_bound",
+            "tests.golden.test_mcp_agent_matrix.McpAgentMatrixTests.test_modified_implementation_closure_reference_is_rejected",
+            "tests.golden.test_mcp_agent_matrix.McpAgentMatrixTests.test_modified_response_evidence_is_rejected",
+            "tests.golden.test_mcp_agent_matrix.McpAgentMatrixTests.test_recorded_matrix_matches_digest_bound_summary",
+            "tests.golden.test_mcp_agent_matrix.McpAgentMatrixTests.test_service_closure_contains_trusted_evaluator_registry",
+            "tests.golden.test_public_sdk.PublicSdkTests.test_init_adapter_generates_valid_declaration_scaffold",
+            "tests.golden.test_public_sdk.PublicSdkTests.test_public_sdk_names_are_importable",
+            "tests.golden.test_service_transports.ServiceTransportTests.test_embedded_paths_in_third_party_errors_are_redacted",
+            "tests.golden.test_service_transports.ServiceTransportTests.test_explain_projection_rewrites_absolute_paths",
+            "tests.golden.test_service_transports.ServiceTransportTests.test_explanation_is_invariant_under_directory_renaming",
+            "tests.golden.test_service_transports.ServiceTransportTests.test_full_chain_artifacts_are_workspace_invariant",
+            "tests.golden.test_service_transports.ServiceTransportTests.test_http_mcp_discovery_is_self_describing",
+            "tests.golden.test_service_transports.ServiceTransportTests.test_http_openapi_schema_is_generated",
+            "tests.golden.test_service_transports.ServiceTransportTests.test_mcp_exposes_only_service_operations",
+            "tests.golden.test_service_transports.ServiceTransportTests.test_public_errors_do_not_disclose_server_paths",
+            "tests.golden.test_service_transports.ServiceTransportTests.test_transport_invariance_and_job_separation",
+            "tests.golden.test_service_transports.ServiceTransportTests.test_workspace_escape_is_rejected_before_runtime_execution",
+            "tests.regression.test_evidence_boundaries.EvidenceBoundaryTests.test_adapter_does_not_manufacture_route_or_lie_capabilities",
+            "tests.regression.test_evidence_boundaries.EvidenceBoundaryTests.test_compiler_rejects_failed_certificate",
+            "tests.regression.test_evidence_boundaries.EvidenceBoundaryTests.test_mutated_depth_fails_independent_validation",
+            "tests.regression.test_evidence_boundaries.EvidenceBoundaryTests.test_raw_plugin_cannot_claim_certificate_status",
+            "tests.regression.test_markov_vertical_slice_failures.MarkovVerticalSliceFailureTests.test_artifact_tampering_is_detected_by_shared_bus",
+            "tests.regression.test_markov_vertical_slice_failures.MarkovVerticalSliceFailureTests.test_cutoff_policy_is_unsupported_and_changes_semantic_identity",
+            "tests.regression.test_markov_vertical_slice_failures.MarkovVerticalSliceFailureTests.test_invalid_row_sum_produces_structured_failure",
+            "tests.regression.test_markov_vertical_slice_failures.MarkovVerticalSliceFailureTests.test_repeated_input_has_stable_semantic_identity",
+            "tests.regression.test_vertical_slice_failures.VerticalSliceFailureTests.test_artifact_tampering_is_detected",
+            "tests.regression.test_vertical_slice_failures.VerticalSliceFailureTests.test_changed_source_fails_old_bundle_validation",
+            "tests.regression.test_vertical_slice_failures.VerticalSliceFailureTests.test_invalid_source_produces_structured_failure",
+            "tests.regression.test_vertical_slice_failures.VerticalSliceFailureTests.test_plugin_exit_produces_structured_failure_with_stderr_digest",
+            "tests.regression.test_vertical_slice_failures.VerticalSliceFailureTests.test_policy_change_changes_semantic_identity_and_is_structured",
+            "tests.regression.test_vertical_slice_failures.VerticalSliceFailureTests.test_promotion_rejects_artifact_outside_frozen_closure",
+            "tests.regression.test_vertical_slice_failures.VerticalSliceFailureTests.test_repeated_input_reuses_semantic_identity_not_execution_identity",
+            "tests.regression.test_vertical_slice_failures.VerticalSliceFailureTests.test_run_response_artifact_closure_tampering_is_detected",
+            "tests.regression.test_vertical_slice_failures.VerticalSliceFailureTests.test_validator_version_mismatch_is_detected",
+            "tests.unit.test_coordinate_evaluators.CoordinateEvaluatorTests.test_cross_module_claim_finding_binding_is_rejected",
+            "tests.unit.test_coordinate_evaluators.CoordinateEvaluatorTests.test_integer_pairs_follow_each_reports_declared_label_order",
+            "tests.unit.test_coordinate_evaluators.CoordinateEvaluatorTests.test_missing_finding_is_not_coerced_to_zero",
+            "tests.unit.test_coordinate_evaluators.CoordinateEvaluatorTests.test_non_identity_alignment_is_not_silently_applied",
+            "tests.unit.test_coordinate_evaluators.CoordinateEvaluatorTests.test_registry_resolves_only_declared_coordinate_ids",
+            "tests.unit.test_coordinate_evaluators.CoordinateEvaluatorTests.test_string_pairs_remain_label_normalized",
+            "tests.unit.test_coordinate_evaluators.CoordinateEvaluatorTests.test_unknown_and_out_of_range_pair_endpoints_are_rejected",
+            "tests.unit.test_coordinate_evaluators.CoordinateEvaluatorTests.test_unsupported_normalization_and_metric_are_rejected",
+            "tests.unit.test_coordinate_evaluators.CoordinateEvaluatorTests.test_word_support_uses_its_own_finding_and_claim",
+            "tests.unit.test_mcp_agent_harness.MCPAgentHarnessTests.test_env_file_loads_missing_secret_without_overwriting_environment",
+            "tests.unit.test_mcp_agent_harness.MCPAgentHarnessTests.test_fixture_manifest_prepares_source_addressed_workspace",
+            "tests.unit.test_mcp_agent_harness.MCPAgentHarnessTests.test_milestone_projection_accepts_successful_realization_retry",
+            "tests.unit.test_mcp_agent_harness.MCPAgentHarnessTests.test_milestone_projection_requires_canonical_realizations",
+            "tests.unit.test_mcp_agent_harness.MCPAgentHarnessTests.test_named_provider_endpoint_cannot_be_overridden",
+            "tests.unit.test_mcp_agent_harness.MCPAgentHarnessTests.test_provider_neutral_loop_executes_native_tool_calls",
+            "tests.unit.test_mcp_agent_harness.MCPAgentHarnessTests.test_provider_requires_https_and_does_not_follow_redirects",
+            "tests.unit.test_mcp_agent_harness.MCPAgentHarnessTests.test_provider_retries_transport_failure_before_response",
+            "tests.unit.test_mcp_agent_harness.MCPAgentHarnessTests.test_report_milestones_follow_realization_paths_not_directory_names",
+            "tests.unit.test_mcp_agent_harness.MCPAgentHarnessTests.test_spawned_server_lifecycle_uses_current_source",
+            "tests.unit.test_positive_word_support.PositiveWordSupportUnitTests.test_cycle4_exact_first_hits",
+            "tests.unit.test_rank_collapse.RankCollapseTests.test_cerny4_exact_reset_depth",
+            "tests.unit.test_rank_collapse.RankCollapseTests.test_finding_schema_rejects_illegal_status_pair",
+            "tests.unit.test_rank_collapse.RankCollapseTests.test_independent_validation_passes",
+            "tests.unit.test_rank_collapse.RankCollapseTests.test_permutation_only_automaton_is_exactly_non_synchronizing",
+            "tests.unit.test_rank_collapse.RankCollapseTests.test_raw_findings_are_not_precertified",
+            "tests.unit.test_run_identity.RunIdentityTests.test_concrete_environment_does_not_change_semantic_identity",
+            "tests.unit.test_run_identity.RunIdentityTests.test_semantic_environment_change_invalidates_identity"
+          ]
+        }
+      },
+      "sha256": "3082448b0e9b397673db0cbc68050805e835ed035dd3f2456a03d51da60ba4be"
+    },
+    {
+      "length": 1031,
+      "path_local": "runs/milestone-ci/a0-portable-windows-host-final/ci-result.json",
+      "result": {
+        "not_executed": [
+          "full-carrier benchmarks and source-bound archived Solana captures",
+          "historical 43/27-case full acceptance closures and executable digests",
+          "remaining prototype/kernel/controller suites outside this selected CI profile",
+          "tests.cross_language.test_a0_inventory_shadow",
+          "tests.cross_language.test_a0_malecns_cache_shadow"
+        ],
+        "ntfs": "NOT_EXECUTED_PROFILE",
+        "platform": "win32",
+        "profile": "a0-portable",
+        "release_or_tag_created": false,
+        "review_tests": {
+          "errors": [],
+          "failures": [],
+          "skipped": [],
+          "status": "PASS_SELECTED_CHECKS",
+          "tests_run": 7
+        },
+        "schema": "sof-runtime.internal-engineering-ci.v0",
+        "sof_guard": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "sof_guard_after": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "status": "PASS_SELECTED_CHECKS"
+      },
+      "sha256": "9c7a8f9f2a82e575957971ba87c8320c81d20e43cd9b2bdb724aa6b7991f8fc8"
+    },
+    {
+      "length": 1016,
+      "path_local": "runs/milestone-ci/a0-ntfs-windows/ci-result.json",
+      "result": {
+        "not_executed": [
+          "full-carrier benchmarks and source-bound archived Solana captures",
+          "historical 43/27-case full acceptance closures and executable digests",
+          "remaining prototype/kernel/controller suites outside this selected CI profile",
+          "Windows process-counter attribution: retained local evidence, not this NTFS test menu"
+        ],
+        "ntfs": "EXECUTED_LOCAL_NTFS_FIXTURES",
+        "ntfs_tests": {
+          "errors": [],
+          "failures": [],
+          "skipped": [],
+          "status": "PASS_SELECTED_CHECKS",
+          "tests_run": 23
+        },
+        "platform": "win32",
+        "profile": "a0-ntfs",
+        "release_or_tag_created": false,
+        "schema": "sof-runtime.internal-engineering-ci.v0",
+        "sof_guard": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "sof_guard_after": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "status": "PASS_SELECTED_CHECKS"
+      },
+      "sha256": "c4fcc1a20d630fd13ec3351b826f7461846165aaa921c3a963a4d1968bfdbf36"
+    },
+    {
+      "length": 883,
+      "path_local": "runs/milestone-ci/a0-ntfs-windows/optimized/ci-result.json",
+      "result": {
+        "not_executed": [
+          "full-carrier benchmarks and source-bound archived Solana captures",
+          "historical 43/27-case full acceptance closures and executable digests",
+          "remaining prototype/kernel/controller suites outside this selected CI profile"
+        ],
+        "ntfs_tests": {
+          "errors": [],
+          "failures": [],
+          "skipped": [],
+          "status": "PASS_SELECTED_CHECKS",
+          "tests_run": 23
+        },
+        "platform": "win32",
+        "profile": "_ntfs-tests",
+        "release_or_tag_created": false,
+        "schema": "sof-runtime.internal-engineering-ci.v0",
+        "sof_guard": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "sof_guard_after": {
+          "files": 304,
+          "historical_tests_reexecuted_by_this_check": false,
+          "status": "MATCHED_PROTECTED_BYTES"
+        },
+        "status": "PASS_SELECTED_CHECKS"
+      },
+      "sha256": "12e74e5443654e3847cd73ed6388f44e05fe2d2366c454404fbef1ff8a4552cf"
+    }
+  ],
+  "date": "2026-10-25",
+  "historical_full_data_runs_reexecuted": false,
+  "host": "Windows NTFS",
+  "linux_hosted_ci": "NOT_EXECUTED_AT_LOCAL_INDEX_CREATION",
+  "main_checkout_comparison": {
+    "head": "a4b3e48bd119908494c6d4de8619bffc01c1ecb9",
+    "new_protected_fixture": "examples/malecns_profile_census/tiny-fixture.json",
+    "protected_git_blobs_equal": 303,
+    "status": "CLEAN_UNMODIFIED",
+    "working_file_eol_differences": [
+      {
+        "engineering_and_git_blob_bytes": {
+          "length": 683,
+          "sha256": "014985d49e906925a3bc1da9b12fc4cf0dd08b0d2f4224c7225b8389a9fef83f"
+        },
+        "main_checkout_bytes": {
+          "length": 704,
+          "sha256": "a503e80f6361ccafb15654f604727f310ca631b395ee787dd13e9574ad0ec608"
+        },
+        "path": "profiles/assembly/strict-conformance-v2.0.json",
+        "scope": "checkout EOL difference only; neither old checkout nor receipt rewritten"
+      },
+      {
+        "engineering_and_git_blob_bytes": {
+          "length": 6921,
+          "sha256": "2eca4018bb8d194981d69f43b400f737113cb96ccc56d23980ae936b315863cc"
+        },
+        "main_checkout_bytes": {
+          "length": 7175,
+          "sha256": "ab0406daf52b99a712a903ae8dbcb49a75137b1e1953a96c65764512a302fdaa"
+        },
+        "path": "profiles/compiler/strict-conformance-v1.0.json",
+        "scope": "checkout EOL difference only; neither old checkout nor receipt rewritten"
+      }
+    ]
+  },
+  "schema": "sof-runtime.internal-milestone-local-checks.v0",
+  "scope": "selected checks on this host, not a release receipt or Linux execution"
+}

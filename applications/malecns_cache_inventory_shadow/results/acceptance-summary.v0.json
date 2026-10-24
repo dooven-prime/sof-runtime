@@ -1,0 +1,445 @@
+{
+  "acceptance_bytes": 506946,
+  "acceptance_sha256": "dd64b4159d94a83f58672e87980a530012e27184dd5511d57e772945d8455393",
+  "boundary": {
+    "b_or_c_extracted": false,
+    "cache_hit_permission": "NOT_GRANTED",
+    "immutable_snapshot_credential": false,
+    "original_execution_identity_replaced": false,
+    "public_replay_package": false,
+    "shared_library_extraction_approved": false
+  },
+  "case_count": 27,
+  "cases": [
+    {
+      "application": {
+        "application_cache_lookup_invoked": false,
+        "consumer_executed": false,
+        "probe_executable_sha256": "f093eb70e10a08a984fff21411614f783998f41fae92773beb925c4ea3d96ae7",
+        "request_sha256": "e3bbeefa1f12857d3cbff78e501923b64267f135c1ab36b09459537464de7be1",
+        "result": {
+          "key": "448e7d1a19a8ed4f3362aee3cfb2f563d5f3ca3b5502689c5f019e5b8757e2a3",
+          "packet": {
+            "edge_count": 25214058,
+            "header": {
+              "record_count": 163439,
+              "schema": "rime.malecns.profile-census-input.v1",
+              "sector_labels": [
+                "<missing>",
+                "L",
+                "M",
+                "R"
+              ],
+              "sign_semantics": "paper16-presynaptic-consensus-transmitter-proxy.v1",
+              "source_artifacts": [
+                {
+                  "name": "carrier_v0_edges.npz",
+                  "role": "CARRIER_EDGES",
+                  "sha256": "c94e885cc2e8cde78012ed0a68a4beb42eccfe1b64607bdc90ac46e675d6966d",
+                  "size": 312341374
+                },
+                {
+                  "name": "carrier_v0_nodes.parquet",
+                  "role": "CARRIER_NODES",
+                  "sha256": "87aa46280d68a210f6c8ef4a044282fbbb62342bbeeaab8393b0fd7fa770515e",
+                  "size": 3008738
+                }
+              ],
+              "source_field": "somaSide",
+              "source_identity": "paper16-carrier-index.v1"
+            },
+            "name": "packet.bin",
+            "record_count": 163439,
+            "sha256": "b23d2c7a75f3c57cb9635bef28fd418a21998e97ad94f5cba79a553367ec6c32",
+            "size": 254592750
+          },
+          "packet_full_entry_validation_seconds": 0.290604,
+          "packet_hash_only_seconds": 0.1442922,
+          "source_preparer_seconds": 0.1778436,
+          "status": "PROBED_NOT_CONSUMED"
+        },
+        "returncode": 0
+      },
+      "error": null,
+      "kind": "normal",
+      "name": "normal-cache-entry",
+      "status": "MATCHED_BYTES"
+    },
+    {
+      "application": null,
+      "error": null,
+      "kind": "normal",
+      "name": "normal-archive",
+      "status": "MATCHED_BYTES"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "DECLARATION",
+        "detail": "data did not match any variant of untagged enum Identities"
+      },
+      "kind": "declaration",
+      "name": "decl-source-role",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "DECLARATION",
+        "detail": "data did not match any variant of untagged enum Identities"
+      },
+      "kind": "declaration",
+      "name": "decl-execution-role",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "DECLARATION",
+        "detail": "data did not match any variant of untagged enum Identities"
+      },
+      "kind": "declaration",
+      "name": "decl-cache-role",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "VERSION",
+        "detail": "schema/identity profile mismatch"
+      },
+      "kind": "declaration",
+      "name": "decl-checkpoint-slot",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "BINDING_MISMATCH",
+        "detail": "producer/schema/identity declarations differ"
+      },
+      "kind": "declaration",
+      "name": "decl-wrong-cache-key",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "BINDING_MISMATCH",
+        "detail": "producer/schema/identity declarations differ"
+      },
+      "kind": "declaration",
+      "name": "decl-wrong-producer",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "VERSION",
+        "detail": "schema/identity profile mismatch"
+      },
+      "kind": "declaration",
+      "name": "decl-profile",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "CONTROL_INSIDE_ROOT",
+        "detail": "detached controls required; self-reference forbidden"
+      },
+      "kind": "declaration",
+      "name": "decl-control-in-root",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "MEMBERSHIP",
+        "detail": "missing or extra file; exact case-sensitive set required"
+      },
+      "kind": "filesystem",
+      "name": "file-missing",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "MEMBERSHIP",
+        "detail": "missing or extra file; exact case-sensitive set required"
+      },
+      "kind": "filesystem",
+      "name": "file-extra",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "DIGEST_MISMATCH",
+        "detail": "declared content differs"
+      },
+      "kind": "filesystem",
+      "name": "file-damaged",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "LENGTH",
+        "detail": "packet.bin"
+      },
+      "kind": "filesystem",
+      "name": "file-truncated",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "FILE_TYPE",
+        "detail": "directory/regular-file mismatch"
+      },
+      "kind": "filesystem",
+      "name": "file-wrong-type",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "MEMBERSHIP",
+        "detail": "missing or extra file; exact case-sensitive set required"
+      },
+      "kind": "filesystem",
+      "name": "file-actual-case",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "HARD_LINK",
+        "detail": "one name per regular file required"
+      },
+      "kind": "filesystem",
+      "name": "file-hardlink",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "REJECTED",
+        "code": "NAMED_STREAM",
+        "detail": "only the unnamed data stream is admitted"
+      },
+      "kind": "filesystem",
+      "name": "file-file-ads",
+      "status": "REJECTED"
+    },
+    {
+      "application": null,
+      "error": null,
+      "kind": "kill",
+      "name": "kill-enumerated",
+      "status": "INCOMPLETE"
+    },
+    {
+      "application": null,
+      "error": null,
+      "kind": "kill",
+      "name": "kill-hashing",
+      "status": "INCOMPLETE"
+    },
+    {
+      "application": null,
+      "error": null,
+      "kind": "kill",
+      "name": "kill-result_partial",
+      "status": "INCOMPLETE"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "INCOMPLETE",
+        "code": "INPUT_CHANGED",
+        "detail": "handle/path identity or metadata changed"
+      },
+      "kind": "mutation",
+      "name": "mutation-content",
+      "status": "INCOMPLETE"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "INCOMPLETE",
+        "code": "INPUT_CHANGED",
+        "detail": "handle/path identity or metadata changed"
+      },
+      "kind": "mutation",
+      "name": "mutation-replacement",
+      "status": "INCOMPLETE"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "INCOMPLETE",
+        "code": "INPUT_CHANGED",
+        "detail": "directory membership changed"
+      },
+      "kind": "mutation",
+      "name": "mutation-extra-file",
+      "status": "INCOMPLETE"
+    },
+    {
+      "application": null,
+      "error": {
+        "class": "INCOMPLETE",
+        "code": "INPUT_CHANGED",
+        "detail": "held object metadata changed"
+      },
+      "kind": "mutation",
+      "name": "mutation-named-stream",
+      "status": "INCOMPLETE"
+    },
+    {
+      "application": null,
+      "error": null,
+      "kind": "expiry",
+      "name": "expired-observation",
+      "status": "MATCHED_BYTES"
+    },
+    {
+      "application": {
+        "application_cache_lookup_invoked": false,
+        "consumer_executed": false,
+        "probe_executable_sha256": "f093eb70e10a08a984fff21411614f783998f41fae92773beb925c4ea3d96ae7",
+        "request_sha256": "0c8535cbc33e7e4a942523af4e5923816a8fa13a6a21556c12e6235f1719cccb",
+        "result": {
+          "detail": "source record bounds/order",
+          "status": "PROBE_REJECTED"
+        },
+        "returncode": 0
+      },
+      "error": null,
+      "kind": "semantic-boundary",
+      "name": "semantic-boundary",
+      "status": "MATCHED_BYTES"
+    }
+  ],
+  "controls": {
+    "a_library_extraction_approved": false,
+    "b_or_c_extracted": false,
+    "cache_hit_permission": "NOT_GRANTED",
+    "cache_path_migrated": false,
+    "changed_intervals": 4,
+    "normal_and_optimized_tests": "PASS",
+    "original_artifacts_unchanged": true,
+    "public_api": false,
+    "real_kills": 3,
+    "semantic_integrity_separation": "PASS"
+  },
+  "created_utc": "2026-10-24T15:26:25.604565+00:00",
+  "evidence_objects": 2110,
+  "implementation_sha256": {
+    "original_producer": {
+      "applications/malecns_profile_census/CACHE_BENCHMARK_PLAN_V1.md": "e7fd18f9a5484970680ab9cc89b88470250b07dcb6ebf2212afd8b7de9318f82",
+      "applications/malecns_profile_census/PREPARED_INPUT_CACHE_V1.md": "ed00a8bedc5b0d78bd24b8a57b47d8f5140b553ad6157726e3e94153deab3fca",
+      "applications/malecns_profile_census/cache_benchmark.py": "21301c07c6c5f3a689d39c173685319201d91ffb89329e746e849c0531c97753",
+      "applications/malecns_profile_census/prepare_input.py": "65c05c39b909bbc068091f819654c2ab10f9365cc22fb23c57aafb5fa747d6da",
+      "applications/malecns_profile_census/prepared_cache.py": "c57c0d1c6299545ad865ddaabb458a1a6be275e951c0bf6688a36960de9e2905",
+      "applications/malecns_profile_census/protocol.py": "d9972a229792b0db8874b52ecb983f8550605dbc72adb6958f60ab047b6197b5",
+      "applications/malecns_profile_census/results/cache-cost.v1/cost-decomposition.v1.json": "dce831812c50e6512353999dedc2ab610d4eace7c63a1f6a21a0c3af055b31bd",
+      "applications/malecns_profile_census/results/full-carrier-somaside.v1/semantic-result.json": "02dcc86a737a9e1534b4ae03d90ed1abba7dfbffc1a557b04213457a56dcdda1",
+      "applications/malecns_profile_census/results/prepared-cache.v1/cache-benchmark.v1.json": "29e27d2134bafdfd1e6583605cabf95f4c51b680b0c562ee3e27d2a6f2a44ef9",
+      "plugins/rust/cache-cost-probe/Cargo.lock": "69309c02d5c9a2c652491c337efa11490e176d768b782fb305e71e39306af312",
+      "plugins/rust/cache-cost-probe/Cargo.toml": "abce974ba4e671c57292366430e72296db5c5e49e498a14b5d22373085bb2809",
+      "plugins/rust/cache-cost-probe/src/main.rs": "9c6504873909c00b78cf4841b425a0a626bcb4b5d2d38280f0da67862a77d4fe",
+      "plugins/rust/cache-cost-probe/target/release/cache-cost-probe.exe": "f093eb70e10a08a984fff21411614f783998f41fae92773beb925c4ea3d96ae7",
+      "plugins/rust/malecns-profile-census/target/release/malecns-profile-census.exe": "2202b83118e2bb4d2b395afff8fce391c8219c7d893249cabc011c35817840f1",
+      "plugins/rust/prepared-input-cache/Cargo.lock": "767b171eace9c999120c67aa5f23a02f7d5b1faa9e17f902f5ca1d468728c7cc",
+      "plugins/rust/prepared-input-cache/Cargo.toml": "5b44c9ceda346b25c6ee9a98765244958531306407ba712765d247ab74f190ec",
+      "plugins/rust/prepared-input-cache/src/main.rs": "dab41011eea745e276a4b54794c20ab29ad1279bb94bafdf60204619639cb422",
+      "plugins/rust/prepared-input-cache/target/release/prepared-input-cache.exe": "fa3e15956cc277999c6d5dc52183d05743369d2adbe0e900dafe5b35a44ad938",
+      "runs/malecns-profile-census/packet-fusion-v1/request.json": "57d2a6b01a7aa9e43928e77652b2617bf35517d39fd6154be8bc5b4b7b042d20",
+      "tests/cache_fixture_preparer.py": "836d683ccf721e41178da40cf1d036ddc101da324787d00124b5e494a075cc1a",
+      "tests/cross_language/test_prepared_input_cache.py": "44f4c583de436096c9f46870ba906dfaafca1feb44a71d64806d396593c441e1"
+    },
+    "shadow": {
+      "applications/malecns_cache_inventory_shadow/CONTRACT.md": "0533ec2fe350729cc621d4e2996539cc92ad3d0677bac8405bb1cd9f55e75236",
+      "applications/malecns_cache_inventory_shadow/__init__.py": "2dadef4a8311a18d60e9e96186897bae3db68ad50e511043e0dbd60692ebccc2",
+      "applications/malecns_cache_inventory_shadow/acceptance.py": "874b9a821acc2a7734e0e93853d81f5ea3ffa06b56e19072c5f2f7378341dcbb",
+      "applications/malecns_cache_inventory_shadow/fixtures.py": "bcf6903cfcc2955a027350c09de12233ea5518748b0a0e0faa21d2c94a5389b2",
+      "applications/malecns_cache_inventory_shadow/original.py": "8c5fa9d40188854bc057fd56728265cc6a736d5bc547412981c941b55f973d23",
+      "applications/malecns_cache_inventory_shadow/plan.v0.json": "b0b5c54ab4d3a0f2c964b14aee1699ae253fd9ea76dea1b664051ca790d5974c",
+      "applications/malecns_cache_inventory_shadow/reference.py": "1a0dc19306c5653a0a07a801c8e1e4857dd91d0b6d2e3e6582c6174007e1601b",
+      "applications/malecns_cache_inventory_shadow/runner.py": "174ef1c0ab8bd4936ac2c24f3374a9a5b4ab0ff61ac15c4e8afa7d7104c26578",
+      "applications/malecns_cache_inventory_shadow/verify.py": "6d303186178e47df8296408c250893c6d773be763dba47ef4ff351ebfeb119c3",
+      "applications/solana_inventory_shadow/evidence.py": "a8c825d975bcd6758ddca2c920b4a0283521c2b8eb4e8f6dea260adc28fa193b",
+      "applications/solana_offchain_slice/common.py": "68a07af82e73aa9016dc6578340716f111630c242086deba77b8042ca6b2eadc",
+      "plugins/rust/a0-inventory-inspector/Cargo.lock": "83ed73dd39f0b638c3be7905d2c3a6d284cc4199c6b728b23f1658b7fe3e31a3",
+      "plugins/rust/a0-inventory-inspector/Cargo.toml": "3bb17fd7012b37ad430e3f65db250a700117afa27c7f3fb6f676a30e6fc911a0",
+      "plugins/rust/a0-inventory-inspector/src/codec.rs": "3fc038ac65da3f10da830cbc8014590d47dbd10c4cfc8d96dc0228da6c206d4b",
+      "plugins/rust/a0-inventory-inspector/src/identity.rs": "93c4d6ea3644c6dcd21586887fafe85da2ad778760dfd18dc932adb25940ec7d",
+      "plugins/rust/a0-inventory-inspector/src/lib.rs": "a7095b54962a70877cafe2816a6d2dbc578c9c2bdc02f53a81dfe9eef5f096fc",
+      "plugins/rust/a0-inventory-inspector/src/main.rs": "84011ed1b0dc76b8923ef15d0b2688f9dcab95af4c9af6abbac25ba9b0bb165f",
+      "plugins/rust/a0-inventory-inspector/src/windows.rs": "d53b787bcf4ef268bf62ecd95b4bf17b96bb2cdcbc43df455d991e29ff7aa0fd",
+      "python_executable": "62ebc90a2884bb63a0cd67e789cafdd51e771eee043587e2354327b4ccc9bb05",
+      "rust_binary": "b895128695ffdcf50a3f1820e40086c306fad11835d5a6f8aa7eb49d616220c8",
+      "tests/cross_language/test_a0_malecns_cache_shadow.py": "9f7578ec245cb79fdadc0f277a47b28761a062c8a4d93fd0616041ac4d493051"
+    }
+  },
+  "inspector_invocations": 35,
+  "origin_receipt_sha256": "29e27d2134bafdfd1e6583605cabf95f4c51b680b0c562ee3e27d2a6f2a44ef9",
+  "primary_outcomes": {
+    "INCOMPLETE": 7,
+    "MATCHED_BYTES": 4,
+    "REJECTED": 16
+  },
+  "prior_a0_preserved": {
+    "receipt_sha256": "92fec64b8735148c8efcd1789281e0c7a430fbdf6b620c3cf3eee4cd615a8cb4",
+    "snapshot": {
+      "Cargo.lock": "ed6696778eb5cde0be04bc8afbef5208d1d063b0a0cd9035eb9b1c91b909bc26",
+      "Cargo.toml": "add233aecc356e0210c7c886f8e36dd2d76e673b6d34b072dda54d4593955159",
+      "a0-inventory-inspector.exe": "29b434e4f62d4610d16f6f28bd7a6184f8bd43e37c1fc7ec8a87e26235626fe8",
+      "src/codec.rs": "3fc038ac65da3f10da830cbc8014590d47dbd10c4cfc8d96dc0228da6c206d4b",
+      "src/identity.rs": "fa16c77a1a338aece3f48315fa66214f74bd66ea601fe0b64e20b1a0cdf13a42",
+      "src/lib.rs": "db0b6392089292a872172283e7bbe8ad343ac58e21c9a7317f8476da7b1732a6",
+      "src/main.rs": "84011ed1b0dc76b8923ef15d0b2688f9dcab95af4c9af6abbac25ba9b0bb165f",
+      "src/windows.rs": "d53b787bcf4ef268bf62ecd95b4bf17b96bb2cdcbc43df455d991e29ff7aa0fd"
+    }
+  },
+  "run_local": "runs/a0-malecns-cache-shadow/acceptance-v0-final",
+  "saved_verification": {
+    "independent_execution_attestation": false,
+    "optimized": "VERIFIED_LOCAL_SAVED_A0_CACHE_SHADOW",
+    "ordinary": "VERIFIED_LOCAL_SAVED_A0_CACHE_SHADOW",
+    "rust_reexecuted": false
+  },
+  "schema": "sof-runtime.a0-malecns-cache-shadow-summary.v0",
+  "solana_regression": {
+    "receipt_sha256": "f5557df1f7acf4c1dbef8a29b8a2ee5adf31ba5f20b6edadbbccb71997eca585",
+    "verification": {
+      "b_or_c_extracted": false,
+      "cases": 43,
+      "future_snapshot_credential": false,
+      "independent_execution_attestation": false,
+      "original_producer_identity_preserved": true,
+      "real_kills": 6,
+      "rust_reexecuted": false,
+      "status": "VERIFIED_LOCAL_SAVED_A0_SHADOW"
+    }
+  },
+  "status": "PASS_LOCAL_READ_ONLY_A0_CACHE_SHADOW"
+}

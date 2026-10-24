@@ -1,0 +1,21 @@
+{
+  "schema": "sof-runtime.prefix-integrity-attribution-plan.v1",
+  "capture_manifest_sha256": "39fa0b60d7ee18f636b5641ffbf727094107fe3e3e42f0e71214128d5ba95424",
+  "prefix_slots": 62,
+  "pairs": 4,
+  "copy_schedules": ["fresh_first", "copy_first", "fresh_first", "copy_first"],
+  "explicit_read_warm_rounds": 2,
+  "warm_order": "alternate_by_pair_and_round",
+  "forced_cold_cache": false,
+  "required_phases": ["checkpoint_anchor", "raw_input_hash", "segment_validation", "aggregate_stream"],
+  "process_timeout_seconds": 120,
+  "process_rss_limit_bytes": 1073741824,
+  "classification": {
+    "non_cpu_wall_cpu_ratio_min": 3,
+    "copy_initial_warm_ratio_min": 2,
+    "required_pairs": 3,
+    "cpu_floor_seconds": 0.001,
+    "cpu_share_candidate_min": 0.7
+  },
+  "stop_rule": "Run the fixed 24 probes and failure controls once. If non-CPU/file-state sensitivity dominates, stop fixed-capture acceleration work. If CPU dominates, record only a bounded candidate, do not tune it here. Otherwise record attribution unresolved and stop; do not expand capture or repetitions automatically."
+}

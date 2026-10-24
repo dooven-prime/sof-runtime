@@ -1,0 +1,18 @@
+{
+  "schema": "sof-runtime.solana-incremental-plan.v1",
+  "endpoint": "https://api.devnet.solana.com",
+  "start_slot": 378967388,
+  "count": 64,
+  "max_response_bytes": 33554432,
+  "request_timeout_seconds": 30,
+  "attempts_per_request": 3,
+  "retry_delays_seconds": [2, 5],
+  "transaction_versions": ["legacy", 0],
+  "filter_unsupported": false,
+  "prefix_slots": [2, 32, 62],
+  "paired_repetitions": 3,
+  "clean_repetitions": 3,
+  "mode_order": "alternating",
+  "process_timeout_seconds": 120,
+  "process_rss_limit_bytes": 1073741824
+}

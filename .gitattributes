@@ -15,3 +15,6 @@
 
 # Published byte-addressed conformance closure; do not normalize line endings.
 tests/conformance/fixtures/sofaction/** -text -diff
+
+# Selected historical execution records are byte-addressed, not reformatted.
+applications/**/results/** -text

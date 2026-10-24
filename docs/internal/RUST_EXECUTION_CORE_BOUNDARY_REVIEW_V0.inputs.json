@@ -1,0 +1,123 @@
+{
+  "inputs": [
+    {
+      "path": "applications/malecns_profile_census/PREPARED_INPUT_CACHE_V1.md",
+      "sha256": "ed00a8bedc5b0d78bd24b8a57b47d8f5140b553ad6157726e3e94153deab3fca"
+    },
+    {
+      "path": "applications/malecns_profile_census/CACHE_READOUT_V1.md",
+      "sha256": "1cc7002520b5df37974055972d39756f31f0a1c99341597233eb9f9eaefc3cae"
+    },
+    {
+      "path": "plugins/rust/prepared-input-cache/src/main.rs",
+      "sha256": "dab41011eea745e276a4b54794c20ab29ad1279bb94bafdf60204619639cb422"
+    },
+    {
+      "path": "applications/event_causal_consumers/parallel_v0/CONTRACT.md",
+      "sha256": "1fd3ef830e3649ab5830401b373fb2d24f042ba98d8ee7fbe6e0a62c726f1d23"
+    },
+    {
+      "path": "applications/event_causal_consumers/parallel_v0/READOUT.md",
+      "sha256": "10548c6b2c1ffc8173e6ce17dc4fd873b4dced7c2ffe671c86056df5c45474c2"
+    },
+    {
+      "path": "applications/event_causal_consumers/parallel_v0/coordinator.py",
+      "sha256": "59a212fae9d23f897f494b39f3149ee69485521eacc1bc5264539d7070c91fa9"
+    },
+    {
+      "path": "applications/malecns_sparse_kernel/CONTRACT.md",
+      "sha256": "f48d80e7511d8b94956c0634b08a6881f1e703640dda6fd4ed92253d9a02b553"
+    },
+    {
+      "path": "applications/malecns_sparse_kernel/READOUT_V0.md",
+      "sha256": "252aed210ad39c67401c5bcd79c8d180550d836d30a0774278fb08b15b4169ab"
+    },
+    {
+      "path": "applications/malecns_sparse_kernel/runner.py",
+      "sha256": "53f05304d11239b755cbd448ed4b75b3fc2f14f9c77b18d2bdcbcbd04256c89d"
+    },
+    {
+      "path": "applications/solana_source_advancement/CONTRACT.md",
+      "sha256": "a8679c868a16b3359fa0bf8df00bd1f1da62109ade3f5d02220821cbdb4f3e1a"
+    },
+    {
+      "path": "applications/solana_publication_recovery/CONTRACT.md",
+      "sha256": "f1bbc7c868aa05fedd5fd59ad5b4b8e820850aed2e799a12ae0d0a0d8c5b8029"
+    },
+    {
+      "path": "applications/solana_publication_recovery/READOUT_V0.md",
+      "sha256": "8a0e036c29528eab503716525b66cb0a6fb527954a08260f7dc266a8fee19ed1"
+    },
+    {
+      "path": "plugins/rust/solana-publication-recovery/src/main.rs",
+      "sha256": "0c052d3a6d2defb12d344fae23f9b60923ff8d24fba0b474da9119784760e458"
+    },
+    {
+      "path": "applications/solana_publication_recovery/runner.py",
+      "sha256": "967fbfc131f33824f9e6d1aad954f11655cc53518ea876a7d0e50e9943a4e3bd"
+    },
+    {
+      "path": "applications/solana_offchain_slice/common.py",
+      "sha256": "68a07af82e73aa9016dc6578340716f111630c242086deba77b8042ca6b2eadc"
+    }
+  ],
+  "recorded_utc": "2026-10-24T13:32:36.448146+00:00",
+  "retained_result_records": [
+    {
+      "declared_status": "PASS_CACHE_BASELINE",
+      "path": "applications/malecns_profile_census/results/prepared-cache.v1/cache-benchmark.v1.json",
+      "sha256": "29e27d2134bafdfd1e6583605cabf95f4c51b680b0c562ee3e27d2a6f2a44ef9"
+    },
+    {
+      "declared_status": "PASS_FUSION_COMPARISON",
+      "path": "applications/malecns_profile_census/results/packet-fusion.v1/fusion-benchmark.v1.json",
+      "sha256": "11be42d149e6242656e0980949eee450729a8e7b6172444b1b6ddf799e83a9ac"
+    },
+    {
+      "declared_status": "PASS_LOCAL_BOUNDED_CONTROLS",
+      "path": "applications/malecns_sparse_kernel/results/benchmark.v0.json",
+      "sha256": "daa6060ff46906ea4b03d872f8e1cec3c4ced419fd718c5d585394f1cfb28773"
+    },
+    {
+      "declared_status": "PASS_LOCAL_CONTROLS",
+      "path": "applications/event_causal_consumers/parallel_v0/results/controls.v0.json",
+      "sha256": "1f700ef47922729467f3149e7c05b712372f710231cc09d7326ada9073f25fb7"
+    },
+    {
+      "declared_status": "PASS_LOCAL_SOURCE_ADVANCEMENT_CONTROLS",
+      "path": "applications/solana_source_advancement/results/acceptance.v0.json",
+      "sha256": "7ae199e3c5164928328d7c15daae318b9a9a73048042e9aed9456127a175007a"
+    },
+    {
+      "declared_status": "PASS_LOCAL_PUBLICATION_RECOVERY",
+      "path": "applications/solana_publication_recovery/results/acceptance-summary.v0.json",
+      "sha256": "8efa7f226b179970167e8696293d618214fa82f8c4d0a223f0408be1b9a4bf07"
+    }
+  ],
+  "review_document": {
+    "path": "docs/internal/RUST_EXECUTION_CORE_BOUNDARY_REVIEW_V0.md",
+    "sha256": "0d009f3ea582c2c00a7942337ca7da93cba9bcc3bc4cdf3c5f067cb8e9ee2c95"
+  },
+  "schema": "sof-runtime.rust-execution-core-boundary-review-inputs.v0",
+  "status": "READ_ONLY_DESIGN_BASIS",
+  "verification_scope": {
+    "boundaries_checked": [
+      "publication_recovery",
+      "source_advancement",
+      "incremental_replay",
+      "prefix_integrity",
+      "offchain_slice",
+      "sparse_kernel",
+      "q2_parallel",
+      "cache_fusion_and_history"
+    ],
+    "independent_execution_attestation": false,
+    "new_application_replay": false,
+    "new_shared_implementation": false,
+    "public_api": false,
+    "publication_identity": false,
+    "service_implementation_closure_unchanged": "e28268f199dff38b7b5d4a41d7b855b0f564425c418638f39c498d9eb00f1448",
+    "source_and_binary_bindings_compared_to_retained_records": true,
+    "vendored_files_checked": 25
+  }
+}

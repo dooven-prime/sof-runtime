@@ -1,0 +1,12 @@
+{
+  "schema": "sof-runtime.source-advancement-plan.v0",
+  "upstream_manifest_sha256": "39fa0b60d7ee18f636b5641ffbf727094107fe3e3e42f0e71214128d5ba95424",
+  "windows": [16, 32, 64],
+  "earliest_mutation_offset": 4,
+  "later_mutation_offset": 9,
+  "required_cases": ["initial", "append_32", "append_64", "full_64", "credential_change_without_reapproval", "credential_change_reapproved", "same_source_raw_revision_without_reapproval", "same_source_raw_revision_reapproved", "prefix_conflict", "listed_status_conflict", "missing_admission", "missing_payload", "continuity_failure", "range_shrink", "unknown_credential", "bad_parent_anchor", "bad_policy_anchor", "corrupt_parent_segment", "foreign_execution", "destination_exists"],
+  "network_access": false,
+  "process_timeout_seconds": 120,
+  "process_rss_limit_bytes": 1073741824,
+  "claim_scope": "OFFLINE_COMPATIBILITY_NOT_REORG"
+}
