@@ -1,0 +1,9 @@
+[package]
+name = "event-causal-q2-enumerator"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

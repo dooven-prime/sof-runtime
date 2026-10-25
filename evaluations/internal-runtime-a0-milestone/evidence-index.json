@@ -1,0 +1,130 @@
+{
+  "boundary": "Selected local records only; ignored inputs, executables and full run directories are not bundled. Historical source/executable identities remain unchanged.",
+  "current_selected_checks": {
+    "length": 26650,
+    "path": "evaluations/internal-runtime-a0-milestone/local-checks.json",
+    "sha256": "b9d7ec90822bb915a47cebeffab0e6f80bbe8b759189d4f2d3b88613e54cf0a4"
+  },
+  "date": "2026-10-25",
+  "records": [
+    {
+      "length": 17389,
+      "path": "applications/malecns_cache_inventory_shadow/results/acceptance-summary.v0.json",
+      "recorded_status": "PASS_LOCAL_READ_ONLY_A0_CACHE_SHADOW",
+      "schema": "sof-runtime.a0-malecns-cache-shadow-summary.v0",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "c9c15ea3f91fa6964d691765d7f9c18520ac2857d6f71c5c48259c396d45c227"
+    },
+    {
+      "length": 49769,
+      "path": "applications/malecns_profile_census/results/cache-cost.v1/cost-decomposition.v1.json",
+      "recorded_status": "PASS_COST_DECOMPOSITION",
+      "schema": "sof-runtime.cache-hit-cost-decomposition.v1",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "dce831812c50e6512353999dedc2ab610d4eace7c63a1f6a21a0c3af055b31bd"
+    },
+    {
+      "length": 12502,
+      "path": "applications/malecns_profile_census/results/full-carrier-somaside.v1/benchmark.v1.json",
+      "recorded_status": "PASS_EXACT_BENCHMARK",
+      "schema": "sof-runtime.malecns-profile-census-benchmark.v1",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "e9ede938dbbf6a68483f494d2bbafd02fa1fbccbe767f4dd58a3dfcc994214b3"
+    },
+    {
+      "length": 2020,
+      "path": "applications/malecns_profile_census/results/full-carrier-somaside.v1/semantic-result.json",
+      "recorded_status": "EXACT_CENSUS",
+      "schema": "rime.malecns.profile-census-result.v1",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "02dcc86a737a9e1534b4ae03d90ed1abba7dfbffc1a557b04213457a56dcdda1"
+    },
+    {
+      "length": 62611,
+      "path": "applications/malecns_profile_census/results/packet-fusion.v1/fusion-benchmark.v1.json",
+      "recorded_status": "PASS_FUSION_COMPARISON",
+      "schema": "sof-runtime.fused-packet-validation-benchmark.v1",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "11be42d149e6242656e0980949eee450729a8e7b6172444b1b6ddf799e83a9ac"
+    },
+    {
+      "length": 13505,
+      "path": "applications/malecns_profile_census/results/prepared-cache.v1/cache-benchmark.v1.json",
+      "recorded_status": "PASS_CACHE_BASELINE",
+      "schema": "sof-runtime.prepared-input-cache-benchmark.v1",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "29e27d2134bafdfd1e6583605cabf95f4c51b680b0c562ee3e27d2a6f2a44ef9"
+    },
+    {
+      "length": 46585,
+      "path": "applications/malecns_sparse_kernel/results/benchmark.v0.json",
+      "recorded_status": "PASS_LOCAL_BOUNDED_CONTROLS",
+      "schema": "sof-runtime.malecns-spmv.benchmark.v0",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "daa6060ff46906ea4b03d872f8e1cec3c4ced419fd718c5d585394f1cfb28773"
+    },
+    {
+      "length": 5392,
+      "path": "applications/shared_a0_extraction_review/results/review-summary.v0.json",
+      "recorded_status": "PASS_LOCAL_SHARED_A0_EXTRACTION_EXPERIMENT",
+      "schema": "sof-runtime.shared-a0-extraction-summary.v0",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "00ea54bacef6fc8788844a071c5a91c7e90bf6fed5206d223efaeaa7974be647"
+    },
+    {
+      "length": 344431,
+      "path": "applications/solana_incremental_replay/results/acceptance.v1.json",
+      "recorded_status": "PASS_LOCAL_INCREMENTAL_CONTROLS",
+      "schema": "sof-runtime.solana-incremental-acceptance.v1",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "e4726cb820f9357056c5e1f99e23fdec52359c1f33917d02b57a51639757bfb1"
+    },
+    {
+      "length": 25717,
+      "path": "applications/solana_inventory_shadow/results/acceptance-summary.v0.json",
+      "recorded_status": "PASS_LOCAL_READ_ONLY_A0_SHADOW",
+      "schema": "sof-runtime.a0-solana-shadow-summary.v0",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "3f4764d4201b72774aaf88c6f8f5d559678cdec358e23635fe18c42af8f8fca4"
+    },
+    {
+      "length": 49044,
+      "path": "applications/solana_offchain_slice/results/acceptance.v0.json",
+      "recorded_status": "PASS_LOCAL_CAPTURE_CONTROLS",
+      "schema": "sof-runtime.solana-offchain.acceptance.v0",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "46636bc512024cc14960de5b35bd599ea3c1e93f677c4e660e7e33d6c3bdc2d6"
+    },
+    {
+      "length": 12065,
+      "path": "applications/solana_prefix_integrity/results/attribution-summary.v1.json",
+      "recorded_status": "PASS_LOCAL_ATTRIBUTION_CONTROLS",
+      "schema": "sof-runtime.prefix-integrity-attribution-summary.v1",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "6d7e24419805759c3c0a57b7b5df33f3db0c54c6405c8af4379fdb23508b1fc6"
+    },
+    {
+      "length": 42564,
+      "path": "applications/solana_publication_recovery/results/acceptance-summary.v0.json",
+      "recorded_status": "PASS_LOCAL_PUBLICATION_RECOVERY",
+      "schema": "sof-runtime.publication-recovery-summary.v0",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "8efa7f226b179970167e8696293d618214fa82f8c4d0a223f0408be1b9a4bf07"
+    },
+    {
+      "length": 314012,
+      "path": "applications/solana_source_advancement/results/acceptance.v0.json",
+      "recorded_status": "PASS_LOCAL_SOURCE_ADVANCEMENT_CONTROLS",
+      "schema": "sof-runtime.source-advancement-acceptance.v0",
+      "scope": "retained historical local result; not reissued for this commit or fresh CI; see owning README/readout",
+      "sha256": "7ae199e3c5164928328d7c15daae318b9a9a73048042e9aed9456127a175007a"
+    }
+  ],
+  "release_identity_claimed": false,
+  "schema": "sof-runtime.internal-milestone-evidence-index.v0",
+  "sof_protected_baseline": {
+    "length": 55193,
+    "path": "evaluations/internal-runtime-a0-milestone/sof-compatibility-baseline.json",
+    "sha256": "700b6497e7f81c925388f2e6ca5d6a405ca4444bb3fd655dd198492b3ba2ecd4"
+  }
+}

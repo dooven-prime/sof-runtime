@@ -1,0 +1,15 @@
+{
+  "schema": "sof-runtime.a0-solana-shadow-plan.v0",
+  "origin_run": "runs/solana-publication-recovery/acceptance-v0-final",
+  "origin_receipt_sha256": "9ca248d36588889c5b1ef2881aa01d659a4726ab2f3f6aba0c2c652c43d4ce0f",
+  "origin_case": "clean-reapprove",
+  "normal_roots": ["state", "producer-receipt"],
+  "file_controls": ["missing", "extra", "damaged", "truncated", "wrong-type", "actual-case", "file-ads", "root-ads", "hardlink", "junction-root", "junction-entry"],
+  "declaration_controls": ["device", "ads", "traversal", "drive", "unc", "case-alias", "duplicate", "schema", "producer", "identity-role", "version", "unknown", "unsorted", "float", "noncanonical", "typed-metadata", "control-in-root-manifest", "control-in-root-bindings"],
+  "kill_points": ["enumerated", "hashing", "result_partial"],
+  "mutation_controls": ["content", "replacement", "extra-file", "named-stream"],
+  "process_timeout_seconds": 60,
+  "max_entries": 4096,
+  "max_total_bytes": 536870912,
+  "scope": "READ_ONLY_A0_NOT_B_C_OR_SOURCE_APPROVAL"
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "sof-runtime.a0-malecns-cache-shadow-plan.v0",
+  "scope": "read-only exact flat inventories; local Windows NTFS; all application policy retained",
+  "origin_run": "runs/malecns-profile-census/cache-baseline-v1-final",
+  "origin_receipt_sha256": "29e27d2134bafdfd1e6583605cabf95f4c51b680b0c562ee3e27d2a6f2a44ef9",
+  "normal_roots": ["cache-entry", "archive"],
+  "declaration_controls": ["source-role", "execution-role", "cache-role", "checkpoint-slot", "wrong-cache-key", "wrong-producer", "profile", "control-in-root"],
+  "file_controls": ["missing", "extra", "damaged", "truncated", "wrong-type", "actual-case", "hardlink", "file-ads"],
+  "kill_points": ["enumerated", "hashing", "result_partial"],
+  "mutation_controls": ["content", "replacement", "extra-file", "named-stream"],
+  "semantic_negative": "original packet header and length retained; first row sign set to zero; all digest declarations accurate",
+  "prior_a0_snapshot": "runs/a0-malecns-cache-shadow/a0-prior-v0-snapshot",
+  "prior_solana_receipt": "runs/a0-solana-inventory-shadow/acceptance-v0-final/acceptance.v0.json",
+  "prior_solana_receipt_sha256": "92fec64b8735148c8efcd1789281e0c7a430fbdf6b620c3cf3eee4cd615a8cb4",
+  "prior_a0_binary_sha256": "29b434e4f62d4610d16f6f28bd7a6184f8bd43e37c1fc7ec8a87e26235626fe8",
+  "b_or_c_extracted": false,
+  "cache_path_migrated": false,
+  "a_library_extraction_approved": false
+}

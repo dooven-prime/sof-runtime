@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import os
 import shutil
 import subprocess
@@ -8,6 +9,20 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = PROJECT_ROOT / "plugins" / "rust" / "positive-word-support" / "Cargo.toml"
+Q2_MANIFEST = (
+    PROJECT_ROOT
+    / "plugins"
+    / "rust"
+    / "event-causal-q2-enumerator"
+    / "Cargo.toml"
+)
+CENSUS_MANIFEST = (
+    PROJECT_ROOT
+    / "plugins"
+    / "rust"
+    / "malecns-profile-census"
+    / "Cargo.toml"
+)
 
 
 def find_cargo() -> Path:
@@ -27,18 +42,17 @@ def find_cargo() -> Path:
 
 
 def main() -> int:
-    subprocess.run(
-        [
-            str(find_cargo()),
-            "build",
-            "--release",
-            "--locked",
-            "--manifest-path",
-            str(MANIFEST),
-        ],
-        cwd=PROJECT_ROOT,
-        check=True,
-    )
+    parser = argparse.ArgumentParser(description="Build the stable SOF Rust plugin; prototypes are opt-in.")
+    parser.add_argument("--engineering", action="store_true", help="also build the Q2 enumerator and MaleCNS census prototypes")
+    args = parser.parse_args()
+    cargo = str(find_cargo())
+    manifests = (MANIFEST, Q2_MANIFEST, CENSUS_MANIFEST) if args.engineering else (MANIFEST,)
+    for manifest in manifests:
+        subprocess.run(
+            [cargo, "build", "--release", "--locked", "--manifest-path", str(manifest)],
+            cwd=PROJECT_ROOT,
+            check=True,
+        )
     return 0
 
 

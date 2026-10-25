@@ -1,8 +1,19 @@
 # sof-runtime
 
-`sof-runtime` implements and applies versioned SOF contracts. It does not
-redefine the mathematical objects, theorems, or ownership boundaries of the
-RIME manuscripts. Canonical semantic authority remains in
+`sof-runtime` maintains versioned SOF contracts and Python workflows while
+developing a separate Rust data-runtime lane. Offline Solana replay, exact
+calculation kernels and read-only shared-inventory prototypes are implemented;
+production Solana ingest, plugin distribution and operational guarantees remain
+development goals. See the [internal engineering milestone](docs/internal/ENGINEERING_MILESTONE_REVIEW.md)
+and [Solana runtime roadmap](docs/SOLANA_RUNTIME_ROADMAP.md).
+
+**Internal engineering milestone, review only.** This branch is not a new
+package release. Existing SOF versions, public contracts and historical receipt
+bindings are preserved; no release/tag or production migration is implied.
+
+The existing SOF compatibility surface does not redefine the mathematical
+objects, theorems, or ownership boundaries of the RIME manuscripts. Canonical
+SOF semantic authority remains in
 [`dooven-prime/rime-lite`](https://github.com/dooven-prime/rime-lite).
 
 Researchers may adopt the runtime protocol without accepting every SOF
@@ -12,6 +23,41 @@ transfer ownership of domain conclusions to SOF.
 
 > The runtime controls language, conformance, and artifacts. Domain plugins
 > remain responsible for domain semantics and conclusions.
+
+## Project Direction
+
+There are two maintained lanes and a restricted shared-mechanism experiment:
+
+- **SOF compatibility:** existing Python SDK/CLI, compiler, reports, comparisons,
+  action artifacts, schemas and validators remain stable and supported. They
+  are not deprecated or replaced with a weaker Rust implementation.
+- **Rust data runtime:** offline Solana capture/projection/checkpoint/recovery,
+  MaleCNS kernels and Q2 controls have independently scoped local evidence.
+- **Shared A0 candidate:** identity, restricted codec and exact flat inventory
+  are shared only by read-only shadows. No B/C process/publication core or
+  production call-path migration is approved.
+
+The [SOF Compatibility Guard](docs/internal/SOF_COMPATIBILITY_GUARD_V0.md) is a
+negative acceptance boundary: A0 success cannot excuse a SOF regression. The
+Q2 enumerator is application-specific, not a generic semantic reducer.
+
+The target architecture and staged acceptance criteria are recorded in the
+[roadmap](docs/SOLANA_RUNTIME_ROADMAP.md). New Solana-facing work should make
+replay identity and operational measurements explicit, and should not silently
+reuse SOF scientific contracts for chain data semantics.
+
+The [MaleCNS profile-census replay case](applications/malecns_profile_census/README.md)
+is an offline sparse-network workload for prototyping exact Rust/Python
+replay. It is neither a Solana workload nor a production performance result.
+Its [full-carrier serial baseline](applications/malecns_profile_census/FULL_CARRIER_READOUT.md)
+now records exact output parity and a workload-specific controlled comparison.
+
+The [shared A0 local readout](applications/shared_a0_extraction_review/READOUT_V0.md)
+records the 43/27 shadow controls and protected SOF regression. These historical
+local results are not a clean-checkout CI replay of the large captured inputs.
+The [CI scope table](docs/internal/ENGINEERING_MILESTONE_REVIEW.md#ci-gates)
+distinguishes portable checks, Windows NTFS checks and unexecuted local-data
+audits. A skip or a platform exclusion is never counted as a passed test.
 
 ## Boundary
 
@@ -194,15 +240,16 @@ hardening release.
 
 Technology responsibilities are explicit:
 
-| Responsibility | Technology / owner |
-|---|---|
-| Theory, normative semantics, and release identity | `rime-lite` |
-| Language-neutral contracts | JSON Schema, canonical encoding, and digests |
-| Reference runtime and orchestration | Python |
-| High-performance kernels | Rust, Julia, or C++ plugins |
-| Formal proof artifacts | Lean source, build record, and digest |
-| Large tabular and array data | Parquet, NPZ, and Zarr |
-| Application-facing typed output | Compiler Output, then the downstream report protocol |
+| Responsibility | Current implementation | Target direction |
+|---|---|---|
+| SOF theory, normative semantics, and publication identity | `rime-lite` | Remains upstream-owned |
+| SOF reference workflow and orchestration | Python | Compatibility surface during transition |
+| Solana data processing runtime | Offline fixed-capture Rust prototypes | Independently validated incremental/operational development |
+| Replay and artifact identity | SOF JSON contracts, canonical encoding, and digests | Explicit source/cursor identity and deterministic replay contracts |
+| High-performance processing | Bounded Rust plugin prototypes | Measured Rust data plane and versioned plugin distribution |
+| Formal proof artifacts | Lean source, build record, and digest | Unchanged unless a concrete need emerges |
+| Large tabular and array data | Parquet, NPZ, and Zarr | Re-evaluate against streaming and replay workloads |
+| SOF typed output | Compiler Output, then downstream report protocol | Retained only for SOF compatibility workflows |
 
 The repository separates immutable upstream contracts, local runtime
 envelopes, carrier extensions, applications, profiles, and tests:

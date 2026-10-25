@@ -1,0 +1,97 @@
+{
+  "schema": "rime.malecns.profile-census-fixture.v1",
+  "source_field": "somaSide",
+  "sector_labels": ["<missing>", "L", "M", "R"],
+  "records": [
+    {
+      "source_id": 1,
+      "source_sector": 1,
+      "sign": 1,
+      "edges": [
+        {"target_sector": 1, "weight": 2},
+        {"target_sector": 2, "weight": 1}
+      ]
+    },
+    {
+      "source_id": 2,
+      "source_sector": 1,
+      "sign": 1,
+      "edges": [
+        {"target_sector": 1, "weight": 4},
+        {"target_sector": 2, "weight": 2}
+      ]
+    },
+    {
+      "source_id": 3,
+      "source_sector": 1,
+      "sign": 1,
+      "edges": [
+        {"target_sector": 1, "weight": 1},
+        {"target_sector": 3, "weight": 2}
+      ]
+    },
+    {
+      "source_id": 4,
+      "source_sector": 1,
+      "sign": 1,
+      "edges": [
+        {"target_sector": 1, "weight": 2},
+        {"target_sector": 3, "weight": 4}
+      ]
+    },
+    {
+      "source_id": 5,
+      "source_sector": 1,
+      "sign": -1,
+      "edges": [{"target_sector": 1, "weight": 5}]
+    },
+    {
+      "source_id": 6,
+      "source_sector": 2,
+      "sign": 1,
+      "edges": [
+        {"target_sector": 0, "weight": 2},
+        {"target_sector": 1, "weight": 2}
+      ]
+    },
+    {
+      "source_id": 7,
+      "source_sector": 2,
+      "sign": 1,
+      "edges": [
+        {"target_sector": 0, "weight": 1},
+        {"target_sector": 1, "weight": 1}
+      ]
+    },
+    {
+      "source_id": 8,
+      "source_sector": 2,
+      "sign": -1,
+      "edges": [{"target_sector": 3, "weight": 3}]
+    },
+    {
+      "source_id": 9,
+      "source_sector": 3,
+      "sign": -1,
+      "edges": [{"target_sector": 3, "weight": 1}]
+    },
+    {
+      "source_id": 10,
+      "source_sector": 3,
+      "sign": 1,
+      "edges": [
+        {"target_sector": 0, "weight": 1},
+        {"target_sector": 1, "weight": 1}
+      ]
+    },
+    {
+      "source_id": 11,
+      "source_sector": 3,
+      "sign": 1,
+      "edges": [
+        {"target_sector": 2, "weight": 1},
+        {"target_sector": 3, "weight": 1}
+      ]
+    }
+  ]
+}

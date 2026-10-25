@@ -1,0 +1,9 @@
+{
+  "schema": "sof-runtime.publication-recovery-plan.v0",
+  "upstream_manifest_sha256": "39fa0b60d7ee18f636b5641ffbf727094107fe3e3e42f0e71214128d5ba95424",
+  "fault_points": ["intent_partial", "intent_published", "calculation_started", "calculation_completed", "stage_created", "segment_partial", "segment_published", "projection_partial", "projection_published", "transition_partial", "transition_published", "checkpoint_partial", "checkpoint_published", "ready_published", "before_publication", "after_publication", "receipt_partial", "receipt_published"],
+  "transition_modes": ["append", "reapprove"],
+  "process_timeout_seconds": 120,
+  "max_process_rss_bytes": 1073741824,
+  "scope": "OFFLINE_PROCESS_KILL_NOT_POWER_LOSS_OR_LIVE_REORG"
+}

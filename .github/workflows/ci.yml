@@ -1,11 +1,11 @@
-name: conformance
+name: internal-conformance
 
 on:
   push:
   pull_request:
 
 jobs:
-  test:
+  sof-compatibility:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -15,9 +15,62 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      - uses: dtolnay/rust-toolchain@stable
       - run: python -m pip install -e ".[all]"
-      - run: python tools/verify_digests.py
-      - run: python -m unittest discover -s tests -v
+      - run: python -B tools/run_engineering_ci.py sof --out runs/ci/sof
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sof-${{ matrix.python-version }}-selected-checks
+          path: runs/ci/sof
+
+  a0-portable:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: dtolnay/rust-toolchain@stable
+      - run: python -m pip install -e .
+      - run: python -B tools/run_engineering_ci.py a0-portable --out runs/ci/a0-portable
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a0-portable-not-ntfs
+          path: runs/ci/a0-portable
+
+  malecns-profile-census:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: dtolnay/rust-toolchain@stable
+      - run: python -m pip install -e . -r requirements/engineering-shadow-ci.txt
+      - run: python -B tools/run_engineering_ci.py malecns-profile --out runs/ci/malecns-profile
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: malecns-profile-selected-checks
+          path: runs/ci/malecns-profile
+
+  a0-windows-ntfs:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: dtolnay/rust-toolchain@stable
+      - run: python -m pip install -e . -r requirements/engineering-shadow-ci.txt
+      - run: python -B tools/run_engineering_ci.py a0-ntfs --out runs/ci/a0-ntfs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a0-windows-ntfs-actual-controls
+          path: runs/ci/a0-ntfs
 
   wheel:
     runs-on: ubuntu-latest
