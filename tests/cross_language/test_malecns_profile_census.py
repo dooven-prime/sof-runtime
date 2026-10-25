@@ -10,7 +10,7 @@ import tempfile
 import unittest
 
 from applications.malecns_profile_census.prepare_input import fixture_data
-from applications.malecns_profile_census.protocol import canonical_bytes, write_packet
+from applications.malecns_profile_census.protocol import SCHEMA, canonical_bytes, write_packet
 from applications.malecns_profile_census.oracle import run as run_python
 
 
@@ -82,6 +82,50 @@ class MaleCNSProfileCensusTests(unittest.TestCase):
         left = result["sectors"][1]
         self.assertEqual(left["profile_classes"], 3)
         self.assertEqual(left["largest_class_sources"], 2)
+
+    def check_separator_order(self, labels: list[str], records: list[dict], expected: list[list[str]]) -> None:
+        packet = Path(self.temp.name) / "nonlexicographic.input.bin"
+        header = {
+            "schema": SCHEMA,
+            "source_field": "synthetic-coordinate-order",
+            "source_identity": "synthetic:coordinate-index-order-v1",
+            "sign_semantics": "declared-source-sign",
+            "sector_labels": labels,
+            "record_count": len(records),
+            "source_artifacts": [],
+        }
+        write_packet(packet, header, records)
+        python = run_python(packet)
+        self.assertEqual(python["sectors"][0]["minimum_separating_coordinate_sets"], expected)
+        self.assertEqual(python["minimum_global_separating_coordinate_sets"], expected)
+        rust = self.rust_result(packet)
+        self.assertEqual(rust.returncode, 0, rust.stderr)
+        self.assertEqual(canonical_bytes(json.loads(rust.stdout)), canonical_bytes(python))
+        replay = subprocess.run(
+            [sys.executable, "-B", "-m", "applications.malecns_profile_census.replay", "--input", str(packet)],
+            cwd=PROJECT_ROOT, capture_output=True, text=True, encoding="utf-8",
+        )
+        self.assertEqual(replay.returncode, 0, replay.stderr)
+        self.assertEqual(json.loads(replay.stdout)["status"], "PASS_EXACT_REPLAY")
+
+    def test_singleton_separators_follow_nonlexicographic_basis_order(self) -> None:
+        records = [
+            {"source_id": 0, "source_sector": 0, "sign": 1, "edges": [(0, 1)]},
+            {"source_id": 1, "source_sector": 0, "sign": 1, "edges": [(1, 1)]},
+        ]
+        self.check_separator_order(["Z", "A"], records, [["Z"], ["A"]])
+
+    def test_multicoordinate_separators_follow_index_combinations_not_masks(self) -> None:
+        records = [
+            {"source_id": 0, "source_sector": 0, "sign": -1, "edges": [(0, 1)]},
+            {"source_id": 1, "source_sector": 0, "sign": 1, "edges": [(0, 1), (1, 1)]},
+            {"source_id": 2, "source_sector": 0, "sign": 1, "edges": [(2, 1), (3, 1)]},
+            {"source_id": 3, "source_sector": 0, "sign": 1, "edges": [(0, 1), (1, 1), (2, 1), (3, 1)]},
+        ]
+        self.check_separator_order(
+            ["Z", "A", "Y", "B"], records,
+            [["Z", "Y"], ["Z", "B"], ["A", "Y"], ["A", "B"]],
+        )
 
     def test_rust_rejects_truncation_and_trailing_bytes(self) -> None:
         truncated = Path(self.temp.name) / "truncated.bin"

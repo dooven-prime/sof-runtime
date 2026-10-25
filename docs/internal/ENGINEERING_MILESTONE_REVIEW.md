@@ -70,6 +70,7 @@ unchanged. The ordinary and optimized menus use this same scoped fixture policy.
 | --- | --- | --- |
 | Linux SOF, Python 3.11/3.13 | Protected byte guard; unchanged SOF unit/conformance/golden/regression suites; original plugin protocol tests; vendored/service/evaluation/matrix checks | A0 NTFS behavior; every new prototype workload; historical large-input replay |
 | Linux A0 portable | Shared Rust codec/identity/name tests and compile-fail controls, inspector build, review/CI reporting tests, unsupported-backend refusal | ADS/reparse/handle stability validation; refusing an unsupported platform is not filesystem conformance |
+| Linux MaleCNS profile census | Rust separator-order unit tests and Python/Rust packet/replay controls, including nonlexicographic sector bases | Historical full-carrier benchmark replay, performance claims or filesystem conformance |
 | Windows A0 NTFS | Actual local NTFS preflight, the two synthetic A0 test menus in ordinary/-O modes, ADS/hard-link/junction and kill/change controls within those menus | Local archived 43/27 full-acceptance runs and MaleCNS full-carrier benchmark; these require ignored external/local inputs |
 | Linux wheel | Existing installed public SOF workflow | A Rust replacement of the Python runtime or a new runtime release |
 

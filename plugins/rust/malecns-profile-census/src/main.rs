@@ -81,17 +81,20 @@ fn minimal_separators(signatures: &[Vec<u64>], labels: &[String]) -> Option<Vec<
                 }
             }
             if unique {
-                answers.push(
-                    coordinates
-                        .iter()
-                        .map(|coordinate| labels[*coordinate].clone())
-                        .collect(),
-                );
+                answers.push(coordinates);
             }
         }
         if !answers.is_empty() {
+            // Match Python combinations in basis-index order, not label order.
             answers.sort();
-            return Some(answers);
+            return Some(
+                answers
+                    .into_iter()
+                    .map(|coordinates| {
+                        coordinates.into_iter().map(|index| labels[index].clone()).collect()
+                    })
+                    .collect(),
+            );
         }
     }
     Some(Vec::new())
@@ -126,17 +129,19 @@ fn minimal_global_separators(
                 })
             });
             if separates_every_fiber {
-                answers.push(
-                    coordinates
-                        .iter()
-                        .map(|coordinate| labels[*coordinate].clone())
-                        .collect(),
-                );
+                answers.push(coordinates);
             }
         }
         if !answers.is_empty() {
             answers.sort();
-            return Some(answers);
+            return Some(
+                answers
+                    .into_iter()
+                    .map(|coordinates| {
+                        coordinates.into_iter().map(|index| labels[index].clone()).collect()
+                    })
+                    .collect(),
+            );
         }
     }
     Some(Vec::new())
@@ -345,5 +350,40 @@ fn main() -> ExitCode {
             eprintln!("malecns-profile-census: {error}");
             ExitCode::from(2)
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{minimal_global_separators, minimal_separators};
+
+    #[test]
+    fn singleton_separators_keep_nonlexicographic_basis_order() {
+        let labels = vec!["Z".to_owned(), "A".to_owned()];
+        let signatures = vec![vec![1, 1, 0], vec![1, 0, 1]];
+        let expected = vec![vec!["Z".to_owned()], vec!["A".to_owned()]];
+        assert_eq!(minimal_separators(&signatures, &labels), Some(expected.clone()));
+        let classes = vec![signatures.into_iter().map(|signature| (signature, 1)).collect()];
+        assert_eq!(minimal_global_separators(&classes, &labels), Some(expected));
+    }
+
+    #[test]
+    fn multicoordinate_separators_use_lexicographic_indices_not_masks() {
+        let labels = vec!["Z".to_owned(), "A".to_owned(), "Y".to_owned(), "B".to_owned()];
+        let signatures = vec![
+            vec![1, 0, 0, 0, 0],
+            vec![2, 1, 1, 0, 0],
+            vec![2, 0, 0, 1, 1],
+            vec![4, 1, 1, 1, 1],
+        ];
+        let expected = vec![
+            vec!["Z".to_owned(), "Y".to_owned()],
+            vec!["Z".to_owned(), "B".to_owned()],
+            vec!["A".to_owned(), "Y".to_owned()],
+            vec!["A".to_owned(), "B".to_owned()],
+        ];
+        assert_eq!(minimal_separators(&signatures, &labels), Some(expected.clone()));
+        let classes = vec![signatures.into_iter().map(|signature| (signature, 1)).collect()];
+        assert_eq!(minimal_global_separators(&classes, &labels), Some(expected));
     }
 }

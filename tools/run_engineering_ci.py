@@ -109,6 +109,11 @@ def run(profile, out):
                 if completed.returncode == 0 or value["status"] != "INCOMPLETE" or value["error"]["code"] != "UNSUPPORTED_PLATFORM":
                     raise ValueError("non-Windows backend failed to refuse unsupported observation")
                 report["unsupported_backend_refusal"] = "PASS_REFUSAL_ONLY_NOT_NTFS_VALIDATION"
+        elif profile == "malecns-profile":
+            crate(out, "malecns-profile-census", "test")
+            report["profile_tests"] = test_suite(["tests.cross_language.test_malecns_profile_census"], out, "profile-census")
+            report["ntfs"] = "NOT_EXECUTED_PROFILE"
+            report["not_executed"] += ["A0 filesystem controls: separate platform-scoped jobs"]
         elif profile == "a0-ntfs":
             if os.name != "nt": raise RuntimeError("UNRESOLVED: selected NTFS job requires Windows, not a platform skip")
             from applications.solana_inventory_shadow.reference import Handle
@@ -140,5 +145,5 @@ def run(profile, out):
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("profile", choices=("sof", "a0-portable", "a0-ntfs", "_ntfs-tests")); p.add_argument("--out", type=Path, required=True)
+    p.add_argument("profile", choices=("sof", "a0-portable", "malecns-profile", "a0-ntfs", "_ntfs-tests")); p.add_argument("--out", type=Path, required=True)
     a = p.parse_args(); print(json.dumps(run(a.profile, a.out), sort_keys=True))

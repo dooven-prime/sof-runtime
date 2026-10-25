@@ -23,6 +23,8 @@ profile coordinates use checked signed-64-bit bounds. Malformed, reordered,
 truncated, overflowing, or trailing input fails without emitting a result.
 The row sign is carried separately from edge magnitudes and represents the
 presynaptic transmitter proxy used by the Paper XVI carrier preparation.
+Minimum separator sets follow lexicographic coordinate-index combinations in
+the declared sector basis, not label-string order. Labels need not be sorted.
 
 ## Run the Fixture
 
